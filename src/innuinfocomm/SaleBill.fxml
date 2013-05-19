@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.SaleBillController">
+  <children>
+    <Label layoutX="382.0" layoutY="14.0" text="Sale Bill" />
+    <VBox id="VBox" alignment="CENTER_RIGHT" fillWidth="false" layoutX="38.0" layoutY="53.0" spacing="5.0">
+      <children>
+        <HBox id="HBox" alignment="CENTER" spacing="5.0">
+          <children>
+            <HBox id="HBox" alignment="CENTER" spacing="5.0">
+              <children>
+                <Label text="Bill No:" />
+                <TextField fx:id="billNoTextbox" prefWidth="46.0">
+                  <HBox.margin>
+                    <Insets right="35.0" />
+                  </HBox.margin>
+                </TextField>
+              </children>
+            </HBox>
+            <HBox id="HBox" alignment="CENTER" spacing="5.0">
+              <children>
+                <Label text="Date:" />
+                <TextField fx:id="dateTextBox" prefWidth="120.0" />
+              </children>
+            </HBox>
+          </children>
+        </HBox>
+        <HBox id="HBox" alignment="CENTER" spacing="5.0">
+          <children>
+            <Label text="Cutomer:" />
+            <ComboBox fx:id="customerComboBox" prefWidth="231.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+          </children>
+        </HBox>
+        <HBox id="HBox" alignment="CENTER" spacing="5.0">
+          <children>
+            <Label text="Site:" />
+            <ComboBox fx:id="siteComboBox" prefWidth="154.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+    <VBox id="VBox" alignment="CENTER" layoutX="35.0" layoutY="152.0" spacing="5.0">
+      <children>
+        <TableView prefHeight="200.0" prefWidth="751.0">
+          <columns>
+            <TableColumn prefWidth="75.0" text="Item Name" fx:id="itemNameTableCol" />
+            <TableColumn prefWidth="75.0" text="Qnty" fx:id="quantityTableCol" />
+            <TableColumn prefWidth="75.0" text="Unit" fx:id="unitTableCol" />
+            <TableColumn prefWidth="75.0" text="Qnty2" fx:id="quantity2TableCol" />
+            <TableColumn prefWidth="75.0" text="Unit2" fx:id="unit2TableCol" />
+            <TableColumn prefWidth="75.0" text="Rate" fx:id="rateTableCol" />
+            <TableColumn prefWidth="75.0" text="Total" fx:id="totalTableCol" />
+            <TableColumn prefWidth="75.0" text="Remark" fx:id="remarkTableCol" />
+            <TableColumn prefWidth="75.0" text="Vat %" fx:id="vatPercTableCol" />
+            <TableColumn prefWidth="75.0" text="Vat Rs" fx:id="vatRsTableCol" />
+          </columns>
+        </TableView>
+      </children>
+    </VBox>
+    <Label layoutX="35.0" layoutY="398.0" text="Remarks:" />
+    <TextField id="remarksTextBo" fx:id="remarksTextBox" layoutX="100.0" layoutY="395.0" prefWidth="200.0" />
+    <Label layoutX="35.0" layoutY="427.0" text="Company:" />
+    <TextField fx:id="companyTextBox" layoutX="110.0" layoutY="424.0" prefWidth="189.0" />
+    <VBox id="VBox" alignment="BOTTOM_LEFT" fillWidth="false" layoutX="33.0" layoutY="463.0" spacing="5.0">
+      <children>
+        <RadioButton fx:id="challanRadioBtn" mnemonicParsing="false" text="Challan" />
+        <RadioButton fx:id="invoiceRadioBtn" mnemonicParsing="false" text="Invoice" />
+        <RadioButton fx:id="challanRateRadioBtn" mnemonicParsing="false" text="Challan Rate" />
+      </children>
+    </VBox>
+    <VBox id="VBox" alignment="CENTER_RIGHT" fillWidth="false" layoutX="417.0" layoutY="376.0" spacing="5.0">
+      <children>
+        <HBox id="HBox" alignment="CENTER" spacing="5.0">
+          <children>
+            <Label text="Vat:" />
+            <TextField fx:id="vatTextBox" prefWidth="200.0" />
+          </children>
+        </HBox>
+        <HBox id="HBox" alignment="CENTER" spacing="5.0">
+          <children>
+            <Label text="Freight Charges:" />
+            <TextField fx:id="frieghtTextBox" prefWidth="200.0" />
+          </children>
+        </HBox>
+        <HBox id="HBox" alignment="CENTER" spacing="5.0">
+          <children>
+            <Label text="Discount:" />
+            <TextField fx:id="discountTextBox" prefWidth="200.0" />
+          </children>
+        </HBox>
+        <HBox id="HBox" alignment="CENTER" spacing="5.0">
+          <children>
+            <Label fx:id="totalTextBox" text="Total:" />
+            <TextField prefWidth="200.0" />
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+    <Button fx:id="saveBtn" layoutX="423.0" layoutY="521.0" mnemonicParsing="false" onAction="#handleSaveBtn" text="Save" />
+    <Button fx:id="printBtn" layoutX="495.0" layoutY="521.0" mnemonicParsing="false" onAction="#handlePrintBtn" text="Print" />
+  </children>
+</AnchorPane>
