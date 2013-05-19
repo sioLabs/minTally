@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="1.0" prefHeight="444.0" prefWidth="600.0" style="-fx-scale-x:1;&#10;-fx-scale-y:1;" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.AddLedgerController">
+  <children>
+    <Label alignment="CENTER" layoutX="262.0" layoutY="22.0" text="Add New Ledger" textAlignment="CENTER" underline="false">
+      <effect>
+        <Glow />
+      </effect>
+      <font>
+        <Font name="DejaVu Sans Condensed Bold" size="20.0" />
+      </font>
+    </Label>
+    <Label layoutX="76.0" layoutY="73.0" text="Name">
+      <labelFor>
+        <TextField fx:id="led_name" layoutX="75.0" layoutY="88.0" prefWidth="200.0" promptText="Name" />
+      </labelFor>
+    </Label>
+    <fx:reference source="led_name" />
+    <Label layoutX="76.0" layoutY="118.0" text="Contact Person">
+      <labelFor>
+        <TextField id="led_name" fx:id="led_contact_person" layoutX="75.0" layoutY="134.0" prefWidth="200.0" promptText="Contact Person Name" />
+      </labelFor>
+    </Label>
+    <fx:reference source="led_contact_person" />
+    <Label layoutX="387.0" layoutY="118.0" text="Contact Number">
+      <labelFor>
+        <TextField id="led_name" fx:id="led_contact_no" layoutX="386.0" layoutY="135.0" prefWidth="167.0" promptText="Phone Number" />
+      </labelFor>
+    </Label>
+    <fx:reference source="led_contact_no" />
+    <Label layoutX="388.0" layoutY="167.0" text="Email">
+      <labelFor>
+        <TextField id="led_name" fx:id="led_email" layoutX="387.0" layoutY="184.0" prefWidth="167.0" promptText="Email address" />
+      </labelFor>
+    </Label>
+    <fx:reference source="led_email" />
+    <Label layoutX="386.0" layoutY="275.0" text="CST Tin">
+      <labelFor>
+        <TextField id="led_name" fx:id="led_cst_tin" layoutX="385.0" layoutY="292.0" prefWidth="167.0" promptText="CST TIN" />
+      </labelFor>
+    </Label>
+    <fx:reference source="led_cst_tin" />
+    <Label layoutX="387.0" layoutY="220.0" text="VAT Tin">
+      <labelFor>
+        <TextField id="led_name" fx:id="led_vat_tin" layoutX="386.0" layoutY="237.0" prefWidth="167.0" promptText="VAT TIN" />
+      </labelFor>
+    </Label>
+    <fx:reference source="led_vat_tin" />
+    <Label layoutX="76.0" layoutY="167.0" text="Address">
+      <labelFor>
+        <TextField id="led_name" layoutX="29.0" layoutY="134.0" prefWidth="200.0" />
+      </labelFor>
+    </Label>
+    <TextArea fx:id="led_address" layoutX="75.0" layoutY="184.0" prefHeight="130.0" prefWidth="200.0" promptText="Address" wrapText="true" />
+    <Label layoutX="76.0" layoutY="327.0" text="Opening Balance">
+      <labelFor>
+        <TextField id="led_name" layoutX="29.0" layoutY="134.0" prefWidth="200.0" />
+      </labelFor>
+    </Label>
+    <Label layoutX="387.0" layoutY="327.0" text="Opening Balance Type">
+      <labelFor>
+        <TextField id="led_name" layoutX="29.0" layoutY="134.0" prefWidth="200.0" />
+      </labelFor>
+    </Label>
+    <TextField id="led_name" fx:id="led_open_bal" layoutX="76.0" layoutY="344.0" prefWidth="199.0" promptText="Opening Balance" />
+    <ComboBox fx:id="led_type" layoutX="387.0" layoutY="89.0" prefWidth="165.0">
+      <items>
+        <FXCollections fx:factory="observableArrayList">
+          <String fx:value="Item 1" />
+          <String fx:value="Item 2" />
+          <String fx:value="Item 3" />
+        </FXCollections>
+      </items>
+    </ComboBox>
+    <Label layoutX="388.0" layoutY="72.0" text="Type">
+      <labelFor>
+        <TextField id="led_name" layoutX="29.0" layoutY="89.0" prefWidth="200.0" />
+      </labelFor>
+    </Label>
+    <ComboBox fx:id="led_open_bal_type" layoutX="387.0" layoutY="344.0" prefWidth="165.0" promptText="Select Balance Type">
+      <items>
+        <FXCollections fx:factory="observableArrayList">
+          <String fx:value="Credit (Cr)" />
+          <String fx:value="Debit (Dr)" />
+        </FXCollections>
+      </items>
+    </ComboBox>
+    <Button fx:id="saveButton" layoutX="75.0" layoutY="396.0" mnemonicParsing="false" onAction="#handleSaveButton" prefWidth="86.0" text="Save" />
+    <Button fx:id="resetButton" layoutX="199.0" layoutY="396.0" mnemonicParsing="false" onAction="#handleResetButton" prefWidth="76.0" text="Reset" />
+    <Button fx:id="cancelButton" layoutX="386.0" layoutY="396.0" mnemonicParsing="false" onAction="#habdleCancelButton" prefWidth="76.0" text="Cancel" />
+  </children>
+  <padding>
+    <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+  </padding>
+</AnchorPane>
