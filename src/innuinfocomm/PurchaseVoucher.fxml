@@ -37,7 +37,7 @@
         <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="38.0" resizable="false" text="Unit" fx:id="unitColumn" />
         <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="76.0" resizable="false" text="Quantity2" fx:id="quantity2Column" />
         <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="47.0" resizable="false" text="Unit2" fx:id="unit2Column" />
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="66.0" resizable="false" text="Rate" fx:id="rateColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="43.0" resizable="false" text="Rate" fx:id="rateColumn" />
         <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="83.0" resizable="false" text="Total" fx:id="totalColumn" />
         <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="83.0" resizable="false" text="Vat %" fx:id="vatPercColumn" />
         <TableColumn prefWidth="75.0" resizable="false" text="Vat Rs" fx:id="vatRsColumn" />
