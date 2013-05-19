@@ -2,10 +2,76 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.PurchaseVoucherController">
-    
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.PurchaseVoucherController">
+  <children>
+    <Label contentDisplay="CENTER" layoutY="30.0" text="Purchase Voucher" textAlignment="CENTER" AnchorPane.leftAnchor="498.0" AnchorPane.rightAnchor="184.0" />
+    <HBox id="HBox" alignment="CENTER" layoutY="67.0" spacing="5.0" AnchorPane.leftAnchor="51.0">
+      <children>
+        <Label text="Bill No:" />
+        <TextField fx:id="biiNoTextBox" prefWidth="94.0" />
+        <Label text="Date:" />
+        <TextField fx:id="dateTextBox" prefWidth="94.0" />
+        <Label text="Ref No:" />
+        <TextField fx:id="refNoTextBox" prefWidth="94.0" />
+      </children>
+    </HBox>
+    <Label layoutX="51.0" layoutY="113.0" text="Supplier Name:" />
+    <ComboBox fx:id="supplierNameComboBox" layoutX="157.0" layoutY="111.0" prefWidth="331.0">
+      <items>
+        <FXCollections fx:factory="observableArrayList">
+          <String fx:value="Item 1" />
+          <String fx:value="Item 2" />
+          <String fx:value="Item 3" />
+        </FXCollections>
+      </items>
+    </ComboBox>
+    <TableView layoutY="155.0" prefHeight="200.0" prefWidth="735.0" AnchorPane.leftAnchor="51.0" AnchorPane.rightAnchor="14.0">
+      <columns>
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="290.0" text="Item Name" fx:id="itemNameColumn" />
+        <TableColumn prefWidth="75.0" resizable="false" text="Quantity" fx:id="quantityColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="38.0" resizable="false" text="Unit" fx:id="unitColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="76.0" resizable="false" text="Quantity2" fx:id="quantity2Column" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="47.0" resizable="false" text="Unit2" fx:id="unit2Column" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="66.0" resizable="false" text="Rate" fx:id="rateColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="83.0" resizable="false" text="Total" fx:id="totalColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="83.0" resizable="false" text="Vat %" fx:id="vatPercColumn" />
+        <TableColumn prefWidth="75.0" resizable="false" text="Vat Rs" fx:id="vatRsColumn" />
+      </columns>
+    </TableView>
+    <VBox id="VBox" alignment="BOTTOM_LEFT" layoutX="51.0" layoutY="399.0" spacing="5.0">
+      <children>
+        <Label text="Remarks:" />
+        <TextArea fx:id="remarksTextArea" prefHeight="114.0" prefWidth="270.0" wrapText="true" />
+      </children>
+    </VBox>
+    <VBox id="VBox" alignment="CENTER" layoutY="401.0" spacing="5.0" AnchorPane.rightAnchor="51.0">
+      <children>
+        <HBox id="HBox" alignment="CENTER" spacing="5.0">
+          <children>
+            <Label text="VAT:" />
+            <TextField fx:id="finalVatTextBox" prefWidth="158.0" />
+          </children>
+        </HBox>
+        <HBox id="HBox" alignment="CENTER" spacing="5.0">
+          <children>
+            <Label text="CST:" />
+            <TextField fx:id="cstNoTextBox" prefWidth="158.0" />
+          </children>
+        </HBox>
+        <HBox id="HBox" alignment="CENTER" spacing="5.0">
+          <children>
+            <Label text="Total:" />
+            <TextField fx:id="finalTotalTextBox" prefWidth="158.0" />
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+    <Button fx:id="saveBtn" layoutX="488.0" layoutY="550.0" mnemonicParsing="false" onAction="#handleSaveBtn" text="Save" />
+    <Button fx:id="printBtn" layoutX="557.0" layoutY="550.0" mnemonicParsing="false" onAction="#handlePrintBtn" text="Print" />
+  </children>
 </AnchorPane>
