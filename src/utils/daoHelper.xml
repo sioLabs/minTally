@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database xmlns="http://www.spoledge.com/audao" version="1.0">
+
+	<config>
+            <factory>
+                 <create-params default="false" direct="true"/>
+            </factory>
+	</config>
+        
+        <tables>
+            <table name="ledger_group_table">
+                <edit-mode>column</edit-mode>
+                <auto-find/>
+                
+                <columns>
+                    <column name="id">
+                        <type>int</type>
+                        <auto/>
+                        <pk/>
+                    </column>
+                    
+                    <column name="group_name">
+                        <type>String</type>
+                        <not-null />
+                    </column>
+                    
+                </columns>
+                
+            </table>
+        
+        </tables>
