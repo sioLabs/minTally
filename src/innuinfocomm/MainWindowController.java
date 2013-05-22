@@ -62,10 +62,6 @@ public class MainWindowController {
     void handleAddLedgerButton(ActionEvent event) throws IOException {
         
         Parent rootNew = FXMLLoader.load(getClass().getResource("AddLedger.fxml"));
-        //Scene sceneNew = new Scene(rootNew);                  
-        //stage.setScene(sceneNew);
-        //stage.show();
-        
         Tab tab = new Tab("Add a New Ledger");
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);
@@ -78,7 +74,12 @@ public class MainWindowController {
     }
 
     @FXML
-    void handleViewAllLedgerButton(ActionEvent event) {
+    void handleViewAllLedgerButton(ActionEvent event) throws IOException {
+        Parent rootNew = FXMLLoader.load(getClass().getResource("ViewAllLedger.fxml"));
+        Tab tab = new Tab("View All Ledger");
+        tab.setContent(rootNew);
+        mainContentTabPane.getTabs().add(tab);
+        
     }
 
     @FXML
