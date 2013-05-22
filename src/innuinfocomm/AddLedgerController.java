@@ -7,16 +7,23 @@ package innuinfocomm;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 
-import model.Ledger;
+import pojos.Ledger;
 
 public class AddLedgerController {
 
@@ -64,6 +71,12 @@ public class AddLedgerController {
 
     @FXML // fx:id="saveButton"
     private Button saveButton; // Value injected by FXMLLoader
+    
+    @FXML //fx:id = "errorLabel"
+    private Label errorLabel;
+    
+    @FXML //fx:id = "successLabel"
+    private Label successLabel;
 
 
     FXMLLoader fxmlLoader;
@@ -91,6 +104,17 @@ public class AddLedgerController {
     @FXML
     void handleResetButton(ActionEvent event) {
         // handle the event here
+        led_address.setText(null);
+        led_contact_no.setText(null);
+        led_contact_person.setText(null);
+        led_cst_tin.setText(null);
+        led_email.setText(null);
+        led_name.setText(null);
+        led_open_bal.setText(null);
+        led_vat_tin.setText(null);
+        errorLabel.setVisible(false);
+        successLabel.setVisible(false);
+                
         
     }
 
@@ -99,21 +123,30 @@ public class AddLedgerController {
     void handleSaveButton(ActionEvent event) {
         // get all the data and save to Database
         
+        //write code here to check if the dabase is working or not
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("InnuInfocommPU");
+        EntityManager em  = emf.createEntityManager();
+        
+               
         //check the name field
         String name = led_name.getText();
-        if(name.trim().equals("")){
-            led_name.setStyle("-fx-text-fill:red");
-            led_name.setText("Name can't be empty");
-            return ;
+        if((name == null) || (name.trim().equals(""))){
+            successLabel.setVisible(false);
+            errorLabel.setText("Name cannot be Empty");
+            errorLabel.setVisible(true);
+            return;       
         }
+            
+        
         
         //check opening balance
         float open_bal =0.0f;
         try{
         open_bal = Float.parseFloat(led_open_bal.getText());
         }catch(Exception e){
-            led_open_bal.setStyle("-fx-text-fill:red");
-            led_open_bal.setText("Please Enter in digits");
+            
+            errorLabel.setText("Please Enter in digits");
+            errorLabel.setVisible(true);
             return;        
         }
         
@@ -125,12 +158,39 @@ public class AddLedgerController {
         String vat = led_vat_tin.getText();
         String cst = led_cst_tin.getText();
         String add = led_address.getText();
-        int type  = led_type.getSelectionModel().getSelectedIndex();
+        int type  = led_type.getSelectionModel().getSelectedIndex()+1;
         int op_type = led_open_bal_type.getSelectionModel().getSelectedIndex();
         
-         // float led_open_bal, char led_open_bal_type, String led_creation_date) 
-        Ledger ledger = new Ledger(name,conPerson, type, add, conNum,email,vat, cst, "", open_bal, op_type);
-        //now save the ledger in the database;
+        Ledger l = new Ledger();
+        l.setLedgerId(null);
+        l.setLedgerName(name);
+        l.setLedgerPersonName(conPerson);
+        l.setLedgerAddress(add);
+        l.setLedgerContactEmail(email);
+        l.setLedgerContactNo(conNum);
+        l.setLedgerCstTin(cst);
+        l.setLedgerModificationDate(new Date());
+        l.setLedgerCreateDate(new Date());
+        l.setLedgerOpenBal(open_bal);
+        l.setLedgerOpenBalType(op_type==0);
+        l.setLedgerType(type);
+        l.setLedgerVatTin(vat);
+        l.setLedgerPresentBal(open_bal);
+        l.setLedgerPresentBalType(op_type==0);
+        
+        try{
+        em.getTransaction().begin();
+        em.persist(l);
+        em.getTransaction().commit();
+        }catch(Exception ex){
+            errorLabel.setVisible(true);
+        }
+        
+         
+        handleResetButton(event);
+        successLabel.setVisible(true);
+        
+        
         
                 
         
@@ -153,6 +213,8 @@ public class AddLedgerController {
         assert led_vat_tin != null : "fx:id=\"led_vat_tin\" was not injected: check your FXML file 'AddLedger.fxml'.";
         assert resetButton != null : "fx:id=\"resetButton\" was not injected: check your FXML file 'AddLedger.fxml'.";
         assert saveButton != null : "fx:id=\"saveButton\" was not injected: check your FXML file 'AddLedger.fxml'.";
+        assert errorLabel != null : "fx:id=\"errorLabel\" was not injected: check your FXML file 'AddLedger.fxml'.";
+        assert successLabel != null : "fx:id=\"successLabel\" was not injected: check your FXML file 'AddLedger.fxml'.";
 
         // Initialize your logic here: all @FXML variables will have been injected
         
@@ -160,6 +222,8 @@ public class AddLedgerController {
         led_type.getItems().add("contra");
         led_type.setValue("contra");
         led_open_bal_type.setValue("Credit (Cr)");
+        errorLabel.setVisible(false);
+        successLabel.setVisible(false);
 
     }
 

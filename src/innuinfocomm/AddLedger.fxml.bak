@@ -12,7 +12,7 @@
 
 <AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="1.0" prefHeight="444.0" prefWidth="600.0" style="-fx-scale-x:1;&#10;-fx-scale-y:1;" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.AddLedgerController">
   <children>
-    <Label alignment="CENTER" layoutX="262.0" layoutY="22.0" text="Add New Ledger" textAlignment="CENTER" underline="false">
+    <Label id="successLabel" alignment="CENTER" layoutX="262.0" layoutY="22.0" text="Add New Ledger" textAlignment="CENTER" underline="false">
       <effect>
         <Glow />
       </effect>
@@ -20,7 +20,7 @@
         <Font name="DejaVu Sans Condensed Bold" size="20.0" />
       </font>
     </Label>
-    <Label layoutX="76.0" layoutY="73.0" text="Name">
+    <Label id="errorLabel" layoutX="76.0" layoutY="73.0" text="Name">
       <labelFor>
         <TextField fx:id="led_name" layoutX="75.0" layoutY="88.0" prefWidth="200.0" promptText="Name" />
       </labelFor>
@@ -44,15 +44,15 @@
       </labelFor>
     </Label>
     <fx:reference source="led_email" />
-    <Label layoutX="386.0" layoutY="275.0" text="CST Tin">
+    <Label layoutX="387.0" layoutY="221.0" text="CST Tin">
       <labelFor>
-        <TextField id="led_name" fx:id="led_cst_tin" layoutX="385.0" layoutY="292.0" prefWidth="167.0" promptText="CST TIN" />
+        <TextField id="led_name" fx:id="led_cst_tin" layoutX="386.0" layoutY="238.0" prefWidth="167.0" promptText="CST TIN" />
       </labelFor>
     </Label>
     <fx:reference source="led_cst_tin" />
-    <Label layoutX="387.0" layoutY="220.0" text="VAT Tin">
+    <Label layoutX="388.0" layoutY="274.0" text="VAT Tin">
       <labelFor>
-        <TextField id="led_name" fx:id="led_vat_tin" layoutX="386.0" layoutY="237.0" prefWidth="167.0" promptText="VAT TIN" />
+        <TextField id="led_name" fx:id="led_vat_tin" layoutX="387.0" layoutY="291.0" prefWidth="167.0" promptText="VAT TIN" />
       </labelFor>
     </Label>
     <fx:reference source="led_vat_tin" />
@@ -96,8 +96,14 @@
       </items>
     </ComboBox>
     <Button fx:id="saveButton" layoutX="75.0" layoutY="396.0" mnemonicParsing="false" onAction="#handleSaveButton" prefWidth="86.0" text="Save" />
-    <Button fx:id="resetButton" layoutX="199.0" layoutY="396.0" mnemonicParsing="false" onAction="#handleResetButton" prefWidth="76.0" text="Reset" />
+    <Button fx:id="resetButton" layoutX="199.0" layoutY="396.0" mnemonicParsing="false" onAction="#handleResetButton" prefWidth="76.0" text="Clear" />
     <Button fx:id="cancelButton" layoutX="386.0" layoutY="396.0" mnemonicParsing="false" onAction="#habdleCancelButton" prefWidth="76.0" text="Cancel" />
+    <Label fx:id="successLabel" layoutX="192.0" layoutY="52.0" text="Ledger Added Successfully" textAlignment="CENTER" textFill="#569900" visible="false">
+      <font>
+        <Font name="System Italic" size="16.0" fx:id="x1" />
+      </font>
+    </Label>
+    <Label font="$x1" layoutX="124.0" layoutY="53.0" text="Error No 101: Data Not Saved Successfully. " textAlignment="CENTER" textFill="#cc0000" visible="false" />
   </children>
   <padding>
     <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
