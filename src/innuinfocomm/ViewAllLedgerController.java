@@ -50,7 +50,7 @@ public class ViewAllLedgerController {
         assert ledgerNameColumn != null : "fx:id=\"ledgerNameColumn\" was not injected: check your FXML file 'ViewAllLedger.fxml'.";
         assert searchTextBox != null : "fx:id=\"searchTextBox\" was not injected: check your FXML file 'ViewAllLedger.fxml'.";
         
-           //write code here to check if the dabase is working or not
+        //write code here to check if the dabase is working or not
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("InnuInfocommPU");
         EntityManager em  = emf.createEntityManager();
         
