@@ -105,8 +105,13 @@ public class ViewAllLedgerController {
         //write code here to check if the dabase is working or not
         
         
+       fillData();
        
-        Query query = em.createNamedQuery("Ledger.findAll");
+
+    }
+    
+    private void fillData(){
+         Query query = em.createNamedQuery("Ledger.findAll");
         List<Ledger> ledgers = query.getResultList();
         ArrayList<LedgerView> shortLedger =  new ArrayList<LedgerView>();
         for(Ledger l : ledgers){
@@ -138,9 +143,9 @@ public class ViewAllLedgerController {
         
         });
         
-        
-       
-
+            
+    
+    
     }
     
     
@@ -228,6 +233,32 @@ public class ViewAllLedgerController {
     
     @FXML
     private void handleLedgerSearchKeyPresses(){
+        String text = searchTextBox.getText();
+        
+        if(text == null || text.trim().equals(""))
+        {fillData();return;}
+        
+        text="%"+text+"%";
+        Query q = em.createNamedQuery("Ledger.findLedgerNameLike");
+        q.setParameter("ledgerName", text);
+        List<Ledger> ledgers = q.getResultList();
+        
+        ArrayList<LedgerView> shortLedger =  new ArrayList<LedgerView>();
+        for(Ledger l : ledgers){
+            LedgerView lv = new LedgerView();
+            lv.setName(l.getLedgerName());
+            lv.setBal(l.getLedgerPresentBal());
+            lv.setId(l.getLedgerId());
+            shortLedger.add(lv);
+        }
+        
+        //data.clear();
+        data = FXCollections.observableArrayList(shortLedger);
+       
+        ledgerListTableView.setItems(data);
+        ledgerListTableView.getSelectionModel().clearSelection();
+        
+        
     }
     
     private void resetDataFom(){

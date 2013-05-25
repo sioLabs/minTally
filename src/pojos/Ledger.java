@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "ledger_table")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Ledger.findLedgerNameLike", query = "SELECT l FROM Ledger l WHERE l.ledgerName LIKE  :ledgerName"),
     @NamedQuery(name = "Ledger.findAll", query = "SELECT l FROM Ledger l"),
     @NamedQuery(name = "Ledger.findByLedgerId", query = "SELECT l FROM Ledger l WHERE l.ledgerId = :ledgerId"),
     @NamedQuery(name = "Ledger.findByLedgerName", query = "SELECT l FROM Ledger l WHERE l.ledgerName = :ledgerName"),
