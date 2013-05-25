@@ -84,7 +84,7 @@
                 </HBox>
               </children>
             </VBox>
-            <Label fx:id="successLabel" layoutX="24.0" layoutY="49.0" text="success" textFill="#216600" visible="false">
+            <Label fx:id="successLabel" layoutX="24.0" layoutY="49.0" text="Ledger Data Saved" textFill="#216600" visible="false">
               <font>
                 <Font size="15.0" fx:id="x1" />
               </font>

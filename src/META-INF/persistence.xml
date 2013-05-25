@@ -7,8 +7,8 @@
     <class>pojos.ItemGroup</class>
     <class>pojos.Item</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/innuInfocom?zeroDateTimeBehavior=convertToNull"/>
-      <property name="javax.persistence.jdbc.password" value="ftd"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/innuInfocomm?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
     </properties>
