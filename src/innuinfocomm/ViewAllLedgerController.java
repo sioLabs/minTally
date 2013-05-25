@@ -24,6 +24,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import pojos.Ledger;
+import pojos.LedgerGroup;
 import utils.LedgerView;
 
 
@@ -160,6 +161,7 @@ public class ViewAllLedgerController {
             l.setLedgerContactNo(contactNumberTextBox.getText()); 
             l.setLedgerVatTin(vatTinTextBox.getText());
             l.setLedgerCstTin(cstTinTextBox.getText());
+            l.setLedgerType(ledgerTypeComboBox.getSelectionModel().getSelectedIndex()+1);
             em.persist(l);
             em.getTransaction().commit();
         }
@@ -207,17 +209,22 @@ public class ViewAllLedgerController {
         contactNumberTextBox.setText(l.getLedgerContactNo());
         vatTinTextBox.setText(l.getLedgerVatTin());
         cstTinTextBox.setText(l.getLedgerCstTin());
+        
+        
+        //Now get all the ledger types
+        q = em.createNamedQuery("LedgerGroup.findAll");
+        List<LedgerGroup> lgroups =  q.getResultList();
+        ledgerTypeComboBox.getItems().clear();
+        for(LedgerGroup lg : lgroups){
+            ledgerTypeComboBox.getItems().add(lg.getId()-1, lg.getGroupName());           
+        }
+        
+        ledgerTypeComboBox.setValue(lgroups.get(l.getLedgerType()-1).getGroupName());
                
                 
    }
     
-    private ArrayList getLedgerTypes(){
-        ArrayList<String> result= new ArrayList<String>();
-        
-        
     
-        return result;
-    }
     
     @FXML
     private void handleLedgerSearchKeyPresses(){
@@ -232,7 +239,7 @@ public class ViewAllLedgerController {
         contactNumberTextBox.setText(null);
         vatTinTextBox.setText(null);
         cstTinTextBox.setText(null); 
-       
+        ledgerTypeComboBox.setValue("Select Type");
         
     }
     

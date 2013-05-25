@@ -61,11 +61,9 @@
                 <Label text="Ledger Type" />
                 <ComboBox fx:id="ledgerTypeComboBox" prefHeight="21.0" prefWidth="200.0">
                   <items>
-                    <FXCollections fx:factory="observableArrayList">
-                      <String fx:value="Item 1" />
-                      <String fx:value="Item 2" />
-                      <String fx:value="Item 3" />
-                    </FXCollections>
+                         <FXCollections fx:factory="observableArrayList">
+                            
+                          </FXCollections>
                   </items>
                 </ComboBox>
                 <Label text="Address" />

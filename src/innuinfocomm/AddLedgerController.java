@@ -7,6 +7,7 @@ package innuinfocomm;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,6 +25,9 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import pojos.Ledger;
+import pojos.LedgerGroup;
+import utils.EntityManagerHelper;
+import utils.LedgerView;
 
 public class AddLedgerController {
 
@@ -79,19 +83,7 @@ public class AddLedgerController {
     private Label successLabel;
 
 
-    FXMLLoader fxmlLoader;
-    //constructor to load the scene
-//     public AddLedgerController() {
-//        fxmlLoader = new FXMLLoader(getClass().getResource( "AddLedger.fxml"));
-//        fxmlLoader.setRoot(this);
-//        fxmlLoader.setController(this);
-//
-//        try {
-//            fxmlLoader.load();
-//        } catch (IOException exception) {
-//            throw new RuntimeException(exception);
-//        }
-//    }
+
     
     
     // Handler for Button[fx:id="cancelButton"] onAction
@@ -177,6 +169,7 @@ public class AddLedgerController {
         l.setLedgerVatTin(vat);
         l.setLedgerPresentBal(open_bal);
         l.setLedgerPresentBalType(op_type==0);
+        l.setLedgerType(led_type.getSelectionModel().getSelectedIndex()+1);
         
         try{
         em.getTransaction().begin();
@@ -218,12 +211,17 @@ public class AddLedgerController {
 
         // Initialize your logic here: all @FXML variables will have been injected
         
-        led_type.getItems().clear();
-        led_type.getItems().add("contra");
-        led_type.setValue("contra");
+        
         led_open_bal_type.setValue("Credit (Cr)");
         errorLabel.setVisible(false);
         successLabel.setVisible(false);
+        EntityManager em = EntityManagerHelper.getInstance().getEm();
+         Query q = em.createNamedQuery("LedgerGroup.findAll");
+        List<LedgerGroup> lgroups =  q.getResultList();
+        
+        for(LedgerGroup lg : lgroups){
+            led_type.getItems().add(lg.getId()-1, lg.getGroupName());           
+        }
 
     }
 
