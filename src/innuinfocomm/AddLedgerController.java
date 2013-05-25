@@ -137,7 +137,7 @@ public class AddLedgerController {
         open_bal = Float.parseFloat(led_open_bal.getText());
         }catch(Exception e){
             
-            errorLabel.setText("Please Enter in digits");
+            errorLabel.setText("Please Enter open balance in digits");
             errorLabel.setVisible(true);
             return;        
         }
