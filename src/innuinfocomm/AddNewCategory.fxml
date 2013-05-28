@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="416.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.AddNewCategoryController">
+  <children>
+    <HBox id="HBox" alignment="CENTER" layoutX="39.0" layoutY="61.0" spacing="5.0">
+      <children>
+        <Label text="Category Name:" />
+        <TextField fx:id="catNameTextBox" prefWidth="200.0" />
+      </children>
+    </HBox>
+    <Button fx:id="saveBtn" layoutX="54.0" layoutY="101.0" mnemonicParsing="false" onAction="#handleSaveBtn" text="Save" />
+    <Button fx:id="cancelBtn" layoutX="157.0" layoutY="101.0" mnemonicParsing="false" onAction="#handleCancelBtn" text="Cancel" />
+    <Label layoutX="133.0" layoutY="14.0" text="Add New Item Category">
+      <effect>
+        <Glow />
+      </effect>
+      <font>
+        <Font size="15.0" />
+      </font>
+    </Label>
+    <Label fx:id="successLabel" layoutX="39.0" layoutY="34.0" text="Label" textFill="#396600" visible="false" />
+  </children>
+</AnchorPane>

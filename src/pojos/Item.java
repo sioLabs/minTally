@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author t0m
+ * @author ashutoshsingh
  */
 @Entity
 @Table(name = "item")
@@ -36,6 +36,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Item.findByItemOpenStock", query = "SELECT i FROM Item i WHERE i.itemOpenStock = :itemOpenStock"),
     @NamedQuery(name = "Item.findByItemTotalValue", query = "SELECT i FROM Item i WHERE i.itemTotalValue = :itemTotalValue")})
 public class Item implements Serializable {
+    @Basic(optional = false)
+    @Column(name = "item_unit_1")
+    private int itemUnit1;
+    @Basic(optional = false)
+    @Column(name = "item_rate_unit")
+    private int itemRateUnit;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,12 +52,8 @@ public class Item implements Serializable {
     @Column(name = "item_name")
     private String itemName;
     @Basic(optional = false)
-    @Column(name = "item_unit_1")
-    private String itemUnit1;
-    @Basic(optional = false)
     @Column(name = "item_rate")
     private float itemRate;
-    @Basic(optional = false)
     @Column(name = "item_unit_2")
     private String itemUnit2;
     @Basic(optional = false)
@@ -74,12 +76,11 @@ public class Item implements Serializable {
         this.itemId = itemId;
     }
 
-    public Item(Integer itemId, String itemName, String itemUnit1, float itemRate, String itemUnit2, float itemVatPerc, float itemOpenStock, int itemTotalValue) {
+    public Item(Integer itemId, String itemName, int itemUnit1, float itemRate, float itemVatPerc, float itemOpenStock, int itemTotalValue) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemUnit1 = itemUnit1;
         this.itemRate = itemRate;
-        this.itemUnit2 = itemUnit2;
         this.itemVatPerc = itemVatPerc;
         this.itemOpenStock = itemOpenStock;
         this.itemTotalValue = itemTotalValue;
@@ -101,11 +102,11 @@ public class Item implements Serializable {
         this.itemName = itemName;
     }
 
-    public String getItemUnit1() {
+    public int getItemUnit1() {
         return itemUnit1;
     }
 
-    public void setItemUnit1(String itemUnit1) {
+    public void setItemUnit1(int itemUnit1) {
         this.itemUnit1 = itemUnit1;
     }
 
@@ -180,6 +181,15 @@ public class Item implements Serializable {
     @Override
     public String toString() {
         return "pojos.Item[ itemId=" + itemId + " ]";
+    }
+
+ 
+    public int getItemRateUnit() {
+        return itemRateUnit;
+    }
+
+    public void setItemRateUnit(int itemRateUnit) {
+        this.itemRateUnit = itemRateUnit;
     }
     
 }

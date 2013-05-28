@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="228.0" prefWidth="465.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.AddNewUnitController">
+  <children>
+    <Label layoutX="186.0" layoutY="17.0" text="Add New Unit">
+      <effect>
+        <Glow />
+      </effect>
+      <font>
+        <Font size="15.0" />
+      </font>
+    </Label>
+    <Label fx:id="successLabel" layoutX="39.0" layoutY="34.0" text="Label" textFill="#396600" visible="false" />
+    <RadioButton fx:id="simpleUnitRadioBtn" layoutX="35.0" layoutY="56.0" mnemonicParsing="false" text="Simple" />
+    <RadioButton fx:id="compundUnitRadioBtn" layoutX="100.0" layoutY="56.0" mnemonicParsing="false" text="Compound" />
+    <AnchorPane fx:id="simpleUnitUI" layoutX="35.0" layoutY="84.0" prefHeight="123.0" prefWidth="406.0" visible="false">
+      <children>
+        <Label layoutX="14.0" layoutY="39.0" text="Unit Name:" />
+        <TextField fx:id="simpleUnitNameTextBox" layoutX="89.0" layoutY="36.0" prefWidth="200.0" />
+        <Button fx:id="saveSimpleUnitBtn" layoutX="89.0" layoutY="78.0" mnemonicParsing="false" onAction="#handleSaveSimpleUnitBtn" text="Save Unit" />
+        <Label layoutX="89.0" layoutY="14.0" text="Unit Saved Successfully" textFill="#216600" visible="false" />
+      </children>
+    </AnchorPane>
+    <AnchorPane layoutX="35.0" layoutY="82.0" prefHeight="132.0" prefWidth="406.0" visible="false">
+      <children>
+        <Label layoutX="23.0" layoutY="16.0" text="First Unit" />
+        <Label layoutX="143.0" layoutY="14.0" text="Conversion" />
+        <Label layoutX="258.0" layoutY="16.0" text="Second Unit" />
+        <ComboBox fx:id="secondUnitComboBox" layoutX="252.0" layoutY="45.0">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+        <TextField fx:id="firstUnitTextBox" layoutX="23.0" layoutY="45.0" prefWidth="48.0" />
+        <TextField fx:id="conversionTextBox" layoutX="143.0" layoutY="45.0" prefWidth="48.0" />
+        <Label layoutX="100.0" layoutY="47.0" prefWidth="21.0" text="Of">
+          <font>
+            <Font name="System Italic" size="12.0" />
+          </font>
+        </Label>
+        <Button fx:id="saveCompUnitBtn" layoutX="23.0" layoutY="89.0" mnemonicParsing="false" onAction="#handleSaveCompundUnitBtn" text="Save" />
+      </children>
+    </AnchorPane>
+  </children>
+</AnchorPane>
