@@ -81,6 +81,15 @@ public class MainWindowController {
         mainContentTabPane.getTabs().add(tab);
         
     }
+    
+    @FXML 
+    void handleAddItemBtn() throws IOException{
+        Parent rootNew = FXMLLoader.load(getClass().getResource("AddItem.fxml"));
+        Tab tab = new Tab("Add an Item");
+        tab.setContent(rootNew);
+        mainContentTabPane.getTabs().add(tab);
+    
+    }
 
     @FXML
     void initialize() {
