@@ -30,6 +30,10 @@ public class MainWindowController {
     @FXML
     private Button addLedgerButton;
 
+    
+    @FXML
+    private Button AddItemBtn;
+    
     @FXML
     private Button addNewLedgerType;
 
@@ -103,6 +107,7 @@ public class MainWindowController {
         assert rootPane != null : "fx:id=\"rootPane\" was not injected: check your FXML file 'MainWindow.fxml'.";
         assert topMenuBar != null : "fx:id=\"topMenuBar\" was not injected: check your FXML file 'MainWindow.fxml'.";
         assert viewAllLedgerButton != null : "fx:id=\"viewAllLedgerButton\" was not injected: check your FXML file 'MainWindow.fxml'.";
+        assert AddItemBtn != null : "fx:id=\"viewAllLedgerButton\" was not injected: check your FXML file 'MainWindow.fxml'.";
         assert x1 != null : "fx:id=\"x1\" was not injected: check your FXML file 'MainWindow.fxml'.";
 
 

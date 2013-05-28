@@ -19,6 +19,11 @@ import utils.EntityManagerHelper;
 public class AddItemController
     implements Initializable {
 
+      @FXML
+    private ResourceBundle resources;
+
+    @FXML
+    private URL location;
     @FXML //  fx:id="itemGroupComboBox"
     private ComboBox<?> itemGroupComboBox; // Value injected by FXMLLoader
 
