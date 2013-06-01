@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "item")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Item.findItemNameLike", query = "SELECT i FROM Item i WHERE i.itemName LIKE  :itemName"),
     @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i"),
     @NamedQuery(name = "Item.findByItemId", query = "SELECT i FROM Item i WHERE i.itemId = :itemId"),
     @NamedQuery(name = "Item.findByItemName", query = "SELECT i FROM Item i WHERE i.itemName = :itemName"),

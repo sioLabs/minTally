@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -25,6 +26,9 @@ public class ViewAllItemsController {
 
     @FXML
     private URL location;
+    
+    @FXML
+    private TextField searchItemsTextBox;
 
     @FXML
     private TableView<ItemView> ItemsTableView;
@@ -75,6 +79,37 @@ public class ViewAllItemsController {
        ItemsTableView.setItems(data);
     }
     
+    public void handleKeyInSearchBox(){
+    
+        String text = searchItemsTextBox.getText();
+        
+         if(text == null || text.trim().equals(""))
+        {fillData();return;}
+         
+         text="%"+text+"%";
+        EntityManager em = EntityManagerHelper.getInstance().getEm();
+        Query q = em.createNamedQuery("Item.findItemNameLike");
+        q.setParameter("itemName", text);
+        ArrayList<ItemView> shortItems = new ArrayList<ItemView>();
+           List<Item> list =      q.getResultList();
+        
+        
+        for(Item i : list){
+            ItemView iV = new ItemView();
+            iV.setItemId(i.getItemId());
+            iV.setItemName(i.getItemName());
+            iV.setUnit(i.getItemUnit1());
+            iV.setItemStock(i.getItePresentStock());
+            iV.setItemGroup(i.getItemGroup().getItemGroupName());
+            shortItems.add(iV);
+        }
+        
+        data = FXCollections.observableArrayList(shortItems);
+       
+        ItemsTableView.setItems(data);
+        ItemsTableView.getSelectionModel().clearSelection();
+    
+    }
     
     @FXML
     void initialize() {
