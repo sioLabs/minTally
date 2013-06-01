@@ -7,6 +7,7 @@ package innuinfocomm;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -36,6 +37,9 @@ public class AddItemController
 
     @FXML //  fx:id="itemGroupComboBox"
     private ComboBox<String> itemGroupComboBox; // Value injected by FXMLLoader
+    
+    //array list to get the group number
+    ArrayList<ItemGroup> catList = null;
 
     @FXML //  fx:id="itemNameTextBox"
     private TextField itemNameTextBox; // Value injected by FXMLLoader
@@ -70,8 +74,11 @@ public class AddItemController
         Item item = new Item();
         String itemName = itemNameTextBox.getText();
         item.setItemName(itemName);
-        int under = itemGroupComboBox.getSelectionModel().getSelectedIndex()+1;
-        item.setItemGroup(new ItemGroup(under));
+        int under = itemGroupComboBox.getSelectionModel().getSelectedIndex();
+        //I only have selected Index. How to create  the Object. From the earlier query
+       
+        ItemGroup i = catList.get(under+1);
+        item.setItemGroup(i);
         int unit = itemUnitComboBox.getSelectionModel().getSelectedIndex()+1;
         item.setItemUnit1(unit);
         float vat = Float.parseFloat(itemVatPercTextBox.getText());
@@ -82,6 +89,7 @@ public class AddItemController
         item.setItemRate(itemRate);
         int ratePerUnit = itemRatePerUnitComboBox.getSelectionModel().getSelectedIndex()+1;
         item.setItemRateUnit(ratePerUnit);
+        item.setItePresentStock(open);
         float totalValue = open*itemRate;
         item.setItemTotalValue((int)totalValue);
         
@@ -162,8 +170,7 @@ public class AddItemController
     private void getCategories(){
         EntityManager em = EntityManagerHelper.getInstance().getEm();
         Query q = em.createNamedQuery("ItemGroup.findAll");
-        List<ItemGroup> catList = (List<ItemGroup>)q.getResultList();
-        
+        catList = new ArrayList(q.getResultList());        
         itemGroupComboBox.getItems().clear();
         for(ItemGroup ig : catList){
             itemGroupComboBox.getItems().add(ig.getItemGroupId()-1, ig.getItemGroupName());

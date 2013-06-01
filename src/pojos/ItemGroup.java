@@ -73,6 +73,7 @@ public class ItemGroup implements Serializable {
     }
 
     @XmlTransient
+    @OneToMany(mappedBy = "itemGroup")
     public Collection<Item> getItemCollection() {
         return itemCollection;
     }

@@ -60,6 +60,9 @@ public class MainWindowController {
 
     @FXML
     private TitledPane x1;
+    
+       @FXML
+    private Button viewAllItemsBtn;
 
 
     @FXML
@@ -93,6 +96,15 @@ public class MainWindowController {
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);
     
+    }
+    
+    @FXML
+    void handleViewAllItemsBtn() throws IOException{
+    
+        Parent rootNew = FXMLLoader.load(getClass().getResource("ViewAllItems.fxml"));
+        Tab tab = new Tab("View All Items");
+        tab.setContent(rootNew);
+        mainContentTabPane.getTabs().add(tab);
     }
 
     @FXML

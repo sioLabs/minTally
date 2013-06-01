@@ -37,6 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Item.findByItemTotalValue", query = "SELECT i FROM Item i WHERE i.itemTotalValue = :itemTotalValue")})
 public class Item implements Serializable {
     @Basic(optional = false)
+    @Column(name = "ite_present_stock")
+    private float itePresentStock;
+    @Basic(optional = false)
     @Column(name = "item_unit_1")
     private int itemUnit1;
     @Basic(optional = false)
@@ -150,6 +153,7 @@ public class Item implements Serializable {
         this.itemTotalValue = itemTotalValue;
     }
 
+    @ManyToOne
     public ItemGroup getItemGroup() {
         return itemGroup;
     }
@@ -190,6 +194,14 @@ public class Item implements Serializable {
 
     public void setItemRateUnit(int itemRateUnit) {
         this.itemRateUnit = itemRateUnit;
+    }
+
+    public float getItePresentStock() {
+        return itePresentStock;
+    }
+
+    public void setItePresentStock(float itePresentStock) {
+        this.itePresentStock = itePresentStock;
     }
     
 }

@@ -111,7 +111,7 @@ public class ViewAllLedgerController {
     }
     
     private void fillData(){
-         Query query = em.createNamedQuery("Ledger.findAll");
+        Query query = em.createNamedQuery("Ledger.findAll");
         List<Ledger> ledgers = query.getResultList();
         ArrayList<LedgerView> shortLedger =  new ArrayList<LedgerView>();
         for(Ledger l : ledgers){
@@ -129,23 +129,13 @@ public class ViewAllLedgerController {
         ledgerListTableView.setItems(data);
         
         ledgerListTableView.setOnMouseClicked(new EventHandler<MouseEvent>(){
-            
-            
-
-             @Override
+              @Override
              public void handle(MouseEvent t) {
                    LedgerView l  = ledgerListTableView.getSelectionModel().getSelectedItem();
                    if(null != l)
                        showLedgerData(l.getId());
              }
-
-             
-        
-        });
-        
-            
-    
-    
+       });
     }
     
     
