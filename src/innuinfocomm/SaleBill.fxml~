@@ -7,7 +7,6 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import utils.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.SaleBillController">
   <children>
@@ -123,15 +122,6 @@
     </VBox>
     <Button fx:id="saveBtn" layoutX="423.0" layoutY="521.0" mnemonicParsing="false" onAction="#handleSaveBtn" text="Save" />
     <Button fx:id="printBtn" layoutX="495.0" layoutY="521.0" mnemonicParsing="false" onAction="#handlePrintBtn" text="Print" />
-    <FilterComboBox editable="true" layoutX="437.0" layoutY="107.0" prefHeight="21.0" prefWidth="282.0">
-      <items>
-        <FXCollections fx:factory="observableArrayList">
-          <String fx:value="Item 1" />
-          <String fx:value="Item 2" />
-          <String fx:value="Item 3" />
-        </FXCollections>
-      </items>
-    </FilterComboBox>
     <Label layoutX="437.0" layoutY="85.0" text="Select Item to Add:" />
   </children>
 </AnchorPane>

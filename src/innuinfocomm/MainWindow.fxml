@@ -33,12 +33,16 @@
           <children>
             <Accordion id="leftMenuAccordion" minWidth="103.0" prefHeight="570.0" prefWidth="103.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <expandedPane>
-                <TitledPane fx:id="x2" animated="false" text="Inventory Management">
+                <TitledPane fx:id="VoucherMgmt" animated="false" text="Vouchers">
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                       <children>
-                        <Button fx:id="AddItemBtn" mnemonicParsing="false" onAction="#handleAddItemBtn" prefHeight="30.0" prefWidth="116.0" text="Add New Item" wrapText="true" AnchorPane.bottomAnchor="434.0" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="62.0" AnchorPane.topAnchor="14.0" />
-                        <Button fx:id="viewAllItemsBtn" layoutX="37.0" layoutY="64.0" mnemonicParsing="false" onAction="#handleViewAllItemsBtn" text="View All Items" />
+                        <Button layoutX="17.0" layoutY="30.0" mnemonicParsing="false" text="Payment" />
+                        <Button layoutX="102.0" layoutY="30.0" mnemonicParsing="false" text="Reciept" />
+                        <Button fx:id="createNewSaleBillBtn" layoutX="102.0" layoutY="59.0" mnemonicParsing="false" onAction="#handleCreateNewSaleBillBtn" text="Sale Bill" />
+                        <Button layoutX="17.0" layoutY="59.0" mnemonicParsing="false" text="Purchase" />
+                        <Button layoutX="17.0" layoutY="91.0" mnemonicParsing="false" text="Recievable" />
+                        <Button layoutX="102.0" layoutY="91.0" mnemonicParsing="false" text="Payable" />
                       </children>
                     </AnchorPane>
                   </content>
@@ -69,21 +73,17 @@
                     </AnchorPane>
                   </content>
                 </TitledPane>
-                <fx:reference source="x2" />
-                <TitledPane fx:id="VoucherMgmt" animated="false" text="Vouchers">
+                <TitledPane fx:id="x2" animated="false" text="Inventory Management">
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                       <children>
-                        <Button layoutX="17.0" layoutY="30.0" mnemonicParsing="false" text="Payment" />
-                        <Button layoutX="102.0" layoutY="30.0" mnemonicParsing="false" text="Reciept" />
-                        <Button layoutX="102.0" layoutY="59.0" mnemonicParsing="false" text="Sales" />
-                        <Button layoutX="17.0" layoutY="59.0" mnemonicParsing="false" text="Purchase" />
-                        <Button layoutX="17.0" layoutY="91.0" mnemonicParsing="false" text="Recievable" />
-                        <Button layoutX="102.0" layoutY="91.0" mnemonicParsing="false" text="Payable" />
+                        <Button fx:id="AddItemBtn" mnemonicParsing="false" onAction="#handleAddItemBtn" prefHeight="30.0" prefWidth="116.0" text="Add New Item" wrapText="true" AnchorPane.bottomAnchor="434.0" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="62.0" AnchorPane.topAnchor="14.0" />
+                        <Button fx:id="viewAllItemsBtn" layoutX="37.0" layoutY="64.0" mnemonicParsing="false" onAction="#handleViewAllItemsBtn" text="View All Items" />
                       </children>
                     </AnchorPane>
                   </content>
                 </TitledPane>
+                <fx:reference source="VoucherMgmt" />
                 <TitledPane fx:id="x1" animated="false" expanded="false" text="Reports">
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">

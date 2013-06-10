@@ -57,6 +57,9 @@ public class MainWindowController {
 
     @FXML
     private Button viewAllLedgerButton;
+    
+    @FXML
+    private Button createNewSaleBillBtn;
 
     @FXML
     private TitledPane x1;
@@ -106,6 +109,15 @@ public class MainWindowController {
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);
     }
+    
+    @FXML
+    void handleCreateNewSaleBillBtn() throws IOException{
+        Parent rootNew = FXMLLoader.load(getClass().getResource("SaleBill.fxml"));
+        Tab tab = new Tab("Create New Sale Bill");
+        tab.setContent(rootNew);
+        mainContentTabPane.getTabs().add(tab);
+    
+    }
 
     @FXML
     void initialize() {
@@ -121,6 +133,7 @@ public class MainWindowController {
         assert viewAllLedgerButton != null : "fx:id=\"viewAllLedgerButton\" was not injected: check your FXML file 'MainWindow.fxml'.";
         assert AddItemBtn != null : "fx:id=\"viewAllLedgerButton\" was not injected: check your FXML file 'MainWindow.fxml'.";
         assert x1 != null : "fx:id=\"x1\" was not injected: check your FXML file 'MainWindow.fxml'.";
+        assert createNewSaleBillBtn != null : "fx:id=\"createNewSaleBillBtn\" was not injected: check your FXML file 'MainWindow.fxml'.";
 
 
     }

@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
+import utils.SaleBillItem;
 
 
 public class SaleBillController {
@@ -33,7 +34,7 @@ public class SaleBillController {
     private TextField companyTextBox;
 
     @FXML
-    private ComboBox<?> customerComboBox;
+    private ComboBox<String> customerComboBox;
 
     @FXML
     private TextField dateTextBox;
@@ -48,22 +49,22 @@ public class SaleBillController {
     private RadioButton invoiceRadioBtn;
 
     @FXML
-    private TableColumn<?, ?> itemNameTableCol;
+    private TableColumn<SaleBillItem, String> itemNameTableCol;
 
     @FXML
     private Button printBtn;
 
     @FXML
-    private TableColumn<?, ?> quantity2TableCol;
+    private TableColumn<SaleBillItem, Float> quantity2TableCol;
 
     @FXML
-    private TableColumn<?, ?> quantityTableCol;
+    private TableColumn<SaleBillItem, Float> quantityTableCol;
 
     @FXML
-    private TableColumn<?, ?> rateTableCol;
+    private TableColumn<SaleBillItem, Float> rateTableCol;
 
     @FXML
-    private TableColumn<?, ?> remarkTableCol;
+    private TableColumn<SaleBillItem, String> remarkTableCol;
 
     @FXML
     private TextField remarksTextBox;
@@ -72,25 +73,25 @@ public class SaleBillController {
     private Button saveBtn;
 
     @FXML
-    private ComboBox<?> siteComboBox;
+    private ComboBox<String> siteComboBox;
 
     @FXML
-    private TableColumn<?, ?> totalTableCol;
+    private TableColumn<SaleBillItem, Float> totalTableCol;
 
     @FXML
     private Label totalTextBox;
 
     @FXML
-    private TableColumn<?, ?> unit2TableCol;
+    private TableColumn<SaleBillItem, String> unit2TableCol;
 
     @FXML
-    private TableColumn<?, ?> unitTableCol;
+    private TableColumn<SaleBillItem, String> unitTableCol;
 
     @FXML
-    private TableColumn<?, ?> vatPercTableCol;
+    private TableColumn<SaleBillItem, Float> vatPercTableCol;
 
     @FXML
-    private TableColumn<?, ?> vatRsTableCol;
+    private TableColumn<SaleBillItem, Float> vatRsTableCol;
 
     @FXML
     private TextField vatTextBox;
@@ -131,8 +132,13 @@ public class SaleBillController {
         assert vatPercTableCol != null : "fx:id=\"vatPercTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert vatRsTableCol != null : "fx:id=\"vatRsTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert vatTextBox != null : "fx:id=\"vatTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
-
-
+    }
+    
+    private void initializeTableColumns(){
+    
+        itemNameTableCol.setEditable(true);
+        
+    
     }
 
 }
