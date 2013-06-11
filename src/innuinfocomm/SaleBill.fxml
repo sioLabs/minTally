@@ -6,12 +6,21 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import utils.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.SaleBillController">
   <children>
-    <Label layoutX="382.0" layoutY="14.0" text="Sale Bill" />
+    <Label layoutX="382.0" layoutY="14.0" text="Sale Bill">
+      <effect>
+        <Glow />
+      </effect>
+      <font>
+        <Font size="15.0" />
+      </font>
+    </Label>
     <VBox id="VBox" alignment="CENTER_RIGHT" fillWidth="false" layoutX="38.0" layoutY="53.0" spacing="5.0">
       <children>
         <HBox id="HBox" alignment="CENTER" spacing="5.0">
@@ -66,20 +75,24 @@
     </VBox>
     <VBox id="VBox" alignment="CENTER" layoutX="35.0" layoutY="152.0" spacing="5.0">
       <children>
-        <TableView prefHeight="200.0" prefWidth="751.0">
-          <columns>
-            <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="76.0" text="Item Name" fx:id="itemNameTableCol" />
-            <TableColumn prefWidth="75.0" text="Qnty" fx:id="quantityTableCol" />
-            <TableColumn prefWidth="75.0" text="Unit" fx:id="unitTableCol" />
-            <TableColumn prefWidth="75.0" text="Qnty2" fx:id="quantity2TableCol" />
-            <TableColumn prefWidth="75.0" text="Unit2" fx:id="unit2TableCol" />
-            <TableColumn prefWidth="75.0" text="Rate" fx:id="rateTableCol" />
-            <TableColumn prefWidth="75.0" text="Total" fx:id="totalTableCol" />
-            <TableColumn prefWidth="75.0" text="Remark" fx:id="remarkTableCol" />
-            <TableColumn prefWidth="75.0" text="Vat %" fx:id="vatPercTableCol" />
-            <TableColumn prefWidth="75.0" text="Vat Rs" fx:id="vatRsTableCol" />
-          </columns>
-        </TableView>
+        <ScrollPane id="ScrollPane" prefViewportHeight="200.0" prefViewportWidth="751.0">
+          <content>
+            <TableView fx:id="SaleItemTableView" prefHeight="200.0" prefWidth="751.0">
+              <columns>
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="76.0" text="Item Name" fx:id="itemNameTableCol" />
+                <TableColumn prefWidth="75.0" text="Qnty" fx:id="quantityTableCol" />
+                <TableColumn prefWidth="75.0" text="Unit" fx:id="unitTableCol" />
+                <TableColumn prefWidth="75.0" text="Qnty2" fx:id="quantity2TableCol" />
+                <TableColumn prefWidth="75.0" text="Unit2" fx:id="unit2TableCol" />
+                <TableColumn prefWidth="75.0" text="Rate" fx:id="rateTableCol" />
+                <TableColumn prefWidth="75.0" text="Total" fx:id="totalTableCol" />
+                <TableColumn prefWidth="75.0" text="Remark" fx:id="remarkTableCol" />
+                <TableColumn prefWidth="75.0" text="Vat %" fx:id="vatPercTableCol" />
+                <TableColumn prefWidth="75.0" text="Vat Rs" fx:id="vatRsTableCol" />
+              </columns>
+            </TableView>
+          </content>
+        </ScrollPane>
       </children>
     </VBox>
     <Label layoutX="35.0" layoutY="398.0" text="Remarks:" />
@@ -88,7 +101,7 @@
     <TextField fx:id="companyTextBox" layoutX="110.0" layoutY="424.0" prefWidth="189.0" />
     <VBox id="VBox" alignment="BOTTOM_LEFT" fillWidth="false" layoutX="33.0" layoutY="463.0" spacing="5.0">
       <children>
-        <RadioButton fx:id="challanRadioBtn" mnemonicParsing="false" prefWidth="56.999908447265625" text="Challan" />
+        <RadioButton fx:id="challanRadioBtn" mnemonicParsing="false" prefWidth="73.0" text="Challan" />
         <RadioButton fx:id="invoiceRadioBtn" mnemonicParsing="false" text="Invoice" />
         <RadioButton fx:id="challanRateRadioBtn" mnemonicParsing="false" text="Challan Rate" />
       </children>
@@ -123,15 +136,10 @@
     </VBox>
     <Button fx:id="saveBtn" layoutX="423.0" layoutY="521.0" mnemonicParsing="false" onAction="#handleSaveBtn" text="Save" />
     <Button fx:id="printBtn" layoutX="495.0" layoutY="521.0" mnemonicParsing="false" onAction="#handlePrintBtn" text="Print" />
-    <FilterComboBox editable="true" layoutX="437.0" layoutY="107.0" prefHeight="21.0" prefWidth="282.0">
+    <ComboBox fx:id="itemComboBox" editable="true" layoutX="489.0" layoutY="71.0" onKeyReleased="#handleComboBox" prefHeight="21.0" prefWidth="189.0">
       <items>
-        <FXCollections fx:factory="observableArrayList">
-          <String fx:value="Item 1" />
-          <String fx:value="Item 2" />
-          <String fx:value="Item 3" />
-        </FXCollections>
+        <FXCollections fx:factory="observableArrayList" />
       </items>
-    </FilterComboBox>
-    <Label layoutX="437.0" layoutY="85.0" text="Select Item to Add:" />
+    </ComboBox>
   </children>
 </AnchorPane>

@@ -1,15 +1,28 @@
 package innuinfocomm;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.util.Callback;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import pojos.Item;
+import utils.EntityManagerHelper;
 import utils.SaleBillItem;
 
 
@@ -65,6 +78,9 @@ public class SaleBillController {
 
     @FXML
     private TableColumn<SaleBillItem, String> remarkTableCol;
+    
+    @FXML
+    private TableView<Item> SaleItemTableView;
 
     @FXML
     private TextField remarksTextBox;
@@ -95,6 +111,9 @@ public class SaleBillController {
 
     @FXML
     private TextField vatTextBox;
+    
+    @FXML
+    private ComboBox<Item> itemComboBox;
 
 
     @FXML
@@ -132,7 +151,50 @@ public class SaleBillController {
         assert vatPercTableCol != null : "fx:id=\"vatPercTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert vatRsTableCol != null : "fx:id=\"vatRsTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert vatTextBox != null : "fx:id=\"vatTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
+        assert itemComboBox != null : "fx:id=\"itemComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
+        assert SaleItemTableView != null : "fx:id=\"saleItemTableView\" was not injected: check your FXML file 'SaleBill.fxml'.";
+        
+        fillComboBox();
+        /*itemComboBox.valueProperty().addListener(new ChangeListener<String>(){
+
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t,  String t1) {
+            
+            }
+
+        
+        });*/
+        
+        
+   }
+    
+    @FXML
+    public void handleComboBox(){
+        
+        String text = itemComboBox.getEditor().getText();
+        if(text.equals("") || text == null){
+            fillComboBox();
+            return;
+        }
+        text="%"+text+"%";
+        
+       
+        //code here to get all the items in the database
+        //and how do we do that
+        //1. GEt all items 
+        //2. Put them in the combobox
+     
+        EntityManager em = EntityManagerHelper.getInstance().getEm();
+        Query q = em.createNamedQuery("Item.findItemNameLike");
+        q.setParameter("itemName", text);
+        List<Item> list = q.getResultList();
+        itemComboBox.getItems().clear();
+        itemComboBox.getItems().addAll(list);
+        itemComboBox.getSelectionModel().clearSelection();
+        itemComboBox.show();
     }
+    
+    
     
     private void initializeTableColumns(){
     
@@ -140,5 +202,24 @@ public class SaleBillController {
         
     
     }
+    
+    
 
+    private void fillComboBox() {
+        
+        EntityManager em = EntityManagerHelper.getInstance().getEm();
+        Query q = em.createNamedQuery("Item.findAll");
+        List<Item> list = q.getResultList();
+        
+        
+        
+        //data = FXCollections.observableList(list);
+        itemComboBox.getItems().clear();
+        itemComboBox.getItems().addAll(list);
+        //itemComboBox.setItems(data);
+        itemComboBox.getSelectionModel().clearSelection();
+        
+    }
+
+       
 }

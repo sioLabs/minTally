@@ -185,7 +185,7 @@ public class Item implements Serializable {
 
     @Override
     public String toString() {
-        return "pojos.Item[ itemId=" + itemId + " ]";
+        return  itemId+" - "+itemName  ;
     }
 
  
