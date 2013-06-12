@@ -21,7 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.util.Callback;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import pojos.Item;
+import pojos.Items;
 import utils.EntityManagerHelper;
 import utils.SaleBillItem;
 
@@ -80,7 +80,7 @@ public class SaleBillController {
     private TableColumn<SaleBillItem, String> remarkTableCol;
     
     @FXML
-    private TableView<Item> SaleItemTableView;
+    private TableView<Items> SaleItemTableView;
 
     @FXML
     private TextField remarksTextBox;
@@ -113,7 +113,7 @@ public class SaleBillController {
     private TextField vatTextBox;
     
     @FXML
-    private ComboBox<Item> itemComboBox;
+    private ComboBox<Items> itemComboBox;
 
 
     @FXML
@@ -187,7 +187,7 @@ public class SaleBillController {
         EntityManager em = EntityManagerHelper.getInstance().getEm();
         Query q = em.createNamedQuery("Item.findItemNameLike");
         q.setParameter("itemName", text);
-        List<Item> list = q.getResultList();
+        List<Items> list = q.getResultList();
         itemComboBox.getItems().clear();
         itemComboBox.getItems().addAll(list);
         itemComboBox.getSelectionModel().clearSelection();
@@ -209,7 +209,7 @@ public class SaleBillController {
         
         EntityManager em = EntityManagerHelper.getInstance().getEm();
         Query q = em.createNamedQuery("Item.findAll");
-        List<Item> list = q.getResultList();
+        List<Items> list = q.getResultList();
         
         
         

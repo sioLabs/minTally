@@ -4,9 +4,9 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>pojos.LedgerGroup</class>
     <class>pojos.Ledger</class>
-    <class>pojos.ItemGroup</class>
-    <class>pojos.Item</class>
+    <class>pojos.Items</class>
     <class>pojos.Units</class>
+    <class>pojos.ItemGroup</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/innuInfocomm?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.password" value=""/>

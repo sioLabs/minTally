@@ -5,7 +5,9 @@
 package pojos;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,8 +15,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -46,9 +50,12 @@ public class Units implements Serializable {
     @Basic(optional = false)
     @Column(name = "conv")
     private float conv;
-    @Basic(optional = false)
     @Column(name = "second_unit")
-    private int secondUnit;
+    private Integer secondUnit;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemFirstUnit")
+    private Collection<Items> itemsCollection;
+    @OneToMany(mappedBy = "itemSecondUnit")
+    private Collection<Items> itemsCollection1;
 
     public Units() {
     }
@@ -57,12 +64,11 @@ public class Units implements Serializable {
         this.id = id;
     }
 
-    public Units(Integer id, int unitType, String unitName, float conv, int secondUnit) {
+    public Units(Integer id, int unitType, String unitName, float conv) {
         this.id = id;
         this.unitType = unitType;
         this.unitName = unitName;
         this.conv = conv;
-        this.secondUnit = secondUnit;
     }
 
     public Integer getId() {
@@ -97,12 +103,30 @@ public class Units implements Serializable {
         this.conv = conv;
     }
 
-    public int getSecondUnit() {
+    public Integer getSecondUnit() {
         return secondUnit;
     }
 
-    public void setSecondUnit(int secondUnit) {
+    public void setSecondUnit(Integer secondUnit) {
         this.secondUnit = secondUnit;
+    }
+
+    @XmlTransient
+    public Collection<Items> getItemsCollection() {
+        return itemsCollection;
+    }
+
+    public void setItemsCollection(Collection<Items> itemsCollection) {
+        this.itemsCollection = itemsCollection;
+    }
+
+    @XmlTransient
+    public Collection<Items> getItemsCollection1() {
+        return itemsCollection1;
+    }
+
+    public void setItemsCollection1(Collection<Items> itemsCollection1) {
+        this.itemsCollection1 = itemsCollection1;
     }
 
     @Override

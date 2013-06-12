@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author t0m
+ * @author ashutoshsingh
  */
 @Entity
 @Table(name = "item_group")
@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ItemGroup.findAll", query = "SELECT i FROM ItemGroup i"),
     @NamedQuery(name = "ItemGroup.findByItemGroupId", query = "SELECT i FROM ItemGroup i WHERE i.itemGroupId = :itemGroupId"),
-    @NamedQuery(name = "ItemGroup.findByItemGroupName", query = "SELECT i FROM ItemGroup i WHERE i.itemGroupName = :itemGroupName")})
+    @NamedQuery(name = "ItemGroup.findByItemGroupName", query = "SELECT i FROM ItemGroup i WHERE i.itemGroupName = :itemGroupName"),
+    @NamedQuery(name = "ItemGroup.findByItemGroupParent", query = "SELECT i FROM ItemGroup i WHERE i.itemGroupParent = :itemGroupParent")})
 public class ItemGroup implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,8 +42,13 @@ public class ItemGroup implements Serializable {
     @Basic(optional = false)
     @Column(name = "item_group_name")
     private String itemGroupName;
+    @Basic(optional = false)
+    @Column(name = "item_group_parent")
+    private int itemGroupParent;
+    @OneToMany(mappedBy = "itemSubGroup")
+    private Collection<Items> itemsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemGroup")
-    private Collection<Item> itemCollection;
+    private Collection<Items> itemsCollection1;
 
     public ItemGroup() {
     }
@@ -51,9 +57,10 @@ public class ItemGroup implements Serializable {
         this.itemGroupId = itemGroupId;
     }
 
-    public ItemGroup(Integer itemGroupId, String itemGroupName) {
+    public ItemGroup(Integer itemGroupId, String itemGroupName, int itemGroupParent) {
         this.itemGroupId = itemGroupId;
         this.itemGroupName = itemGroupName;
+        this.itemGroupParent = itemGroupParent;
     }
 
     public Integer getItemGroupId() {
@@ -72,14 +79,30 @@ public class ItemGroup implements Serializable {
         this.itemGroupName = itemGroupName;
     }
 
-    @XmlTransient
-    @OneToMany(mappedBy = "itemGroup")
-    public Collection<Item> getItemCollection() {
-        return itemCollection;
+    public int getItemGroupParent() {
+        return itemGroupParent;
     }
 
-    public void setItemCollection(Collection<Item> itemCollection) {
-        this.itemCollection = itemCollection;
+    public void setItemGroupParent(int itemGroupParent) {
+        this.itemGroupParent = itemGroupParent;
+    }
+
+    @XmlTransient
+    public Collection<Items> getItemsCollection() {
+        return itemsCollection;
+    }
+
+    public void setItemsCollection(Collection<Items> itemsCollection) {
+        this.itemsCollection = itemsCollection;
+    }
+
+    @XmlTransient
+    public Collection<Items> getItemsCollection1() {
+        return itemsCollection1;
+    }
+
+    public void setItemsCollection1(Collection<Items> itemsCollection1) {
+        this.itemsCollection1 = itemsCollection1;
     }
 
     @Override

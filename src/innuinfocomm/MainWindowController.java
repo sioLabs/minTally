@@ -30,6 +30,8 @@ public class MainWindowController {
     @FXML
     private Button addLedgerButton;
 
+    @FXML
+    private Button importInventoryBtn;
     
     @FXML
     private Button AddItemBtn;
@@ -136,6 +138,16 @@ public class MainWindowController {
         assert createNewSaleBillBtn != null : "fx:id=\"createNewSaleBillBtn\" was not injected: check your FXML file 'MainWindow.fxml'.";
 
 
+    }
+    
+    @FXML
+    public void handleImportInventoryBtn() throws IOException{
+    
+     Parent rootNew = FXMLLoader.load(getClass().getResource("ImportInventory.fxml"));
+        Tab tab = new Tab("Import Inventory");
+        tab.setContent(rootNew);
+        mainContentTabPane.getTabs().add(tab);
+        
     }
 
 }

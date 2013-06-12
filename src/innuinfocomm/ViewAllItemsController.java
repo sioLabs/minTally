@@ -13,7 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import pojos.Item;
+
+import pojos.Items;
 import utils.EntityManagerHelper;
 import utils.ItemView;
 import utils.LedgerView;
@@ -56,14 +57,14 @@ public class ViewAllItemsController {
         ArrayList<ItemView> shortView = new ArrayList<ItemView>();
         EntityManager em = EntityManagerHelper.getInstance().getEm();
         Query q = em.createNamedQuery("Item.findAll");
-        List<Item> list = q.getResultList();
-        for(Item i:list){
+        List<Items> list = q.getResultList();
+        for(Items i:list){
         
             ItemView iV = new ItemView();
             iV.setItemId(i.getItemId());
             iV.setItemName(i.getItemName());
-            iV.setUnit(i.getItemUnit1());
-            iV.setItemStock(i.getItePresentStock());
+            //iV.setUnit(i.getItemUnit1());
+            //iV.setItemStock(i.getItePresentStock());
             iV.setItemGroup(i.getItemGroup().getItemGroupName());
             shortView.add(iV);
         }
@@ -91,15 +92,15 @@ public class ViewAllItemsController {
         Query q = em.createNamedQuery("Item.findItemNameLike");
         q.setParameter("itemName", text);
         ArrayList<ItemView> shortItems = new ArrayList<ItemView>();
-           List<Item> list =      q.getResultList();
+           List<Items> list =      q.getResultList();
         
         
-        for(Item i : list){
+        for(Items i : list){
             ItemView iV = new ItemView();
             iV.setItemId(i.getItemId());
             iV.setItemName(i.getItemName());
-            iV.setUnit(i.getItemUnit1());
-            iV.setItemStock(i.getItePresentStock());
+            //iV.setUnit(i.getItemUnit1());
+            //iV.setItemStock(i.getItePresentStock());
             iV.setItemGroup(i.getItemGroup().getItemGroupName());
             shortItems.add(iV);
         }

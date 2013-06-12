@@ -26,7 +26,7 @@ import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import pojos.Item;
+import pojos.Items;
 import pojos.ItemGroup;
 import pojos.Units;
 import utils.EntityManagerHelper;
@@ -71,7 +71,7 @@ public class AddItemController
         // handle the event here
           System.out.println("Check if this wotking or not");
         // handle the event here
-        Item item = new Item();
+        Items item = new Items();
         String itemName = itemNameTextBox.getText();
         item.setItemName(itemName);
         int under = itemGroupComboBox.getSelectionModel().getSelectedIndex();
@@ -80,18 +80,18 @@ public class AddItemController
         ItemGroup i = catList.get(under+1);
         item.setItemGroup(i);
         int unit = itemUnitComboBox.getSelectionModel().getSelectedIndex()+1;
-        item.setItemUnit1(unit);
+        //item.setItemUnit1(unit);
         float vat = Float.parseFloat(itemVatPercTextBox.getText());
-        item.setItemVatPerc(vat);
+        //item.setItemVatPerc(vat);
         float open = Float.parseFloat(itemOpeningBalTextBox.getText());
-        item.setItemOpenStock(open);
+        //item.setItemOpenStock(open);
         float itemRate = Float.parseFloat(itemRateTextBox.getText());
-        item.setItemRate(itemRate);
+       // item.setItemRate(itemRate);
         int ratePerUnit = itemRatePerUnitComboBox.getSelectionModel().getSelectedIndex()+1;
-        item.setItemRateUnit(ratePerUnit);
-        item.setItePresentStock(open);
+        //item.setItemRateUnit(ratePerUnit);
+        //item.setItePresentStock(open);
         float totalValue = open*itemRate;
-        item.setItemTotalValue((int)totalValue);
+        //item.setItemTotalValue((int)totalValue);
         
         try{
         EntityManager em = EntityManagerHelper.getInstance().getEm();
