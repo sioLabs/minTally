@@ -17,7 +17,7 @@ import javax.persistence.Query;
 import pojos.Items;
 import utils.EntityManagerHelper;
 import utils.ItemView;
-import utils.LedgerView;
+
 
 
 public class ViewAllItemsController {

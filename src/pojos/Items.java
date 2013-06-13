@@ -5,6 +5,12 @@
 package pojos;
 
 import java.io.Serializable;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,73 +40,74 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Items.findByItemRate", query = "SELECT i FROM Items i WHERE i.itemRate = :itemRate"),
     @NamedQuery(name = "Items.findByItemVatPerc", query = "SELECT i FROM Items i WHERE i.itemVatPerc = :itemVatPerc"),
     @NamedQuery(name = "Items.findByItemName", query = "SELECT i FROM Items i WHERE i.itemName = :itemName")})
-public class Items implements Serializable {
+    public class Items implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
 
-    private Double itemOpenStock;
+    private DoubleProperty itemOpenStock =  new SimpleDoubleProperty();
  
-    private String itemRackNo;
-    @Column(name = "item_code")
-    private String itemCode;
-    @Column(name = "item_rate")
-    private Double itemRate;
-    @Column(name = "item_vat_perc")
-    private Double itemVatPerc;
+    private StringProperty itemRackNo = new SimpleStringProperty();
+    
+    private StringProperty  itemCode = new SimpleStringProperty();
+    
+    private DoubleProperty itemRate = new SimpleDoubleProperty();
+    
+    private DoubleProperty itemVatPerc = new SimpleDoubleProperty();
+    
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "item_id")
-    private Integer itemId;
-    @Basic(optional = false)
-    @Column(name = "item_name")
-    private String itemName;
-    @JoinColumn(name = "item_first_unit", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    
+    
+    private IntegerProperty itemId = new SimpleIntegerProperty();
+    
+    private StringProperty itemName = new SimpleStringProperty();
+    
     private Units itemFirstUnit;
-    @JoinColumn(name = "item_sub_group", referencedColumnName = "item_group_id")
-    @ManyToOne
+    
     private ItemGroup itemSubGroup;
-    @JoinColumn(name = "item_group", referencedColumnName = "item_group_id")
-    @ManyToOne(optional = false)
+    
     private ItemGroup itemGroup;
-    @JoinColumn(name = "item_second_unit", referencedColumnName = "id")
-    @ManyToOne
+    
     private Units itemSecondUnit;
 
     public Items() {
     }
 
     public Items(Integer itemId) {
-        this.itemId = itemId;
+        this.itemId.set(itemId);
     }
 
     public Items(Integer itemId, double itemOpenStock, double itemRate, double itemVatPerc, String itemName) {
-        this.itemId = itemId;
-        this.itemOpenStock = itemOpenStock;
-        this.itemRate = itemRate;
-        this.itemVatPerc = itemVatPerc;
-        this.itemName = itemName;
+        this.itemId.set(itemId);
+        this.itemOpenStock.set(itemOpenStock); 
+        this.itemRate.set(itemRate);
+        this.itemVatPerc.set(itemVatPerc); 
+        this.itemName.set(itemName);
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "item_id")
     public Integer getItemId() {
-        return itemId;
+        return itemId.get();
     }
 
     public void setItemId(Integer itemId) {
-        this.itemId = itemId;
+        this.itemId.set(itemId);
     }
 
 
-
+    @Basic(optional = false)
+    @Column(name = "item_name")
     public String getItemName() {
-        return itemName;
+        return itemName.get();
     }
 
     public void setItemName(String itemName) {
-        this.itemName = itemName;
+        this.itemName.set(itemName);
     }
 
+    @JoinColumn(name = "item_first_unit", referencedColumnName = "id")
+    @ManyToOne(optional = false)
     public Units getItemFirstUnit() {
         return itemFirstUnit;
     }
@@ -109,6 +116,8 @@ public class Items implements Serializable {
         this.itemFirstUnit = itemFirstUnit;
     }
 
+    @JoinColumn(name = "item_sub_group", referencedColumnName = "item_group_id")
+    @ManyToOne
     public ItemGroup getItemSubGroup() {
         return itemSubGroup;
     }
@@ -117,6 +126,8 @@ public class Items implements Serializable {
         this.itemSubGroup = itemSubGroup;
     }
 
+    @JoinColumn(name = "item_group", referencedColumnName = "item_group_id")
+    @ManyToOne(optional = false)
     public ItemGroup getItemGroup() {
         return itemGroup;
     }
@@ -125,6 +136,8 @@ public class Items implements Serializable {
         this.itemGroup = itemGroup;
     }
 
+    @JoinColumn(name = "item_second_unit", referencedColumnName = "id")
+    @ManyToOne
     public Units getItemSecondUnit() {
         return itemSecondUnit;
     }
@@ -160,44 +173,48 @@ public class Items implements Serializable {
 
     @Column(name = "item_open_stock")
     public Double getItemOpenStock() {
-        return itemOpenStock;
+        return itemOpenStock.get();
     }
 
     public void setItemOpenStock(Double itemOpenStock) {
-        this.itemOpenStock = itemOpenStock;
+        this.itemOpenStock.set(itemOpenStock);
     }
 
     @Column(name = "item_rack_no")
     public String getItemRackNo() {
-        return itemRackNo;
+        return itemRackNo.get();
     }
 
     public void setItemRackNo(String itemRackNo) {
-        this.itemRackNo = itemRackNo;
+        this.itemRackNo.set(itemRackNo);
     }
 
+    @Column(name = "item_code")
     public String getItemCode() {
-        return itemCode;
+        return itemCode.get();
     }
 
     public void setItemCode(String itemCode) {
-        this.itemCode = itemCode;
+        this.itemCode.set(itemCode);
     }
 
+    @Column(name = "item_rate")
     public Double getItemRate() {
-        return itemRate;
+        return itemRate.get();
     }
 
+    
     public void setItemRate(Double itemRate) {
-        this.itemRate = itemRate;
+        this.itemRate.set(itemRate);
     }
 
+    @Column(name = "item_vat_perc")
     public Double getItemVatPerc() {
-        return itemVatPerc;
+        return itemVatPerc.get();
     }
 
     public void setItemVatPerc(Double itemVatPerc) {
-        this.itemVatPerc = itemVatPerc;
+        this.itemVatPerc.set(itemVatPerc);
     }
     
 }

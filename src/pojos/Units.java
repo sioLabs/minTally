@@ -151,7 +151,7 @@ public class Units implements Serializable {
 
     @Override
     public String toString() {
-        return "pojos.Units[ id=" + id + " ]";
+        return unitName;
     }
     
 }

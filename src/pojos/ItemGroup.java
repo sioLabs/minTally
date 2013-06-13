@@ -127,7 +127,7 @@ public class ItemGroup implements Serializable {
 
     @Override
     public String toString() {
-        return "pojos.ItemGroup[ itemGroupId=" + itemGroupId + " ]";
+        return itemGroupName;
     }
     
 }

@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -35,35 +37,53 @@ import utils.EntityManagerHelper;
 public class AddItemController
     implements Initializable {
 
-    @FXML //  fx:id="itemGroupComboBox"
-    private ComboBox<String> itemGroupComboBox; // Value injected by FXMLLoader
-    
-    //array list to get the group number
-    ArrayList<ItemGroup> catList = null;
+      @FXML
+    private ResourceBundle resources;
 
-    @FXML //  fx:id="itemNameTextBox"
-    private TextField itemNameTextBox; // Value injected by FXMLLoader
+    @FXML
+    private URL location;
 
-    @FXML //  fx:id="itemOpeningBalTextBox"
-    private TextField itemOpeningBalTextBox; // Value injected by FXMLLoader
+    @FXML
+    private Button addNewCategoryBtn;
 
-    @FXML //  fx:id="itemRatePerUnitComboBox"
-    private ComboBox<String> itemRatePerUnitComboBox; // Value injected by FXMLLoader
+    @FXML
+    private Button addNewUnitBtn;
 
-    @FXML //  fx:id="itemRateTextBox"
-    private TextField itemRateTextBox; // Value injected by FXMLLoader
+    @FXML
+    private ComboBox<ItemGroup> itemGroupComboBox;
 
-    @FXML //  fx:id="itemTotalValueTextBox"
-    private TextField itemTotalValueTextBox; // Value injected by FXMLLoader
+    @FXML
+    private TextField itemNameTextBox;
 
-    @FXML //  fx:id="itemUnitComboBox"
-    private ComboBox<String> itemUnitComboBox; // Value injected by FXMLLoader
+    @FXML
+    private TextField itemOpeningBalTextBox;
 
-    @FXML //  fx:id="itemVatPercTextBox"
-    private TextField itemVatPercTextBox; // Value injected by FXMLLoader
+    @FXML
+    private TextField itemRackNoTextField;
 
-    @FXML //  fx:id="saveItemButton"
-    private Button saveItemButton; // Value injected by FXMLLoader
+    @FXML
+    private TextField itemRateTextBox;
+
+    @FXML
+    private ComboBox<Units> itemSecondUnitComboBox;
+
+    @FXML
+    private ComboBox<ItemGroup> itemSubGroupComboBox;
+
+    @FXML
+    private TextField itemTotalValueTextBox;
+
+    @FXML
+    private ComboBox<Units> itemUnitComboBox;
+
+    @FXML
+    private TextField itemVatPercTextBox;
+
+    @FXML
+    private Button saveItemButton;
+
+    @FXML
+    private TextField itemCodeTextBox;
 
 
     // Handler for Button[fx:id="saveItemButton"] onAction
@@ -74,25 +94,26 @@ public class AddItemController
         Items item = new Items();
         String itemName = itemNameTextBox.getText();
         item.setItemName(itemName);
-        int under = itemGroupComboBox.getSelectionModel().getSelectedIndex();
-        //I only have selected Index. How to create  the Object. From the earlier query
-       
-        ItemGroup i = catList.get(under+1);
-        item.setItemGroup(i);
-        int unit = itemUnitComboBox.getSelectionModel().getSelectedIndex()+1;
-        //item.setItemUnit1(unit);
-        float vat = Float.parseFloat(itemVatPercTextBox.getText());
-        //item.setItemVatPerc(vat);
-        float open = Float.parseFloat(itemOpeningBalTextBox.getText());
-        //item.setItemOpenStock(open);
-        float itemRate = Float.parseFloat(itemRateTextBox.getText());
-       // item.setItemRate(itemRate);
-        int ratePerUnit = itemRatePerUnitComboBox.getSelectionModel().getSelectedIndex()+1;
-        //item.setItemRateUnit(ratePerUnit);
-        //item.setItePresentStock(open);
-        float totalValue = open*itemRate;
-        //item.setItemTotalValue((int)totalValue);
+        ItemGroup group = itemGroupComboBox.getSelectionModel().getSelectedItem();
+           
         
+        item.setItemGroup(group);
+        Units funit = itemUnitComboBox.getSelectionModel().getSelectedItem();
+        item.setItemFirstUnit(funit);
+        
+        Units sunit = itemSecondUnitComboBox.getSelectionModel().getSelectedItem();
+        item.setItemSecondUnit(sunit);
+        
+        double vat = Double.parseDouble(itemVatPercTextBox.getText());
+        item.setItemVatPerc(vat);
+        double open = Double.parseDouble(itemOpeningBalTextBox.getText());
+        item.setItemOpenStock(open);
+        double itemRate = Float.parseFloat(itemRateTextBox.getText());
+        item.setItemRate(itemRate);
+        item.setItemCode(itemCodeTextBox.getText().trim());
+        
+        
+               
         try{
         EntityManager em = EntityManagerHelper.getInstance().getEm();
         em.getTransaction().begin();
@@ -147,21 +168,24 @@ public class AddItemController
     //get all the units present in the system
     private void getAllUnits(){
     
-         EntityManager em = EntityManagerHelper.getInstance().getEm();
+        EntityManager em = EntityManagerHelper.getInstance().getEm();
         Query q = em.createNamedQuery("Units.findAll");
-        List<Units> units = q.getResultList();
+        ArrayList<Units> units = new ArrayList<Units>(q.getResultList());
         
         itemUnitComboBox.getItems().clear();
-        for(Units u:units){
-            itemUnitComboBox.getItems().add(u.getId()-1, u.getUnitName());
-        }
+        itemUnitComboBox.getItems().addAll(units);
+        
         itemUnitComboBox.getSelectionModel().clearSelection();
         itemUnitComboBox.setValue(itemUnitComboBox.getItems().get(0));
-        itemRatePerUnitComboBox.getItems().clear();
-        itemRatePerUnitComboBox.getItems().addAll(itemUnitComboBox.getItems());
-        itemRatePerUnitComboBox.getSelectionModel().clearSelection();
+        itemSecondUnitComboBox.getItems().clear();
+        itemSecondUnitComboBox.getItems().addAll(units);
+        itemSecondUnitComboBox.getSelectionModel().clearSelection();
+        itemSecondUnitComboBox.setValue(itemSecondUnitComboBox.getItems().get(0));
+        //itemRatePerUnitComboBox.getItems().clear();
+        //itemRatePerUnitComboBox.getItems().addAll(itemUnitComboBox.getItems());
+        //itemRatePerUnitComboBox.getSelectionModel().clearSelection();
        
-        itemRatePerUnitComboBox.setValue(itemRatePerUnitComboBox.getItems().get(0));
+        //itemRatePerUnitComboBox.setValue(itemRatePerUnitComboBox.getItems().get(0));
     
     }
     
@@ -169,15 +193,35 @@ public class AddItemController
     
     private void getCategories(){
         EntityManager em = EntityManagerHelper.getInstance().getEm();
-        Query q = em.createNamedQuery("ItemGroup.findAll");
-        catList = new ArrayList(q.getResultList());        
+        Query q = em.createNamedQuery("ItemGroup.findByItemGroupParent");
+        q.setParameter("itemGroupParent", 0);
+        ArrayList<ItemGroup> catList = new ArrayList(q.getResultList());        
         itemGroupComboBox.getItems().clear();
-        for(ItemGroup ig : catList){
-            itemGroupComboBox.getItems().add(ig.getItemGroupId()-1, ig.getItemGroupName());
-        }
-        
+        itemGroupComboBox.getItems().addAll(catList);
         itemGroupComboBox.getSelectionModel().clearSelection();     
         itemGroupComboBox.setValue(itemGroupComboBox.getItems().get(0));
+   }
+    
+    private void getSubGroup(){
+        
+        EntityManager em = EntityManagerHelper.getInstance().getEm();
+        
+        int parentId = itemGroupComboBox.getSelectionModel().getSelectedItem().getItemGroupId();
+        Query q = em.createNamedQuery("ItemGroup.findByItemGroupParent");
+        q.setParameter("itemGroupParent", parentId);
+        
+        ArrayList<ItemGroup> subGroups = new ArrayList<ItemGroup>(q.getResultList());
+        if(subGroups.size()<1)
+        {
+            itemSubGroupComboBox.getItems().clear();
+            return;
+        }
+        
+        itemSubGroupComboBox.getItems().clear();
+        itemSubGroupComboBox.getItems().addAll(subGroups);
+        itemSubGroupComboBox.getSelectionModel().clearSelection();
+        itemSubGroupComboBox.setValue(itemSubGroupComboBox.getItems().get(0));
+        
     }
     
 
@@ -186,7 +230,6 @@ public class AddItemController
         assert itemGroupComboBox != null : "fx:id=\"itemGroupComboBox\" was not injected: check your FXML file 'AddItem.fxml'.";
         assert itemNameTextBox != null : "fx:id=\"itemNameTextBox\" was not injected: check your FXML file 'AddItem.fxml'.";
         assert itemOpeningBalTextBox != null : "fx:id=\"itemOpeningBalTextBox\" was not injected: check your FXML file 'AddItem.fxml'.";
-        assert itemRatePerUnitComboBox != null : "fx:id=\"itemRatePerUnitComboBox\" was not injected: check your FXML file 'AddItem.fxml'.";
         assert itemRateTextBox != null : "fx:id=\"itemRateTextBox\" was not injected: check your FXML file 'AddItem.fxml'.";
         assert itemTotalValueTextBox != null : "fx:id=\"itemTotalValueTextBox\" was not injected: check your FXML file 'AddItem.fxml'.";
         assert itemUnitComboBox != null : "fx:id=\"itemUnitComboBox\" was not injected: check your FXML file 'AddItem.fxml'.";
@@ -196,6 +239,16 @@ public class AddItemController
         // initialize your logic here: all @FXML variables will have been injected
         getCategories();
         getAllUnits();
+        itemGroupComboBox.valueProperty().addListener(new ChangeListener<ItemGroup>(){
+
+            @Override
+            public void changed(ObservableValue<? extends ItemGroup> ov, ItemGroup t, ItemGroup t1) {
+               getSubGroup();
+            }
+        
+        
+        });
+        
     }
 
 }

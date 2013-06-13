@@ -9,13 +9,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.AddItemController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="480.0" prefWidth="773.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.AddItemController">
   <children>
     <GridPane id="GridPane" alignment="CENTER_RIGHT" hgap="5.0" layoutY="92.0" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="513.0" vgap="10.0" AnchorPane.leftAnchor="63.5" AnchorPane.rightAnchor="63.5">
       <children>
         <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Name:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <TextField fx:id="itemNameTextBox" prefWidth="244.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <Label text="Under:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label text="Group" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <ComboBox fx:id="itemGroupComboBox" prefWidth="145.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
           <items>
             <FXCollections fx:factory="observableArrayList">
@@ -41,8 +41,10 @@
         <TextField fx:id="itemOpeningBalTextBox" prefWidth="82.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
         <Label text="Rate:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
         <TextField fx:id="itemRateTextBox" prefWidth="82.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-        <Label prefWidth="27.0" text="Per:" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-        <ComboBox fx:id="itemRatePerUnitComboBox" prefWidth="106.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+        <Button fx:id="addNewCategoryBtn" mnemonicParsing="false" onAction="#handleAddNewCategoryBtn" text="Add New Group" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+        <Button fx:id="addNewUnitBtn" mnemonicParsing="false" onAction="#handleAddNewUnitBtn" prefWidth="106.0" text="Add New Unit" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+        <Label text="Sub Group:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <ComboBox fx:id="itemSubGroupComboBox" prefHeight="21.0" prefWidth="145.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
           <items>
             <FXCollections fx:factory="observableArrayList">
               <String fx:value="Item 1" />
@@ -51,16 +53,28 @@
             </FXCollections>
           </items>
         </ComboBox>
-        <Label text="Total Value:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-        <TextField fx:id="itemTotalValueTextBox" prefWidth="82.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-        <Button fx:id="addNewCategoryBtn" mnemonicParsing="false" onAction="#handleAddNewCategoryBtn" text="Add New Category" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-        <Button fx:id="addNewUnitBtn" mnemonicParsing="false" onAction="#handleAddNewUnitBtn" text="Add New Unit" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+        <Label text="Second Unit:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+        <ComboBox fx:id="itemSecondUnitComboBox" prefHeight="21.0" prefWidth="145.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+        <Label text="Rack No:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+        <TextField fx:id="itemRackNoTextField" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+        <Label text="Item Code:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        <TextField prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
       </children>
       <columnConstraints>
-        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="10.0" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-        <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" minWidth="10.0" />
-        <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" minWidth="10.0" />
+        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="98.0" minWidth="10.0" prefWidth="92.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="369.0" minWidth="10.0" prefWidth="169.0" />
+        <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" maxWidth="229.0" minWidth="10.0" prefWidth="75.0" />
+        <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" maxWidth="163.0" minWidth="10.0" prefWidth="147.0" />
+        <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" maxWidth="27.0" minWidth="10.0" prefWidth="22.0" />
+        <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" maxWidth="121.0" minWidth="10.0" prefWidth="116.0" />
       </columnConstraints>
       <rowConstraints>
         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -72,7 +86,7 @@
         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
       </rowConstraints>
     </GridPane>
-    <Label layoutX="277.0" layoutY="18.0" text="Add Item">
+    <Label layoutX="350.0" layoutY="18.0" text="Add Item">
       <effect>
         <InnerShadow blurType="GAUSSIAN">
           <input>
@@ -84,6 +98,6 @@
         <Font size="18.0" />
       </font>
     </Label>
-    <Button fx:id="saveItemButton" layoutX="198.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleSaveItemButton" text="Save Item" />
+    <Button fx:id="saveItemButton" layoutX="161.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleSaveItemButton" text="Save Item" />
   </children>
 </AnchorPane>

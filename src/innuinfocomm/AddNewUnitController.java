@@ -64,6 +64,8 @@ public class AddNewUnitController
 
     @FXML //  fx:id="successLabel"
     private Label successLabel; // Value injected by FXMLLoader
+    
+   
 
 
     // Handler for Button[fx:id="saveCompUnitBtn"] onAction
@@ -109,7 +111,7 @@ public class AddNewUnitController
     private void getAllUnits(){
     
         EntityManager em = EntityManagerHelper.getInstance().getEm();
-        Query q = em.createNamedQuery("Units.findAll");
+        Query q = em.createNamedQuery("Units.findBySecondUnit");
         List<Units> units = q.getResultList();
         
         secondUnitComboBox.getItems().clear();
