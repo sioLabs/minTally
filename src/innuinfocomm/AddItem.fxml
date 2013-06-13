@@ -66,7 +66,7 @@
         <Label text="Rack No:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
         <TextField fx:id="itemRackNoTextField" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
         <Label text="Item Code:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-        <TextField prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+        <TextField fx:id="itemCodeTextBox" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
       </children>
       <columnConstraints>
         <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="98.0" minWidth="10.0" prefWidth="92.0" />
@@ -98,6 +98,12 @@
         <Font size="18.0" />
       </font>
     </Label>
-    <Button fx:id="saveItemButton" layoutX="161.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleSaveItemButton" text="Save Item" />
+    <Button fx:id="saveItemButton" layoutX="161.0" layoutY="320.0" mnemonicParsing="false" onAction="#handleSaveItemButton" text="Save Item" />
+    <Label fx:id="successLabel" layoutX="121.0" layoutY="66.0" text="Item Added Successfulluy" textFill="#10cc00" visible="false">
+      <font>
+        <Font size="14.0" fx:id="x1" />
+      </font>
+    </Label>
+    <Label fx:id="errorLabel" font="$x1" layoutX="121.0" layoutY="69.0" text="Error in Saving Item. Please Check the values entered" textFill="#cc0000" visible="false" />
   </children>
 </AnchorPane>

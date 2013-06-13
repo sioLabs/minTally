@@ -85,14 +85,16 @@ public class AddNewCategoryController
         em.getTransaction().begin();
         em.persist(ig);
         em.getTransaction().commit();   
-        }catch(Exception e){
-            //TODO remove sout from here
-            System.out.println("Error is saving new category");
-        }
-        
         successLabel.setStyle("-fx-color:green;");
         successLabel.setVisible(true);
-        successLabel.setText("Category Added Successfully");
+        successLabel.setText("Group Added Successfully");
+        }catch(Exception e){
+            successLabel.setStyle("-fx-color:red;");
+            successLabel.setVisible(true);
+            successLabel.setText("Error in adding group ");
+        }
+        
+       
        
             
     }
@@ -102,11 +104,22 @@ public class AddNewCategoryController
         ItemGroup group = new ItemGroup();
         group.setItemGroupParent(itemGroupComboBox.getSelectionModel().getSelectedItem().getItemGroupId());
         group.setItemGroupName(itemSubGroupTextBox.getText());
+        try{
         EntityManager em = EntityManagerHelper.getInstance().getEm();
         em.getTransaction().begin();
         em.persist(group);
         em.getTransaction().commit();
-        successLabel.setText("Category Saved Successfully");
+        successLabel.setStyle("-fx-color:green;");
+        successLabel.setVisible(true);
+        successLabel.setText("Sub group Added Successfully");
+        }catch(Exception e){
+            successLabel.setStyle("-fx-color:red;");
+            successLabel.setVisible(true);
+            successLabel.setText("Error in adding Sub group ");
+        }
+        
+       
+        
     }
     
     private void fillGroupComboBox(){

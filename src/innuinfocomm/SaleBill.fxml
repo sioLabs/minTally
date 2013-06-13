@@ -18,7 +18,7 @@
         <Glow />
       </effect>
       <font>
-        <Font size="15.0" />
+        <Font name="System Bold" size="15.0" />
       </font>
     </Label>
     <VBox id="VBox" alignment="CENTER_RIGHT" fillWidth="false" layoutX="38.0" layoutY="53.0" spacing="5.0">
@@ -136,10 +136,5 @@
     </VBox>
     <Button fx:id="saveBtn" layoutX="423.0" layoutY="521.0" mnemonicParsing="false" onAction="#handleSaveBtn" text="Save" />
     <Button fx:id="printBtn" layoutX="495.0" layoutY="521.0" mnemonicParsing="false" onAction="#handlePrintBtn" text="Print" />
-    <ComboBox fx:id="itemComboBox" editable="true" layoutX="489.0" layoutY="71.0" onKeyReleased="#handleComboBox" prefHeight="21.0" prefWidth="189.0">
-      <items>
-        <FXCollections fx:factory="observableArrayList" />
-      </items>
-    </ComboBox>
   </children>
 </AnchorPane>

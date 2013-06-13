@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Items.findAll", query = "SELECT i FROM Items i"),
+    @NamedQuery(name = "Items.findByItemsNameLike", query = "SELECT i FROM Items i WHERE i.itemName LIKE  :itemName"),
     @NamedQuery(name = "Items.findByItemId", query = "SELECT i FROM Items i WHERE i.itemId = :itemId"),
     @NamedQuery(name = "Items.findByItemOpenStock", query = "SELECT i FROM Items i WHERE i.itemOpenStock = :itemOpenStock"),
     @NamedQuery(name = "Items.findByItemRackNo", query = "SELECT i FROM Items i WHERE i.itemRackNo = :itemRackNo"),
@@ -99,11 +100,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @Basic(optional = false)
     @Column(name = "item_name")
     public String getItemName() {
-        return itemName.get();
+        return itemName.getValueSafe();
     }
 
     public void setItemName(String itemName) {
-        this.itemName.set(itemName);
+        this.itemName.setValue(itemName);
     }
 
     @JoinColumn(name = "item_first_unit", referencedColumnName = "id")
@@ -173,48 +174,51 @@ import javax.xml.bind.annotation.XmlRootElement;
 
     @Column(name = "item_open_stock")
     public Double getItemOpenStock() {
-        return itemOpenStock.get();
+        return itemOpenStock.getValue();
     }
 
     public void setItemOpenStock(Double itemOpenStock) {
-        this.itemOpenStock.set(itemOpenStock);
+        //if(itemOpenStock == null)
+            
+        this.itemOpenStock.setValue(itemOpenStock);
     }
 
+    @Basic
     @Column(name = "item_rack_no")
     public String getItemRackNo() {
-        return itemRackNo.get();
+        return itemRackNo.getValue();
     }
 
     public void setItemRackNo(String itemRackNo) {
-        this.itemRackNo.set(itemRackNo);
+        this.itemRackNo.setValue(itemRackNo);
     }
 
     @Column(name = "item_code")
     public String getItemCode() {
-        return itemCode.get();
+        return itemCode.getValueSafe();
     }
 
     public void setItemCode(String itemCode) {
-        this.itemCode.set(itemCode);
+        this.itemCode.setValue(itemCode);
     }
 
     @Column(name = "item_rate")
     public Double getItemRate() {
-        return itemRate.get();
+        return itemRate.getValue();
     }
 
     
     public void setItemRate(Double itemRate) {
-        this.itemRate.set(itemRate);
+        this.itemRate.setValue(itemRate);
     }
 
     @Column(name = "item_vat_perc")
     public Double getItemVatPerc() {
-        return itemVatPerc.get();
+        return itemVatPerc.getValue();
     }
 
     public void setItemVatPerc(Double itemVatPerc) {
-        this.itemVatPerc.set(itemVatPerc);
+        this.itemVatPerc.setValue(itemVatPerc);
     }
     
 }

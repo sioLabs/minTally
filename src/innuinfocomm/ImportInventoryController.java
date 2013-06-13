@@ -14,6 +14,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -49,6 +51,8 @@ public class ImportInventoryController {
     @FXML
     private TextField filePathTextBox;
 
+    @FXML 
+    private ProgressIndicator importProgressIndicator;
 
     private File chosenFile;
     @FXML
@@ -83,6 +87,7 @@ public class ImportInventoryController {
             
             EntityManager em = EntityManagerHelper.getInstance().getEm();
            
+            int size = sheet.getLastRowNum();
             ///////////change here
             for(int i=1; i<=sheet.getLastRowNum(); i++){
                 
@@ -286,9 +291,9 @@ public class ImportInventoryController {
                  em.getTransaction().begin();
                  em.persist(item);
                  em.getTransaction().commit();
-                  
                  em.clear();
-                  
+                 
+       
                   
                     
           }
@@ -306,7 +311,8 @@ public class ImportInventoryController {
     void initialize() {
         assert fileBrowseBtn != null : "fx:id=\"fileBrowseBtn\" was not injected: check your FXML file 'ImportInventory.fxml'.";
         assert filePathTextBox != null : "fx:id=\"filePathTextBox\" was not injected: check your FXML file 'ImportInventory.fxml'.";
-
+        assert importProgressIndicator != null : "fx:id=\"importProgressIndicator\" was not injected: check your FXML file 'ImportInventory.fxml'.";
+        importProgressIndicator.setVisible(false);
 
     }
 

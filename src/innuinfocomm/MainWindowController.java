@@ -18,11 +18,14 @@ import javafx.scene.layout.AnchorPane;
 
 public class MainWindowController {
 
-    @FXML
+   @FXML
     private ResourceBundle resources;
 
     @FXML
     private URL location;
+
+    @FXML
+    private Button AddItemBtn;
 
     @FXML
     private TitledPane VoucherMgmt;
@@ -31,13 +34,28 @@ public class MainWindowController {
     private Button addLedgerButton;
 
     @FXML
-    private Button importInventoryBtn;
-    
-    @FXML
-    private Button AddItemBtn;
-    
-    @FXML
     private Button addNewLedgerType;
+
+    @FXML
+    private Button createNewPayableBtn;
+
+    @FXML
+    private Button createNewPaymentVoucherResult;
+
+    @FXML
+    private Button createNewPurchaseBtn;
+
+    @FXML
+    private Button createNewRecieptVoucherBtn;
+
+    @FXML
+    private Button createNewRecievableBtn;
+
+    @FXML
+    private Button createNewSaleBillBtn;
+
+    @FXML
+    private Button importInventoryBtn;
 
     @FXML
     private TitledPane ledgerMgmt;
@@ -58,16 +76,16 @@ public class MainWindowController {
     private MenuBar topMenuBar;
 
     @FXML
-    private Button viewAllLedgerButton;
-    
+    private Button viewAllItemsBtn;
+
     @FXML
-    private Button createNewSaleBillBtn;
+    private Button viewAllLedgerButton;
 
     @FXML
     private TitledPane x1;
-    
-       @FXML
-    private Button viewAllItemsBtn;
+
+    @FXML
+    private TitledPane x2;
 
 
     @FXML
@@ -118,6 +136,61 @@ public class MainWindowController {
         Tab tab = new Tab("Create New Sale Bill");
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);
+    
+    }
+    
+    @FXML 
+    void handleCreateNewPayableBtn()
+    {
+        
+    
+    }
+    
+    @FXML 
+    void handleCreateNewRecievableBtn(){
+    
+    }
+    
+    @FXML
+    void handleCreateNewPurchaseBill() throws IOException{
+        Parent rootNew = FXMLLoader.load(getClass().getResource("PurchaseVoucher.fxml"));
+        Tab tab = new Tab("Create New Purchase Bill");
+        tab.setContent(rootNew);
+        mainContentTabPane.getTabs().add(tab);                
+    }
+    
+    @FXML 
+    void handleCreateNewRecieptVoucherBtn() throws IOException{
+        Parent rootNew = FXMLLoader.load(getClass().getResource("RecieptVoucher.fxml"));
+        Tab tab = new Tab("Create New Reciept Voucher");
+        tab.setContent(rootNew);
+        mainContentTabPane.getTabs().add(tab);                
+    }
+    
+    @FXML
+    void handleCreateNewPaymentVoucher() throws IOException{
+        Parent rootNew = FXMLLoader.load(getClass().getResource("PaymentVoucher.fxml"));
+        Tab tab = new Tab("Create New Purchase Voucher");
+        tab.setContent(rootNew);
+        mainContentTabPane.getTabs().add(tab);                    
+    }
+    
+    @FXML
+    void handleCreateNewContraVoucher() throws IOException{
+        Parent rootNew = FXMLLoader.load(getClass().getResource("ContraVoucher.fxml"));
+        Tab tab = new Tab("Create New Contra Voucher");
+        tab.setContent(rootNew);
+        mainContentTabPane.getTabs().add(tab);                    
+    
+    }
+    
+    @FXML
+    void handleCreateNewJournalVoucher() throws IOException{
+        Parent rootNew = FXMLLoader.load(getClass().getResource("Journalvoucher.fxml"));
+        Tab tab = new Tab("Create New Journal Voucher");
+        tab.setContent(rootNew);
+        mainContentTabPane.getTabs().add(tab);                    
+    
     
     }
 

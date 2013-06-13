@@ -5,12 +5,21 @@
 <?import javafx.collections.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane id="AnchorPane" layoutX="0.0" layoutY="0.0" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.RecieptVoucherController">
   <children>
-    <Label layoutX="382.0" layoutY="13.0" text="Reciept Voucher" />
-    <HBox id="HBox" alignment="CENTER" layoutX="25.0" layoutY="48.0" spacing="5.0">
+    <Label layoutX="342.0" layoutY="14.0" text="Reciept Voucher">
+      <effect>
+        <Glow />
+      </effect>
+      <font>
+        <Font name="System Bold" size="15.0" />
+      </font>
+    </Label>
+    <HBox id="HBox" alignment="CENTER" layoutX="25.0" layoutY="77.0" spacing="5.0">
       <children>
         <Group id="Group">
           <children>

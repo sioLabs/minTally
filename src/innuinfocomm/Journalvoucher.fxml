@@ -5,42 +5,64 @@
 <?import javafx.collections.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.JournalvoucherController">
   <children>
-    <Label layoutX="104.0" layoutY="57.0" text="Voucher No:" />
-    <TextField fx:id="voucherNoTextBox" layoutX="185.0" layoutY="54.0" prefWidth="71.0" />
-    <Label layoutX="307.0" layoutY="57.0" text="Date:" />
-    <TextField fx:id="dateTextBox" layoutX="352.0" layoutY="54.0" prefWidth="112.00009999999747" />
-    <Label layoutX="104.0" layoutY="108.0" text="By:" />
-    <ComboBox fx:id="byAccComboBox" layoutX="132.0" layoutY="103.0" prefWidth="220.0">
-      <items>
-        <FXCollections fx:factory="observableArrayList">
-          <String fx:value="Item 1" />
-          <String fx:value="Item 2" />
-          <String fx:value="Item 3" />
-        </FXCollections>
-      </items>
-    </ComboBox>
-    <Label layoutX="364.0" layoutY="106.0" text="Balance:" />
-    <TextField fx:id="balanceTextBox" layoutX="445.0" layoutY="103.0" prefWidth="71.0" />
+    <HBox id="HBox" alignment="CENTER" layoutX="80.0" layoutY="76.0" spacing="5.0">
+      <children>
+        <Label text="Voucher No:" />
+        <TextField fx:id="voucherNoTextBox" prefWidth="71.0" />
+        <Label text="Date:" />
+        <TextField fx:id="dateTextBox" prefWidth="112.00009999999747" />
+      </children>
+    </HBox>
+    <HBox id="HBox" alignment="CENTER" layoutX="80.0" layoutY="106.0" spacing="5.0">
+      <children>
+        <Label text="By:" />
+        <ComboBox fx:id="byAccComboBox" prefWidth="220.0">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+        <Label text="Balance:" />
+        <TextField fx:id="balanceTextBox" prefWidth="71.0" />
+      </children>
+    </HBox>
     <Label layoutX="79.0" layoutY="180.0" text="To" />
-    <Label layoutX="79.0" layoutY="225.0" text="Account In:" />
-    <ComboBox fx:id="toAccComboBox" layoutX="159.0" layoutY="223.0" prefWidth="241.0">
-      <items>
-        <FXCollections fx:factory="observableArrayList">
-          <String fx:value="Item 1" />
-          <String fx:value="Item 2" />
-          <String fx:value="Item 3" />
-        </FXCollections>
-      </items>
-    </ComboBox>
-    <Label layoutX="421.0" layoutY="222.0" text="Amount:" />
-    <TextField fx:id="toAmountTextBox" layoutX="481.0" layoutY="219.0" prefWidth="81.0" />
+    <HBox id="HBox" alignment="CENTER" layoutX="80.0" layoutY="208.0" spacing="5.0">
+      <children>
+        <Label text="Account In:" />
+        <ComboBox fx:id="toAccComboBox" prefWidth="241.0">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+        <Label text="Amount:" />
+        <TextField fx:id="toAmountTextBox" prefWidth="81.0" />
+      </children>
+    </HBox>
     <Label layoutX="80.0" layoutY="292.0" text="Description:" />
     <TextArea fx:id="descTextArea" layoutX="79.0" layoutY="320.0" prefHeight="97.0" prefWidth="287.0" wrapText="true" />
     <Button fx:id="saveBtn" layoutX="292.0" layoutY="470.0" mnemonicParsing="false" onAction="#handleSaveBtn" text="Save" />
     <Button fx:id="printBtn" layoutX="367.0" layoutY="470.0" mnemonicParsing="false" onAction="#handlePrintBtn" text="Print" />
+    <Label layoutX="357.0" layoutY="27.0" text="Journal Voucher">
+      <effect>
+        <Glow />
+      </effect>
+      <font>
+        <Font name="System Bold" size="15.0" />
+      </font>
+    </Label>
   </children>
 </AnchorPane>

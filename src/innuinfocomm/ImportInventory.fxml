@@ -13,7 +13,7 @@
     <HBox id="HBox" alignment="CENTER" layoutX="80.0" layoutY="86.0" spacing="5.0">
       <children>
         <Label text="Excel Sheet Path:" />
-        <TextField fx:id="filePathTextBox"  prefWidth="200.0" text="" />
+        <TextField fx:id="filePathTextBox" prefWidth="200.0" text="" />
         <Button fx:id="browseBtn" mnemonicParsing="false" onAction="#handleBrowseBtn" text="Browse File" />
         <Button id="fileBrowseBtn" fx:id="importFileBtn" mnemonicParsing="false" onAction="#handleImportBtn" text="Import" />
       </children>
@@ -26,5 +26,6 @@
         <Font name="System Bold" size="15.0" />
       </font>
     </Label>
+    <ProgressIndicator fx:id="importProgressIndicator" layoutX="260.0" layoutY="109.0" progress="0.0" />
   </children>
 </AnchorPane>

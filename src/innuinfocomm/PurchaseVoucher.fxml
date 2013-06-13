@@ -5,11 +5,20 @@
 <?import javafx.collections.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.PurchaseVoucherController">
   <children>
-    <Label contentDisplay="CENTER" layoutY="30.0" text="Purchase Voucher" textAlignment="CENTER" AnchorPane.leftAnchor="498.0" AnchorPane.rightAnchor="184.0" />
+    <Label contentDisplay="CENTER" layoutY="14.0" prefWidth="94.0" text="Purchase Bill" textAlignment="CENTER" AnchorPane.leftAnchor="403.0" AnchorPane.rightAnchor="403.0">
+      <effect>
+        <Glow />
+      </effect>
+      <font>
+        <Font name="System Bold" size="15.0" />
+      </font>
+    </Label>
     <HBox id="HBox" alignment="CENTER" layoutY="67.0" spacing="5.0" AnchorPane.leftAnchor="51.0">
       <children>
         <Label text="Bill No:" />

@@ -207,17 +207,17 @@ public class SaleBillController {
 
     private void fillComboBox() {
         
-        EntityManager em = EntityManagerHelper.getInstance().getEm();
-        Query q = em.createNamedQuery("Item.findAll");
-        List<Items> list = q.getResultList();
+//        EntityManager em = EntityManagerHelper.getInstance().getEm();
+  //      Query q = em.createNamedQuery("Item.findAll");
+    //    List<Items> list = q.getResultList();
         
         
         
         //data = FXCollections.observableList(list);
-        itemComboBox.getItems().clear();
-        itemComboBox.getItems().addAll(list);
+        //itemComboBox.getItems().clear();
+        //itemComboBox.getItems().addAll(list);
         //itemComboBox.setItems(data);
-        itemComboBox.getSelectionModel().clearSelection();
+        //itemComboBox.getSelectionModel().clearSelection();
         
     }
 

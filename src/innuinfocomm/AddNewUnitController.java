@@ -6,6 +6,7 @@
 package innuinfocomm;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
@@ -14,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -23,6 +25,7 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Window;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import pojos.Units;
@@ -32,6 +35,12 @@ import utils.EntityManagerHelper;
 public class AddNewUnitController
     implements Initializable {
 
+    @FXML 
+    private Button cancelBtn;
+    
+    @FXML 
+    private Button cancelBtn2;
+    
     @FXML //  fx:id="cmpndUnitUI"
     private AnchorPane cmpndUnitUI; 
     
@@ -54,7 +63,7 @@ public class AddNewUnitController
     private Button saveSimpleUnitBtn; // Value injected by FXMLLoader
 
     @FXML //  fx:id="secondUnitComboBox"
-    private ComboBox<String> secondUnitComboBox; // Value injected by FXMLLoader
+    private ComboBox<Units> secondUnitComboBox; // Value injected by FXMLLoader
 
     @FXML //  fx:id="simpleUnitNameTextBox"
     private TextField simpleUnitNameTextBox; // Value injected by FXMLLoader
@@ -78,7 +87,7 @@ public class AddNewUnitController
             unit.setUnitType(2); // 2 for compound unit
             unit.setUnitName(firstUnitTextBox.getText());
             unit.setConv(Float.parseFloat(conversionTextBox.getText()));
-            unit.setSecondUnit(secondUnitComboBox.getSelectionModel().getSelectedIndex()+1);           
+            unit.setSecondUnit(secondUnitComboBox.getSelectionModel().getSelectedItem().getId());           
             
             EntityManager em = EntityManagerHelper.getInstance().getEm();
             em.getTransaction().begin();
@@ -111,15 +120,17 @@ public class AddNewUnitController
     private void getAllUnits(){
     
         EntityManager em = EntityManagerHelper.getInstance().getEm();
-        Query q = em.createNamedQuery("Units.findBySecondUnit");
-        List<Units> units = q.getResultList();
-        
+        Query q = em.createNamedQuery("Units.findAll");        
+        //q.setParameter("secondUnit", 0);
+        ArrayList<Units> units = new ArrayList<Units>(q.getResultList());        
         secondUnitComboBox.getItems().clear();
-        for(Units u:units){
-            secondUnitComboBox.getItems().add(u.getId()-1, u.getUnitName());
-        }
+        secondUnitComboBox.getItems().addAll(units);
         secondUnitComboBox.getSelectionModel().clearSelection();
     
+    }
+    
+    @FXML public void handleCancelBtn(){
+        Scene scene = cancelBtn.getScene();         
     }
 
     @Override // This method is called by the FXMLLoader when initialization is complete
@@ -169,5 +180,7 @@ public class AddNewUnitController
         
 
     }
+    
+    
 
 }

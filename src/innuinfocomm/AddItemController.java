@@ -21,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -84,12 +85,17 @@ public class AddItemController
 
     @FXML
     private TextField itemCodeTextBox;
+    
+   @FXML
+    private Label errorLabel;
 
+       @FXML
+    private Label successLabel;
 
     // Handler for Button[fx:id="saveItemButton"] onAction
     public void handleSaveItemButton(ActionEvent event) {
         // handle the event here
-          System.out.println("Check if this wotking or not");
+         try{
         // handle the event here
         Items item = new Items();
         String itemName = itemNameTextBox.getText();
@@ -114,13 +120,16 @@ public class AddItemController
         
         
                
-        try{
+       
         EntityManager em = EntityManagerHelper.getInstance().getEm();
         em.getTransaction().begin();
         em.persist(item);
         em.getTransaction().commit();
+        successLabel.setVisible(true);
+        errorLabel.setVisible(false);
         }catch(Exception e){
-            System.out.println("Some exception in saving the Item.");
+            errorLabel.setVisible(true);
+            successLabel.setVisible(false);
         }
         
     }
@@ -196,6 +205,11 @@ public class AddItemController
         Query q = em.createNamedQuery("ItemGroup.findByItemGroupParent");
         q.setParameter("itemGroupParent", 0);
         ArrayList<ItemGroup> catList = new ArrayList(q.getResultList());        
+        
+        if(catList.size() < 1){
+            itemGroupComboBox.getItems().clear();
+            return;
+        }
         itemGroupComboBox.getItems().clear();
         itemGroupComboBox.getItems().addAll(catList);
         itemGroupComboBox.getSelectionModel().clearSelection();     
@@ -206,6 +220,10 @@ public class AddItemController
         
         EntityManager em = EntityManagerHelper.getInstance().getEm();
         
+        if(itemGroupComboBox.getSelectionModel().getSelectedItem() == null){
+            itemSubGroupComboBox.getItems().clear();
+            return;
+        }
         int parentId = itemGroupComboBox.getSelectionModel().getSelectedItem().getItemGroupId();
         Query q = em.createNamedQuery("ItemGroup.findByItemGroupParent");
         q.setParameter("itemGroupParent", parentId);

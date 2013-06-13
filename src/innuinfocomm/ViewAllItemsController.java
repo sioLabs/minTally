@@ -32,50 +32,42 @@ public class ViewAllItemsController {
     private TextField searchItemsTextBox;
 
     @FXML
-    private TableView<ItemView> ItemsTableView;
+    private TableView<Items> ItemsTableView;
 
     @FXML
-    private TableColumn<ItemView, Integer> itemCodeTableColumn;
+    private TableColumn<Items, String> itemCodeTableColumn;
 
     @FXML
-    private TableColumn<ItemView, Float> itemCurrentStockTableColumn;
+    private TableColumn<Items, Double> itemCurrentStockTableColumn;
+    
 
     @FXML
-    private TableColumn<ItemView, Integer> itemFUnitTableColumn;
+    private TableColumn<Items, String> itemFUnitTableColumn;
 
     @FXML
-    private TableColumn<ItemView, String> itemGroupTableColumn;
+    private TableColumn<Items, String> itemGroupTableColumn;
 
     @FXML
-    private TableColumn<ItemView, String> itemNameTableColumn;
+    private TableColumn<Items, String> itemNameTableColumn;
 
     
-    private  ObservableList<ItemView> data = null;
+    private  ObservableList<Items> data = null;
 
     private void fillData(){
         
         ArrayList<ItemView> shortView = new ArrayList<ItemView>();
         EntityManager em = EntityManagerHelper.getInstance().getEm();
-        Query q = em.createNamedQuery("Item.findAll");
-        List<Items> list = q.getResultList();
-        for(Items i:list){
+        Query q = em.createNamedQuery("Items.findAll");
+        ArrayList<Items> list = new ArrayList<Items>(q.getResultList());
         
-            ItemView iV = new ItemView();
-            iV.setItemId(i.getItemId());
-            iV.setItemName(i.getItemName());
-            //iV.setUnit(i.getItemUnit1());
-            //iV.setItemStock(i.getItePresentStock());
-            iV.setItemGroup(i.getItemGroup().getItemGroupName());
-            shortView.add(iV);
-        }
         
-        data = FXCollections.observableArrayList(shortView);
+        data = FXCollections.observableArrayList(list);
        //ledgerNameColumn.setCellValueFactory(new PropertyValueFactory<LedgerView,String>("name"));
-       itemNameTableColumn.setCellValueFactory(new PropertyValueFactory<ItemView,String>("itemName"));
-       itemGroupTableColumn.setCellValueFactory(new PropertyValueFactory<ItemView,String>("itemGroup"));
-       itemFUnitTableColumn.setCellValueFactory(new PropertyValueFactory<ItemView,Integer>("unit"));
-       itemCodeTableColumn.setCellValueFactory(new PropertyValueFactory<ItemView,Integer>("itemId"));
-       itemCurrentStockTableColumn.setCellValueFactory(new PropertyValueFactory<ItemView,Float>("itemStock"));
+       itemNameTableColumn.setCellValueFactory(new PropertyValueFactory<Items,String>("itemName"));
+       itemGroupTableColumn.setCellValueFactory(new PropertyValueFactory<Items,String>("itemGroup"));
+       itemFUnitTableColumn.setCellValueFactory(new PropertyValueFactory<Items,String>("itemFirstUnit"));
+       itemCodeTableColumn.setCellValueFactory(new PropertyValueFactory<Items,String>("itemCode"));
+       itemCurrentStockTableColumn.setCellValueFactory(new PropertyValueFactory<Items,Double>("itemOpenStock"));
        
        ItemsTableView.setItems(data);
     }
@@ -89,21 +81,13 @@ public class ViewAllItemsController {
          
          text="%"+text+"%";
         EntityManager em = EntityManagerHelper.getInstance().getEm();
-        Query q = em.createNamedQuery("Item.findItemNameLike");
+        Query q = em.createNamedQuery("Items.findByItemsNameLike");
         q.setParameter("itemName", text);
-        ArrayList<ItemView> shortItems = new ArrayList<ItemView>();
-           List<Items> list =      q.getResultList();
+        ArrayList<Items> shortItems = new ArrayList<Items>(q.getResultList());
+           
         
         
-        for(Items i : list){
-            ItemView iV = new ItemView();
-            iV.setItemId(i.getItemId());
-            iV.setItemName(i.getItemName());
-            //iV.setUnit(i.getItemUnit1());
-            //iV.setItemStock(i.getItePresentStock());
-            iV.setItemGroup(i.getItemGroup().getItemGroupName());
-            shortItems.add(iV);
-        }
+        
         
         data = FXCollections.observableArrayList(shortItems);
        
