@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 16, 2013 at 10:37 AM
+-- Generation Time: Jun 16, 2013 at 10:38 AM
 -- Server version: 5.5.24-log
 -- PHP Version: 5.3.13
 
@@ -19,6 +19,22 @@ SET time_zone = "+00:00";
 --
 -- Database: `innuinfocomm`
 --
+DROP DATABASE `innuinfocomm`;
+CREATE DATABASE `innuinfocomm` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `innuinfocomm`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item_group`
+--
+
+CREATE TABLE IF NOT EXISTS `item_group` (
+  `item_group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_group_name` varchar(50) NOT NULL,
+  `item_group_parent` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`item_group_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=136 ;
 
 -- --------------------------------------------------------
 
@@ -26,7 +42,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `items`
 --
 
-DROP TABLE IF EXISTS `items`;
 CREATE TABLE IF NOT EXISTS `items` (
   `item_id` int(11) NOT NULL AUTO_INCREMENT,
   `item_group` int(11) NOT NULL,
@@ -49,24 +64,9 @@ CREATE TABLE IF NOT EXISTS `items` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `item_group`
---
-
-DROP TABLE IF EXISTS `item_group`;
-CREATE TABLE IF NOT EXISTS `item_group` (
-  `item_group_id` int(11) NOT NULL AUTO_INCREMENT,
-  `item_group_name` varchar(50) NOT NULL,
-  `item_group_parent` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`item_group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=136 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `ledger_group_table`
 --
 
-DROP TABLE IF EXISTS `ledger_group_table`;
 CREATE TABLE IF NOT EXISTS `ledger_group_table` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_name` varchar(45) NOT NULL,
@@ -79,7 +79,6 @@ CREATE TABLE IF NOT EXISTS `ledger_group_table` (
 -- Table structure for table `ledger_table`
 --
 
-DROP TABLE IF EXISTS `ledger_table`;
 CREATE TABLE IF NOT EXISTS `ledger_table` (
   `ledger_id` int(11) NOT NULL AUTO_INCREMENT,
   `ledger_name` varchar(45) NOT NULL,
@@ -102,10 +101,29 @@ CREATE TABLE IF NOT EXISTS `ledger_table` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sale_bill`
+--
+
+CREATE TABLE IF NOT EXISTS `sale_bill` (
+  `sale_bill_no` int(11) NOT NULL AUTO_INCREMENT,
+  `sale_bill_date` date NOT NULL,
+  `sale_bill_customer` int(11) NOT NULL,
+  `sale_bill_site` varchar(100) NOT NULL,
+  `sale_bil_remark` varchar(100) NOT NULL,
+  `sale_bill_company` varchar(80) NOT NULL,
+  `sale_bill_totalvat` double NOT NULL,
+  `sale_bill_frieghtCharges` double NOT NULL,
+  `sale_bill_discount` double NOT NULL,
+  `sale_bill_total_amount` double NOT NULL,
+  PRIMARY KEY (`sale_bill_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `salebill_item`
 --
 
-DROP TABLE IF EXISTS `salebill_item`;
 CREATE TABLE IF NOT EXISTS `salebill_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `item_id` int(11) NOT NULL,
@@ -124,31 +142,9 @@ CREATE TABLE IF NOT EXISTS `salebill_item` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sale_bill`
---
-
-DROP TABLE IF EXISTS `sale_bill`;
-CREATE TABLE IF NOT EXISTS `sale_bill` (
-  `sale_bill_no` int(11) NOT NULL AUTO_INCREMENT,
-  `sale_bill_date` date NOT NULL,
-  `sale_bill_customer` int(11) NOT NULL,
-  `sale_bill_site` varchar(100) NOT NULL,
-  `sale_bil_remark` varchar(100) NOT NULL,
-  `sale_bill_company` varchar(80) NOT NULL,
-  `sale_bill_totalvat` double NOT NULL,
-  `sale_bill_frieghtCharges` double NOT NULL,
-  `sale_bill_discount` double NOT NULL,
-  `sale_bill_total_amount` double NOT NULL,
-  PRIMARY KEY (`sale_bill_no`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `units`
 --
 
-DROP TABLE IF EXISTS `units`;
 CREATE TABLE IF NOT EXISTS `units` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `unit_type` int(1) NOT NULL,
