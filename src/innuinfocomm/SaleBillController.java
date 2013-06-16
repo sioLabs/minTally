@@ -167,19 +167,23 @@ public class SaleBillController {
         assert groupComboBox != null : "fx:id=\"itemsComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert subGroupComboBox != null : "fx:id=\"itemsComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         
+        itemsComboBox = new ComboBox<>();
         groupComboBox.getItems().clear();
         subGroupComboBox.getItems().clear();        
-        //itemsComboBox.getItems().clear();
+        itemsComboBox.getItems().clear();
                 
         System.out.println("\n in initialize func");
         fillGroupComboBox();
         
         groupComboBox.valueProperty().addListener(new ChangeListener<ItemGroup>(){
 
-            
+            @Override
             public void changed(ObservableValue<? extends ItemGroup> ov, ItemGroup t, ItemGroup t1) {
                 //now set the subgroup items here 
-                  fillSubGroupComboBox();
+                   System.out.println("group combox box value hanged");
+                   System.out.println("old value = "+t.getItemGroupName());
+                   System.out.println("new value = "+t1.getItemGroupName());
+                   fillSubGroupComboBox();
            
             }
         
@@ -190,12 +194,22 @@ public class SaleBillController {
 
             @Override
             public void changed(ObservableValue<? extends ItemGroup> ov, ItemGroup t, ItemGroup t1) {
+                System.out.println("subgroup value changed to "+t1.getItemGroupName());
                 fillItemsComboBox();
             }
         
         
         });
         
+        itemsComboBox.valueProperty().addListener(new ChangeListener<Items>(){
+
+            @Override
+            public void changed(ObservableValue<? extends Items> ov, Items t, Items t1) {
+                System.out.println("Items selection changed" + t1.getItemName());                
+            }
+        
+            
+        });
         
         
    }
@@ -218,19 +232,18 @@ public class SaleBillController {
         EntityManager em = EntityManagerHelper.getInstance().getEm();
         Query q  = em.createNamedQuery("ItemGroup.findByItemGroupParent");
         q.setParameter("itemGroupParent", 0);
-        ArrayList<ItemGroup> groups = new ArrayList<ItemGroup>(q.getResultList());
-        
+        ArrayList<ItemGroup> groups = new ArrayList<ItemGroup>(q.getResultList());        
         groupComboBox.getItems().clear();
         groupComboBox.getItems().addAll(groups);
         groupComboBox.getSelectionModel().clearSelection();
-        groupComboBox.setValue(groups.get(0));
+        groupComboBox.getSelectionModel().selectFirst();
         
     
     }
     
     private void fillSubGroupComboBox(){
         //get the selected value in the group Combo Box
-        System.out.println("fill subgrou pcombo box");
+        System.out.println("fill subgroup combo box");
         ItemGroup group = groupComboBox.getSelectionModel().getSelectedItem();
         
         EntityManager em = EntityManagerHelper.getInstance().getEm();
@@ -241,42 +254,57 @@ public class SaleBillController {
         em.getTransaction().commit();
         
         if(subGroup.size()<1){  //this means that no subgroup exist
-            System.out.println("inside the no subgroup condition");
+            System.out.println("inside the nosubgroup condition");
             subGroupComboBox.getItems().clear();
             fillItemsComboBox();
             return ;
         }
-        
+        System.out.println("group has subgroups");
         subGroupComboBox.getItems().clear();
         subGroupComboBox.getItems().addAll(subGroup);
         subGroupComboBox.getSelectionModel().clearSelection();
-        subGroupComboBox.setValue(subGroup.get(0));
+        //subGroupComboBox.setValue(subGroup.get(0));
+        subGroupComboBox.getSelectionModel().selectFirst();
     
     }
     
     private void fillItemsComboBox(){
+        System.out.println("Inside fill items");
+        itemsComboBox.getItems().removeAll(itemsComboBox.getItems());
+       
         //check if the number of items in subgorup. 
         if(subGroupComboBox.getItems().size() < 1){
+            System.out.println("No sub groups exist");
             //the get the items according to the selected group
             ItemGroup group = groupComboBox.getSelectionModel().getSelectedItem();
-            ArrayList<Items> items = new ArrayList<>(group.getItemsCollection());
+            ArrayList<Items> items1 = new ArrayList<Items>(group.getItemsCollection1());
+            System.out.println(group.getItemGroupName()+"\n" + group.getItemsCollection().size()+" "+group.getItemsCollection1().size()+"\n"+items1.size());
             itemsComboBox.getItems().clear();
-            itemsComboBox.getItems().addAll(items);
+            itemsComboBox.getItems().addAll(items1);
             itemsComboBox.getSelectionModel().clearSelection();
-            itemsComboBox.setValue(items.get(0));       
+            itemsComboBox.getSelectionModel().selectFirst();
             
         
         }else{
             //get the select subgroup and list items from that 
-            EntityManager em = EntityManagerHelper.getInstance().getEm();
-            em.getTransaction().begin();
+            //EntityManager em = EntityManagerHelper.getInstance().getEm();
+            //em.getTransaction().begin();
             ItemGroup group = subGroupComboBox.getSelectionModel().getSelectedItem();
-            ArrayList<Items> items = new ArrayList<>(group.getItemsCollection1());
-            em.getTransaction().commit();
+            
+            System.out.println("group has subgroup and subgroup has items");
+            System.out.println("subgroup = " +group.getItemGroupName());
+            //System.out.println(group.getItemGroupName() + "\n"+group.getItemsCollection().size()+"\n "+group.getItemsCollection1().size());
+            ArrayList<Items> items1 = new ArrayList<Items>(group.getItemsCollection());
+            System.out.println(items1.size() + "num items ");
+            System.out.println(itemsComboBox.getItems().size()+"initial size");
             itemsComboBox.getItems().clear();
-            itemsComboBox.getItems().addAll(items);
+            itemsComboBox.getItems().addAll(items1);
             itemsComboBox.getSelectionModel().clearSelection();
-            itemsComboBox.setValue(items.get(0));       
+            //itemsComboBox.
+            System.out.println(itemsComboBox.getItems().size()+"finalSize size");
+            itemsComboBox.getSelectionModel().selectFirst();
+            //itemsComboBox.getSelectionModel().
+            
         
         }
                

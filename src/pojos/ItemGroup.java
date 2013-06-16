@@ -46,6 +46,7 @@ public class ItemGroup implements Serializable {
     @Basic(optional = false)
     @Column(name = "item_group_parent")
     private int itemGroupParent;
+    
     @OneToMany(mappedBy = "itemSubGroup", fetch= FetchType.EAGER)
     private Collection<Items> itemsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemGroup", fetch=FetchType.EAGER)
