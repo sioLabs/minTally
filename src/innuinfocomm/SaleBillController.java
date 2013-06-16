@@ -2,6 +2,7 @@ package innuinfocomm;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
@@ -10,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -24,11 +26,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import pojos.ItemGroup;
 import pojos.Items;
+import pojos.SaleBill;
+import pojos.SalebillItem;
 import utils.EntityManagerHelper;
-import utils.SaleBillItem;
 
 
-public class SaleBillController {
+
+public class SaleBillController implements Initializable {
 
     @FXML
     private ResourceBundle resources;
@@ -36,6 +40,7 @@ public class SaleBillController {
     @FXML
     private URL location;
 
+    SaleBill s = new SaleBill();
     @FXML
     private TextField billNoTextbox;
 
@@ -64,22 +69,21 @@ public class SaleBillController {
     private RadioButton invoiceRadioBtn;
 
     @FXML
-    private TableColumn<SaleBillItem, String> itemNameTableCol;
+    private TableColumn<SalebillItem, String> itemNameTableCol;
 
     @FXML
     private Button printBtn;
 
-    @FXML
-    private TableColumn<SaleBillItem, Float> quantity2TableCol;
+
 
     @FXML
-    private TableColumn<SaleBillItem, Float> quantityTableCol;
+    private TableColumn<SalebillItem, Float> quantityTableCol;
 
     @FXML
-    private TableColumn<SaleBillItem, Float> rateTableCol;
+    private TableColumn<SalebillItem, Float> rateTableCol;
 
     @FXML
-    private TableColumn<SaleBillItem, String> remarkTableCol;
+    private TableColumn<SalebillItem, String> remarkTableCol;
     
     @FXML
     private TableView<Items> SaleItemTableView;
@@ -94,22 +98,22 @@ public class SaleBillController {
     private ComboBox<String> siteComboBox;
 
     @FXML
-    private TableColumn<SaleBillItem, Float> totalTableCol;
+    private TableColumn<SalebillItem, Float> totalTableCol;
 
     @FXML
     private Label totalTextBox;
 
     @FXML
-    private TableColumn<SaleBillItem, String> unit2TableCol;
+    private TableColumn<SalebillItem, String> unit2TableCol;
 
     @FXML
-    private TableColumn<SaleBillItem, String> unitTableCol;
+    private TableColumn<SalebillItem, String> unitTableCol;
 
     @FXML
-    private TableColumn<SaleBillItem, Float> vatPercTableCol;
+    private TableColumn<SalebillItem, Float> vatPercTableCol;
 
     @FXML
-    private TableColumn<SaleBillItem, Float> vatRsTableCol;
+    private TableColumn<SalebillItem, Float> vatRsTableCol;
 
     @FXML
     private TextField vatTextBox;
@@ -124,9 +128,6 @@ public class SaleBillController {
     private ComboBox<ItemGroup> subGroupComboBox;
     
 
-
-   
-
     @FXML
     void handlePrintBtn(ActionEvent event) {
     }
@@ -136,7 +137,8 @@ public class SaleBillController {
     }
 
     @FXML
-    void initialize() {
+    public void initialize(URL location, ResourceBundle r) {
+        assert SaleItemTableView != null : "fx:id=\"SaleItemTableView\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert billNoTextbox != null : "fx:id=\"billNoTextbox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert challanRadioBtn != null : "fx:id=\"challanRadioBtn\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert challanRateRadioBtn != null : "fx:id=\"challanRateRadioBtn\" was not injected: check your FXML file 'SaleBill.fxml'.";
@@ -145,16 +147,18 @@ public class SaleBillController {
         assert dateTextBox != null : "fx:id=\"dateTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert discountTextBox != null : "fx:id=\"discountTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert frieghtTextBox != null : "fx:id=\"frieghtTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
+        assert groupComboBox != null : "fx:id=\"groupComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert invoiceRadioBtn != null : "fx:id=\"invoiceRadioBtn\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert itemNameTableCol != null : "fx:id=\"itemNameTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
+        assert itemsComboBox != null : "fx:id=\"itemsCombobox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert printBtn != null : "fx:id=\"printBtn\" was not injected: check your FXML file 'SaleBill.fxml'.";
-        assert quantity2TableCol != null : "fx:id=\"quantity2TableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert quantityTableCol != null : "fx:id=\"quantityTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert rateTableCol != null : "fx:id=\"rateTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert remarkTableCol != null : "fx:id=\"remarkTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert remarksTextBox != null : "fx:id=\"remarksTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert saveBtn != null : "fx:id=\"saveBtn\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert siteComboBox != null : "fx:id=\"siteComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
+        assert subGroupComboBox != null : "fx:id=\"subGroupComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert totalTableCol != null : "fx:id=\"totalTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert totalTextBox != null : "fx:id=\"totalTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert unit2TableCol != null : "fx:id=\"unit2TableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
@@ -162,12 +166,9 @@ public class SaleBillController {
         assert vatPercTableCol != null : "fx:id=\"vatPercTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert vatRsTableCol != null : "fx:id=\"vatRsTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert vatTextBox != null : "fx:id=\"vatTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
-        assert SaleItemTableView != null : "fx:id=\"saleItemTableView\" was not injected: check your FXML file 'SaleBill.fxml'.";
-        assert itemsComboBox != null : "fx:id=\"itemsComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
-        assert groupComboBox != null : "fx:id=\"itemsComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
-        assert subGroupComboBox != null : "fx:id=\"itemsComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
-        
-        itemsComboBox = new ComboBox<>();
+
+        initializeSaleBill();
+        //itemsComboBox = new ComboBox<>();
         groupComboBox.getItems().clear();
         subGroupComboBox.getItems().clear();        
         itemsComboBox.getItems().clear();
@@ -194,8 +195,11 @@ public class SaleBillController {
 
             @Override
             public void changed(ObservableValue<? extends ItemGroup> ov, ItemGroup t, ItemGroup t1) {
-                System.out.println("subgroup value changed to "+t1.getItemGroupName());
-                fillItemsComboBox();
+                if((t1!=null))
+                        {
+                            System.out.println("subgroup value changed to "+t1.getItemGroupName());
+                            fillItemsComboBox();
+                        }
             }
         
         
@@ -205,7 +209,17 @@ public class SaleBillController {
 
             @Override
             public void changed(ObservableValue<? extends Items> ov, Items t, Items t1) {
-                System.out.println("Items selection changed" + t1.getItemName());                
+                if((t!=null) &&(t1!=null)){
+                    SalebillItem item = new SalebillItem();
+                    item.setItemId(t1.getItemId());
+                    item.setItemName(t1.getItemName());
+                    item.setItemQnty(0);
+                    item.setItemRate(t1.getItemRate());
+                    item.setRemark("");
+                    item.setItemVatRs(0);
+                    item.setSaleBillNo(s);
+                    item.setTotal(0);
+                }
             }
         
             
@@ -259,18 +273,17 @@ public class SaleBillController {
             fillItemsComboBox();
             return ;
         }
-        System.out.println("group has subgroups");
+        System.out.println("group has subgroups" + subGroup.size());
         subGroupComboBox.getItems().clear();
         subGroupComboBox.getItems().addAll(subGroup);
         subGroupComboBox.getSelectionModel().clearSelection();
-        //subGroupComboBox.setValue(subGroup.get(0));
         subGroupComboBox.getSelectionModel().selectFirst();
     
     }
     
     private void fillItemsComboBox(){
         System.out.println("Inside fill items");
-        itemsComboBox.getItems().removeAll(itemsComboBox.getItems());
+        //itemsComboBox.getItems().removeAll(itemsComboBox.getItems());
        
         //check if the number of items in subgorup. 
         if(subGroupComboBox.getItems().size() < 1){
@@ -296,14 +309,11 @@ public class SaleBillController {
             //System.out.println(group.getItemGroupName() + "\n"+group.getItemsCollection().size()+"\n "+group.getItemsCollection1().size());
             ArrayList<Items> items1 = new ArrayList<Items>(group.getItemsCollection());
             System.out.println(items1.size() + "num items ");
-            System.out.println(itemsComboBox.getItems().size()+"initial size");
             itemsComboBox.getItems().clear();
             itemsComboBox.getItems().addAll(items1);
-            itemsComboBox.getSelectionModel().clearSelection();
-            //itemsComboBox.
-            System.out.println(itemsComboBox.getItems().size()+"finalSize size");
+            itemsComboBox.getSelectionModel().clearSelection();                    
             itemsComboBox.getSelectionModel().selectFirst();
-            //itemsComboBox.getSelectionModel().
+            
             
         
         }
@@ -311,5 +321,23 @@ public class SaleBillController {
     
     }
 
+    private void initializeSaleBill() {
+        //first thing is get a saleBillNumber;
+        
+        
+        EntityManager em = EntityManagerHelper.getInstance().getEm();
+        
+        Integer nextValue = (Integer)em.createQuery("select max(s.saleBillNo) from SaleBill s").getSingleResult();
+        if(nextValue!=null)
+            billNoTextbox.setText(nextValue+"");
+        else
+            billNoTextbox.setText(1+"");
+        
+        s.setSaleBillDate(new Date());          
+        
+        
+    }
+
+    
            
 }

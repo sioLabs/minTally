@@ -171,7 +171,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
     @Override
     public String toString() {
-        return "pojos.Items[ itemId=" + itemId + " ]";
+        return this.getItemName() ;
     }
 
     @Column(name = "item_open_stock")

@@ -28,7 +28,7 @@
             <HBox id="HBox" alignment="CENTER" spacing="5.0">
               <children>
                 <Label text="Bill No:" />
-                <TextField fx:id="billNoTextbox" prefWidth="46.0">
+                <TextField fx:id="billNoTextbox" editable="false" prefWidth="46.0">
                   <HBox.margin>
                     <Insets right="35.0" />
                   </HBox.margin>
@@ -38,7 +38,7 @@
             <HBox id="HBox" alignment="CENTER" spacing="5.0">
               <children>
                 <Label text="Date:" />
-                <TextField fx:id="dateTextBox" prefWidth="120.0" />
+                <TextField fx:id="dateTextBox" editable="false" prefWidth="120.0" />
               </children>
             </HBox>
           </children>
@@ -79,11 +79,9 @@
           <content>
             <TableView fx:id="SaleItemTableView" prefHeight="200.0" prefWidth="751.0">
               <columns>
-                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="76.0" text="Item Name" fx:id="itemNameTableCol" />
+                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="226.0" text="Item Name" fx:id="itemNameTableCol" />
                 <TableColumn prefWidth="75.0" text="Qnty" fx:id="quantityTableCol" />
                 <TableColumn prefWidth="75.0" text="Unit" fx:id="unitTableCol" />
-                <TableColumn prefWidth="75.0" text="Qnty2" fx:id="quantity2TableCol" />
-                <TableColumn prefWidth="75.0" text="Unit2" fx:id="unit2TableCol" />
                 <TableColumn prefWidth="75.0" text="Rate" fx:id="rateTableCol" />
                 <TableColumn prefWidth="75.0" text="Total" fx:id="totalTableCol" />
                 <TableColumn prefWidth="75.0" text="Remark" fx:id="remarkTableCol" />
@@ -159,7 +157,7 @@
           </items>
         </ComboBox>
         <Label text="Items:" />
-        <ComboBox fx:id="itemsCombobox" minHeight="20.0" prefWidth="182.0">
+        <ComboBox fx:id="itemsComboBox" disable="false" minHeight="20.0" prefWidth="182.0">
           <items>
             <FXCollections fx:factory="observableArrayList">
               <String fx:value="Item 1" />
