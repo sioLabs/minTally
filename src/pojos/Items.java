@@ -14,6 +14,7 @@ import javafx.beans.property.StringProperty;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Items.findAll", query = "SELECT i FROM Items i"),
     @NamedQuery(name = "Items.findByItemsNameLike", query = "SELECT i FROM Items i WHERE i.itemName LIKE  :itemName"),
+    //@NamedQuery(name = "Items.findByItemGroup", query = "SELECT i FROM Items i WHERE i.itemName LIKE  :itemName"),
     @NamedQuery(name = "Items.findByItemId", query = "SELECT i FROM Items i WHERE i.itemId = :itemId"),
     @NamedQuery(name = "Items.findByItemOpenStock", query = "SELECT i FROM Items i WHERE i.itemOpenStock = :itemOpenStock"),
     @NamedQuery(name = "Items.findByItemRackNo", query = "SELECT i FROM Items i WHERE i.itemRackNo = :itemRackNo"),
@@ -108,7 +110,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     }
 
     @JoinColumn(name = "item_first_unit", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch= FetchType.EAGER)
     public Units getItemFirstUnit() {
         return itemFirstUnit;
     }
@@ -118,7 +120,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     }
 
     @JoinColumn(name = "item_sub_group", referencedColumnName = "item_group_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     public ItemGroup getItemSubGroup() {
         return itemSubGroup;
     }
