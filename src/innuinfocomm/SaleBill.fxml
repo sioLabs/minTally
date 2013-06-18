@@ -126,8 +126,8 @@
         </HBox>
         <HBox id="HBox" alignment="CENTER" spacing="5.0">
           <children>
-            <Label fx:id="totalTextBox" text="Total:" />
-            <TextField prefWidth="200.0" />
+            <Label id="t" text="Total:" />
+            <TextField fx:id="totalTextBox" prefWidth="200.0" />
           </children>
         </HBox>
       </children>

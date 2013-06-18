@@ -108,7 +108,7 @@ public class SaleBillController implements Initializable {
     private TableColumn<SalebillItem, Double> totalTableCol;
 
     @FXML
-    private Label totalTextBox;
+    private TextField totalTextBox;
 
     @FXML
     private TableColumn<SalebillItem, String> unitTableCol;
@@ -169,7 +169,6 @@ public class SaleBillController implements Initializable {
         assert subGroupComboBox != null : "fx:id=\"subGroupComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert totalTableCol != null : "fx:id=\"totalTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert totalTextBox != null : "fx:id=\"totalTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
-//        assert unit2TableCol != null : "fx:id=\"unit2TableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert unitTableCol != null : "fx:id=\"unitTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert vatPercTableCol != null : "fx:id=\"vatPercTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert vatRsTableCol != null : "fx:id=\"vatRsTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
@@ -418,14 +417,14 @@ public class SaleBillController implements Initializable {
         
         
         if(discountTextBox.getText().equals("")){
-            totalTextBox.setText(total+"");
+            totalTextBox.setText(String.format("%.2f", total));
         }
         else{
             double discount = Double.parseDouble(discountTextBox.getText());
             total -= total*discount/100;
-            totalTextBox.setText(total+"");             
+            totalTextBox.setText(String.format("%.2f", total));             
          }
-        vatTextBox.setText(""+vat);
+        vatTextBox.setText(String.format("%.2f", vat));
     }
            
 }
