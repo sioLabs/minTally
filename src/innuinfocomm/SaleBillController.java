@@ -411,7 +411,7 @@ public class SaleBillController implements Initializable {
         double vat = 0.0;
         for(int i = 0 ;i <data.size();i++){
             vat += data.get(i).getItemVatRs();
-            total += data.get(i).getTotal() + vat;
+            total += data.get(i).getTotal() + data.get(i).getItemVatRs();
             
         }
         
