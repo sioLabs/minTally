@@ -7,6 +7,9 @@ package pojos;
 import java.io.Serializable;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -41,34 +44,50 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "SalebillItem.findByItemVatRs", query = "SELECT s FROM SalebillItem s WHERE s.itemVatRs = :itemVatRs")})
 public class SalebillItem implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
+    
     private Integer id;
-    @Basic(optional = false)
-    @Column(name = "item_id")
+    
     private int itemId;
 
-    private StringProperty itemName;
+    private StringProperty itemName = new SimpleStringProperty();
     
-    private DoubleProperty itemQnty;
-    @Basic(optional = false)
-    @Column(name = "item_unit")
-    private IntegerProperty itemUnit;
-    @Basic(optional = false)
-    @Column(name = "item_rate")
-    private DoubleProperty itemRate;
-    @Basic(optional = false)
-    @Column(name = "total")
-    private DoubleProperty total;
-    @Column(name = "remark")
-    private StringProperty remark;
-    @Basic(optional = false)
-    @Column(name = "item_vat_rs")
-    private IntegerProperty itemVatRs;
-    @JoinColumn(name = "sale_bill_no", referencedColumnName = "sale_bill_no")
-    @ManyToOne(optional = false)
+    private DoubleProperty itemQnty = new SimpleDoubleProperty();
+    
+    private IntegerProperty itemUnit = new SimpleIntegerProperty();
+    
+    private StringProperty itemUnitName = new SimpleStringProperty();
+    
+    
+    private DoubleProperty itemRate =  new SimpleDoubleProperty();
+    
+    
+    private DoubleProperty total = new SimpleDoubleProperty();
+    
+    
+    private StringProperty remark = new SimpleStringProperty();
+    
+    
+    private DoubleProperty itemVatRs = new SimpleDoubleProperty();
+    
+    private DoubleProperty itemVatPerc = new SimpleDoubleProperty();
+
+    public String getItemUnitName() {
+        return itemUnitName.getValue();
+    }
+
+    public void setItemUnitName(String itemUnitName) {
+        this.itemUnitName.set(itemUnitName);
+    }
+
+    public Double getItemVatPerc() {
+        return itemVatPerc.getValue();
+    }
+
+    public void setItemVatPerc(Double itemVatPerc) {
+        this.itemVatPerc.setValue(itemVatPerc);
+    }
+    
+    
     private SaleBill saleBillNo;
 
     public SalebillItem() {
@@ -82,13 +101,17 @@ public class SalebillItem implements Serializable {
         this.id = id;
         this.itemId = itemId;
         this.itemName.setValue(itemName);
-        this.itemQnty = itemQnty;
-        this.itemUnit = itemUnit;
-        this.itemRate = itemRate;
-        this.total = total;
-        this.itemVatRs = itemVatRs;
+        //this.itemQnty = itemQnty;
+        ///this.itemUnit = itemUnit;
+        //this.itemRate = itemRate;
+        //this.total = total;
+        //this.itemVatRs = itemVatRs;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
     public Integer getId() {
         return id;
     }
@@ -97,6 +120,8 @@ public class SalebillItem implements Serializable {
         this.id = id;
     }
 
+    @Basic(optional = false)
+    @Column(name = "item_id")
     public int getItemId() {
         return itemId;
     }
@@ -122,50 +147,61 @@ public class SalebillItem implements Serializable {
         return itemQnty.getValue();
     }
 
-    public void setItemQnty(double itemQnty) {
+    public void setItemQnty(Double itemQnty) {
         this.itemQnty.setValue(itemQnty);
     }
 
-    public int getItemUnit() {
-        return itemUnit;
+    @Basic(optional = false)
+    @Column(name = "item_unit")
+    public Integer getItemUnit() {
+        return itemUnit.getValue();
     }
 
-    public void setItemUnit(int itemUnit) {
-        this.itemUnit = itemUnit;
+    public void setItemUnit(Integer itemUnit) {
+        this.itemUnit.setValue(itemUnit);
     }
 
-    public double getItemRate() {
-        return itemRate;
+    @Basic(optional = false)
+    @Column(name = "item_rate")
+    public Double getItemRate() {
+        return itemRate.getValue();
     }
 
-    public void setItemRate(double itemRate) {
-        this.itemRate = itemRate;
+    public void setItemRate(Double itemRate) {
+        this.itemRate.setValue(itemRate);
     }
 
-    public double getTotal() {
-        return total;
+    @Basic(optional = false)
+    @Column(name = "total") 
+    public Double getTotal() {
+        return total.getValue();
     }
 
-    public void setTotal(double total) {
-        this.total = total;
+    public void setTotal(Double total) {
+        this.total.setValue(total);
     }
 
+    @Column(name = "remark")
     public String getRemark() {
-        return remark;
+        return remark.getValue();
     }
 
     public void setRemark(String remark) {
-        this.remark = remark;
+        this.remark.setValue(remark);
     }
 
-    public int getItemVatRs() {
-        return itemVatRs;
+    @Basic(optional = false)
+    @Column(name = "item_vat_rs")
+    public Double getItemVatRs() {
+        return itemVatRs.getValue();
     }
 
-    public void setItemVatRs(int itemVatRs) {
-        this.itemVatRs = itemVatRs;
+    public void setItemVatRs(Double itemVatRs) {
+        this.itemVatRs.setValue(itemVatRs);
     }
 
+    @JoinColumn(name = "sale_bill_no", referencedColumnName = "sale_bill_no")
+    @ManyToOne(optional = false)
     public SaleBill getSaleBillNo() {
         return saleBillNo;
     }

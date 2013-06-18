@@ -2,26 +2,33 @@ package innuinfocomm;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.ContentDisplay;
 import javafx.util.Callback;
+import javafx.util.converter.DoubleStringConverter;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import pojos.ItemGroup;
@@ -77,16 +84,16 @@ public class SaleBillController implements Initializable {
 
 
     @FXML
-    private TableColumn<SalebillItem, Float> quantityTableCol;
+    private TableColumn<SalebillItem, Double> quantityTableCol;
 
     @FXML
-    private TableColumn<SalebillItem, Float> rateTableCol;
+    private TableColumn<SalebillItem, Double> rateTableCol;
 
     @FXML
     private TableColumn<SalebillItem, String> remarkTableCol;
     
     @FXML
-    private TableView<Items> SaleItemTableView;
+    private TableView<SalebillItem> SaleItemTableView;
 
     @FXML
     private TextField remarksTextBox;
@@ -98,22 +105,19 @@ public class SaleBillController implements Initializable {
     private ComboBox<String> siteComboBox;
 
     @FXML
-    private TableColumn<SalebillItem, Float> totalTableCol;
+    private TableColumn<SalebillItem, Double> totalTableCol;
 
     @FXML
     private Label totalTextBox;
 
     @FXML
-    private TableColumn<SalebillItem, String> unit2TableCol;
-
-    @FXML
     private TableColumn<SalebillItem, String> unitTableCol;
 
     @FXML
-    private TableColumn<SalebillItem, Float> vatPercTableCol;
+    private TableColumn<SalebillItem,Double> vatPercTableCol;
 
     @FXML
-    private TableColumn<SalebillItem, Float> vatRsTableCol;
+    private TableColumn<SalebillItem, Double> vatRsTableCol;
 
     @FXML
     private TextField vatTextBox;
@@ -135,6 +139,10 @@ public class SaleBillController implements Initializable {
     @FXML
     void handleSaveBtn(ActionEvent event) {
     }
+    
+    private  ObservableList<SalebillItem> data = null;
+    private ArrayList<SalebillItem> saleItemList = new ArrayList<SalebillItem>();
+
 
     @FXML
     public void initialize(URL location, ResourceBundle r) {
@@ -161,11 +169,45 @@ public class SaleBillController implements Initializable {
         assert subGroupComboBox != null : "fx:id=\"subGroupComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert totalTableCol != null : "fx:id=\"totalTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert totalTextBox != null : "fx:id=\"totalTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
-        assert unit2TableCol != null : "fx:id=\"unit2TableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
+//        assert unit2TableCol != null : "fx:id=\"unit2TableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert unitTableCol != null : "fx:id=\"unitTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert vatPercTableCol != null : "fx:id=\"vatPercTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert vatRsTableCol != null : "fx:id=\"vatRsTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert vatTextBox != null : "fx:id=\"vatTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
+        
+        itemNameTableCol.setCellValueFactory(new PropertyValueFactory<SalebillItem,String>("itemName"));
+        quantityTableCol.setCellValueFactory(new PropertyValueFactory<SalebillItem,Double>("itemQnty"));
+        rateTableCol.setCellValueFactory(new PropertyValueFactory<SalebillItem,Double>("itemRate"));
+        unitTableCol.setCellValueFactory(new PropertyValueFactory<SalebillItem,String>("itemUnitName"));
+        remarkTableCol.setCellValueFactory(new PropertyValueFactory<SalebillItem,String>("remark"));
+        totalTableCol.setCellValueFactory(new PropertyValueFactory<SalebillItem,Double>("total"));
+        vatPercTableCol.setCellValueFactory(new PropertyValueFactory<SalebillItem,Double>("itemVatPerc"));
+        vatRsTableCol.setCellValueFactory(new PropertyValueFactory<SalebillItem,Double>("itemVatRs"));
+        
+        SaleItemTableView.setEditable(true);
+        
+        quantityTableCol.setEditable(true);
+        //quantityTableCol.setCellFactory(TextFieldTableCell.);
+        Callback<TableColumn<SalebillItem,Double>,TableCell<SalebillItem,Double>> cellFactory = 
+                new Callback<TableColumn<SalebillItem,Double>,TableCell<SalebillItem,Double>>(){
+                     public TableCell call(TableColumn p) {
+                      return new EditingQntyCell();
+                  }
+                };
+        quantityTableCol.setCellFactory(cellFactory);
+        quantityTableCol.setOnEditCommit(
+               new EventHandler<TableColumn.CellEditEvent<SalebillItem, Double> >(){
+
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<SalebillItem, Double> t) {
+                        SalebillItem edit = (SalebillItem) t.getTableView().getItems().get(t.getTablePosition().getRow());
+                        edit.setItemQnty(t.getNewValue());
+                        edit.setTotal(t.getNewValue()*edit.getItemRate());
+                        t.getTableView().getSelectionModel().clearSelection();
+                    }
+               
+        });
+        
 
         initializeSaleBill();
         //itemsComboBox = new ComboBox<>();
@@ -213,12 +255,18 @@ public class SaleBillController implements Initializable {
                     SalebillItem item = new SalebillItem();
                     item.setItemId(t1.getItemId());
                     item.setItemName(t1.getItemName());
-                    item.setItemQnty(0);
+                    item.setItemUnitName(t1.getItemFirstUnit().getUnitName());
+                    item.setItemVatPerc(t1.getItemVatPerc());
+                    item.setItemQnty(0.0);
                     item.setItemRate(t1.getItemRate());
                     item.setRemark("");
-                    item.setItemVatRs(0);
+                    item.setItemVatRs(0.0);
                     item.setSaleBillNo(s);
-                    item.setTotal(0);
+                    item.setTotal(0.0);
+                    saleItemList.add(item);
+                    data = FXCollections.observableArrayList(saleItemList);
+                    SaleItemTableView.setItems(data);
+                    SaleItemTableView.getSelectionModel().clearSelection();
                 }
             }
         
@@ -336,8 +384,83 @@ public class SaleBillController implements Initializable {
         s.setSaleBillDate(new Date());          
         
         
+        s.setSaleBillDate(new Date());
+        
+        Calendar c = Calendar.getInstance();
+        int month = c.get(Calendar.MONTH)+1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int year = c.get(Calendar.YEAR);
+        
+        dateTextBox.setText(day+"/"+month+"/"+year);
+        dateTextBox.setEditable(false);
+        
     }
 
+    //qnty cell editing tablecell impl
+    class EditingQntyCell extends TableCell<SalebillItem,Double>{
+           private TextField textField;
+           
+           public EditingQntyCell(){}
+           
+           @Override
+           public void startEdit(){
+               if(textField == null)
+                   createTextField();
+               
+               setGraphic(textField);
+               setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+               textField.selectAll();
+           }
+           
+           //update Item
+              @Override
+              public void updateItem(Double item, boolean empty) {
+                  super.updateItem(item, empty);
+
+                  if (empty) {
+                      setText(null);
+                      setGraphic(null);
+                  } else {
+                      if (isEditing()) {
+                          if (textField != null) {
+                              textField.setText(getString());
+                          }
+                          setGraphic(textField);
+                          setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                      } else {
+                          setText(getString());
+                          setContentDisplay(ContentDisplay.TEXT_ONLY);
+                      }
+                  }
+              }
+           
+           //textfield creation and settings
+           private void createTextField(){
+                textField = new TextField(getString());
+                textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
+                textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+                    @Override
+                    public void handle(KeyEvent t) {
+                        if (t.getCode() == KeyCode.ENTER) {
+                            commitEdit(Double.parseDouble(textField.getText()));
+                        } else if (t.getCode() == KeyCode.ESCAPE) {
+                            cancelEdit();
+                        }
+                    }
+                });
+           
+           
+          }//end create textfield
+           
+            
+           private String getString() {
+                    return getItem() == null ? "" : getItem().toString();
+           }
+
+    }
     
            
 }
+
+
