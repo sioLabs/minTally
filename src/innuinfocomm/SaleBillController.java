@@ -140,7 +140,7 @@ public class SaleBillController implements Initializable {
     void handleSaveBtn(ActionEvent event) {
     }
     
-    private  ObservableList<SalebillItem> data = null;
+    private  ObservableList<SalebillItem> data = FXCollections.observableArrayList();
     private ArrayList<SalebillItem> saleItemList = new ArrayList<SalebillItem>();
 
 
@@ -204,10 +204,10 @@ public class SaleBillController implements Initializable {
                         System.out.println("on edit commit called " + t.getNewValue());
                         SalebillItem edit = (SalebillItem) t.getTableView().getItems().get(t.getTablePosition().getRow());
                         edit.setItemQnty(t.getNewValue());
-                        //edit.setItemName("haathi");
-                        edit.setTotal(t.getNewValue()*edit.getItemRate());
-                        t.getTableView().setVisible(false);
-                        t.getTableView().setVisible(true);
+                        
+                        setTotalTextBox();
+                        t.getTableView().getColumns().get(0).setVisible(false);
+                        t.getTableView().getColumns().get(0).setVisible(true);
                         //t.getTableView().getItems()
                         //t.getTableView().getSelectionModel().clearSelection();
                         //t.getTableView().getSelectionModel().clearSelection();
@@ -269,8 +269,9 @@ public class SaleBillController implements Initializable {
                     item.setItemVatRs(0.0);
                     item.setSaleBillNo(s);
                     item.setTotal(0.0);
-                    saleItemList.add(item);
-                    data = FXCollections.observableArrayList(saleItemList);
+                    //saleItemList.add(item);
+                    data.add(item);
+                    //data = FXCollections.observableArrayList(saleItemList);
                     SaleItemTableView.setItems(data);
                     SaleItemTableView.getSelectionModel().clearSelection();
                 }
@@ -404,7 +405,28 @@ public class SaleBillController implements Initializable {
 
     //qnty cell editing tablecell impl
    
-    
+    private void setTotalTextBox(){
+        
+        
+        double total = 0.0;
+        double vat = 0.0;
+        for(int i = 0 ;i <data.size();i++){
+            vat += data.get(i).getItemVatRs();
+            total += data.get(i).getTotal() + vat;
+            
+        }
+        
+        
+        if(discountTextBox.getText().equals("")){
+            totalTextBox.setText(total+"");
+        }
+        else{
+            double discount = Double.parseDouble(discountTextBox.getText());
+            total -= total*discount/100;
+            totalTextBox.setText(total+"");             
+         }
+        vatTextBox.setText(""+vat);
+    }
            
 }
 
@@ -483,4 +505,5 @@ public class SaleBillController implements Initializable {
            }
 
     }
+
 

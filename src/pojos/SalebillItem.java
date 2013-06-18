@@ -149,6 +149,8 @@ public class SalebillItem implements Serializable {
 
     public void setItemQnty(Double itemQnty) {
         this.itemQnty.setValue(itemQnty);
+        this.total.setValue(itemQnty*itemRate.get());
+        this.itemVatRs.setValue(total.getValue()*itemVatPerc.getValue()/100);
     }
 
     @Basic(optional = false)
@@ -179,6 +181,10 @@ public class SalebillItem implements Serializable {
 
     public void setTotal(Double total) {
         this.total.setValue(total);
+    }
+    
+    public DoubleProperty getTotalProperty(){
+        return total;
     }
 
     @Column(name = "remark")
