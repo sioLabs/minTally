@@ -262,7 +262,7 @@ public class SaleBillController implements Initializable {
                     item.setItemName(t1.getItemName());
                     item.setItemUnitName(t1.getItemFirstUnit().getUnitName());
                     item.setItemVatPerc(t1.getItemVatPerc());
-                    item.setItemQnty(0.0);
+                    item.setItemQnty(1.0);
                     item.setItemRate(t1.getItemRate());
                     item.setRemark("");
                     item.setItemVatRs(0.0);
