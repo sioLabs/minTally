@@ -10,25 +10,25 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.event.EventHandler;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
+
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.util.Callback;
-import javafx.util.converter.DoubleStringConverter;
+import org.javafxdata.control.*;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import pojos.ItemGroup;
@@ -190,22 +190,28 @@ public class SaleBillController implements Initializable {
         //quantityTableCol.setCellFactory(TextFieldTableCell.);
         Callback<TableColumn<SalebillItem,Double>,TableCell<SalebillItem,Double>> cellFactory = 
                 new Callback<TableColumn<SalebillItem,Double>,TableCell<SalebillItem,Double>>(){
-                     public TableCell call(TableColumn p) {
+                     public TableCell<SalebillItem,Double> call(TableColumn<SalebillItem,Double> p) {
                       return new EditingQntyCell();
                   }
                 };
         quantityTableCol.setCellFactory(cellFactory);
+        
         quantityTableCol.setOnEditCommit(
-               new EventHandler<TableColumn.CellEditEvent<SalebillItem, Double> >(){
+               new EventHandler<TableColumn.CellEditEvent<SalebillItem, Double>>(){
 
                     @Override
                     public void handle(TableColumn.CellEditEvent<SalebillItem, Double> t) {
+                        System.out.println("on edit commit called " + t.getNewValue());
                         SalebillItem edit = (SalebillItem) t.getTableView().getItems().get(t.getTablePosition().getRow());
                         edit.setItemQnty(t.getNewValue());
+                        //edit.setItemName("haathi");
                         edit.setTotal(t.getNewValue()*edit.getItemRate());
-                        t.getTableView().getSelectionModel().clearSelection();
-                    }
-               
+                        t.getTableView().setVisible(false);
+                        t.getTableView().setVisible(true);
+                        //t.getTableView().getItems()
+                        //t.getTableView().getSelectionModel().clearSelection();
+                        //t.getTableView().getSelectionModel().clearSelection();
+                    }               
         });
         
 
@@ -397,13 +403,20 @@ public class SaleBillController implements Initializable {
     }
 
     //qnty cell editing tablecell impl
-    class EditingQntyCell extends TableCell<SalebillItem,Double>{
+   
+    
+           
+}
+
+
+ class EditingQntyCell extends TableCell<SalebillItem,Double>{
            private TextField textField;
            
            public EditingQntyCell(){}
            
            @Override
            public void startEdit(){
+               super.startEdit();
                if(textField == null)
                    createTextField();
                
@@ -411,6 +424,14 @@ public class SaleBillController implements Initializable {
                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                textField.selectAll();
            }
+           
+            @Override
+          public void cancelEdit() {
+            super.cancelEdit();
+
+            setText(String.valueOf(getItem()));
+            setContentDisplay(ContentDisplay.TEXT_ONLY);
+        }
            
            //update Item
               @Override
@@ -442,8 +463,11 @@ public class SaleBillController implements Initializable {
 
                     @Override
                     public void handle(KeyEvent t) {
+                        System.out.println("inside key handle event");
+                        System.out.println(t.getCode());
                         if (t.getCode() == KeyCode.ENTER) {
                             commitEdit(Double.parseDouble(textField.getText()));
+                            System.out.println("enter key pressed");
                         } else if (t.getCode() == KeyCode.ESCAPE) {
                             cancelEdit();
                         }
@@ -459,8 +483,4 @@ public class SaleBillController implements Initializable {
            }
 
     }
-    
-           
-}
-
 
