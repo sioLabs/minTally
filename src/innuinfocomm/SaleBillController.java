@@ -34,6 +34,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import pojos.ItemGroup;
 import pojos.Items;
+import pojos.Ledger;
+import pojos.LedgerGroup;
 import pojos.SaleBill;
 import pojos.SalebillItem;
 import utils.EntityManagerHelper;
@@ -62,7 +64,7 @@ public class SaleBillController implements Initializable {
     private TextField companyTextBox;
 
     @FXML
-    private ComboBox<String> customerComboBox;
+    private ComboBox<Ledger> customerComboBox;
 
     @FXML
     private TextField dateTextBox;
@@ -142,7 +144,7 @@ public class SaleBillController implements Initializable {
     }
     
     private  ObservableList<SalebillItem> data = FXCollections.observableArrayList();
-    private ArrayList<SalebillItem> saleItemList = new ArrayList<SalebillItem>();
+   // private ArrayList<SalebillItem> saleItemList = new ArrayList<SalebillItem>();
 
 
     @FXML
@@ -234,6 +236,7 @@ public class SaleBillController implements Initializable {
         groupComboBox.getItems().clear();
         subGroupComboBox.getItems().clear();        
         itemsComboBox.getItems().clear();
+        //customerComboBox.getItems().clear();
                 
         System.out.println("\n in initialize func");
         fillGroupComboBox();
@@ -296,6 +299,22 @@ public class SaleBillController implements Initializable {
         
             
         });
+        
+        customerComboBox.valueProperty().addListener(new ChangeListener<Ledger>(){
+
+            @Override
+            public void changed(ObservableValue<? extends Ledger> ov, Ledger t, Ledger t1) {
+                //if a new value is chosen and its not first customer
+                
+                if((t!=null) || (t1!=null)){
+                    s.setSaleBillCustomer(t1.getLedgerId());
+                }
+            }
+        
+        
+        });
+        
+        
         
         
    }
@@ -396,7 +415,21 @@ public class SaleBillController implements Initializable {
     
     //function to fill the customer combo box. Remember customer is sundry debtors
     private void fillCustomerComboBox(){
-       / EntityManager em = EntityManagerHelper
+        EntityManager em = EntityManagerHelper.getInstance().getEm();
+        Query q = em.createNamedQuery("Ledger.findByLedgerType");
+        Query q1 = em.createNamedQuery("LedgerGroup.findByGroupName");
+        q1.setParameter("groupName", "Sundry Debtors");
+        LedgerGroup l  = (LedgerGroup)q1.getSingleResult();
+        q.setParameter("ledgerType", l.getId());
+        //System.out.println(l.getGroupName()+ " "+ l.getId());
+        
+        ArrayList<Ledger> custList = new ArrayList<Ledger>(q.getResultList());
+        System.out.println(custList.size());
+        customerComboBox.getItems().clear();
+        customerComboBox.getItems().addAll(custList);
+        customerComboBox.getSelectionModel().clearSelection();
+        customerComboBox.getSelectionModel().selectFirst();
+        
             
     }
     
@@ -425,6 +458,8 @@ public class SaleBillController implements Initializable {
         
         dateTextBox.setText(day+"/"+month+"/"+year);
         dateTextBox.setEditable(false);
+        
+        fillCustomerComboBox();
         
     }
 
@@ -455,6 +490,8 @@ public class SaleBillController implements Initializable {
            
 }
 
+
+////////////////////////////////Cellfactories
 
  class EditingQntyCell extends TableCell<SalebillItem,Double>{
            private TextField textField;

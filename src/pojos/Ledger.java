@@ -251,7 +251,7 @@ public class Ledger implements Serializable {
 
     @Override
     public String toString() {
-        return "pojos.Ledger[ ledgerId=" + ledgerId + " ]";
+        return ledgerName;
     }
     
 }
