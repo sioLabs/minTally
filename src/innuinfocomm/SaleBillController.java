@@ -27,6 +27,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.util.Callback;
 import org.javafxdata.control.*;
 import javax.persistence.EntityManager;
@@ -185,6 +186,7 @@ public class SaleBillController implements Initializable {
         
         SaleItemTableView.setEditable(true);
         
+        //////////QUANTITY TABLE CELL
         quantityTableCol.setEditable(true);
         //quantityTableCol.setCellFactory(TextFieldTableCell.);
         Callback<TableColumn<SalebillItem,Double>,TableCell<SalebillItem,Double>> cellFactory = 
@@ -212,6 +214,19 @@ public class SaleBillController implements Initializable {
                         //t.getTableView().getSelectionModel().clearSelection();
                     }               
         });
+        
+        /////////UNIT TABLE CELL
+//        unitTableCol.setCellFactory(new Callback<TableCoumn<SalebillItem,String>,TableCell<SalebillItem,String>>(){
+//
+//            
+//            @Override
+//            public TableCell<SalebillItem, String> call(TableColumn<SalebillItem,String> p ) {
+//                
+//            }
+//
+//        
+//        
+//        });
         
 
         initializeSaleBill();
@@ -275,6 +290,7 @@ public class SaleBillController implements Initializable {
                     //data = FXCollections.observableArrayList(saleItemList);
                     SaleItemTableView.setItems(data);
                     SaleItemTableView.getSelectionModel().clearSelection();
+                    setTotalTextBox();
                 }
             }
         
@@ -297,7 +313,7 @@ public class SaleBillController implements Initializable {
     
     private void fillGroupComboBox(){
     
-        System.out.println("fillGroupComboBox");
+   //     System.out.println("fillGroupComboBox");
         //get all the item group with parent id as 0;
         EntityManager em = EntityManagerHelper.getInstance().getEm();
         Query q  = em.createNamedQuery("ItemGroup.findByItemGroupParent");
@@ -313,7 +329,7 @@ public class SaleBillController implements Initializable {
     
     private void fillSubGroupComboBox(){
         //get the selected value in the group Combo Box
-        System.out.println("fill subgroup combo box");
+   //     System.out.println("fill subgroup combo box");
         ItemGroup group = groupComboBox.getSelectionModel().getSelectedItem();
         
         EntityManager em = EntityManagerHelper.getInstance().getEm();
@@ -324,7 +340,7 @@ public class SaleBillController implements Initializable {
         em.getTransaction().commit();
         
         if(subGroup.size()<1){  //this means that no subgroup exist
-            System.out.println("inside the nosubgroup condition");
+       //     System.out.println("inside the nosubgroup condition");
             subGroupComboBox.getItems().clear();
             fillItemsComboBox();
             return ;
@@ -338,16 +354,16 @@ public class SaleBillController implements Initializable {
     }
     
     private void fillItemsComboBox(){
-        System.out.println("Inside fill items");
+   //     System.out.println("Inside fill items");
         //itemsComboBox.getItems().removeAll(itemsComboBox.getItems());
        
         //check if the number of items in subgorup. 
         if(subGroupComboBox.getItems().size() < 1){
-            System.out.println("No sub groups exist");
+ //           System.out.println("No sub groups exist");
             //the get the items according to the selected group
             ItemGroup group = groupComboBox.getSelectionModel().getSelectedItem();
             ArrayList<Items> items1 = new ArrayList<Items>(group.getItemsCollection1());
-            System.out.println(group.getItemGroupName()+"\n" + group.getItemsCollection().size()+" "+group.getItemsCollection1().size()+"\n"+items1.size());
+   //         System.out.println(group.getItemGroupName()+"\n" + group.getItemsCollection().size()+" "+group.getItemsCollection1().size()+"\n"+items1.size());
             itemsComboBox.getItems().clear();
             itemsComboBox.getItems().addAll(items1);
             itemsComboBox.getSelectionModel().clearSelection();
@@ -360,22 +376,30 @@ public class SaleBillController implements Initializable {
             //em.getTransaction().begin();
             ItemGroup group = subGroupComboBox.getSelectionModel().getSelectedItem();
             
-            System.out.println("group has subgroup and subgroup has items");
-            System.out.println("subgroup = " +group.getItemGroupName());
+    //        System.out.println("group has subgroup and subgroup has items");
+    //        System.out.println("subgroup = " +group.getItemGroupName());
             //System.out.println(group.getItemGroupName() + "\n"+group.getItemsCollection().size()+"\n "+group.getItemsCollection1().size());
             ArrayList<Items> items1 = new ArrayList<Items>(group.getItemsCollection());
-            System.out.println(items1.size() + "num items ");
+      //      System.out.println(items1.size() + "num items ");
             itemsComboBox.getItems().clear();
             itemsComboBox.getItems().addAll(items1);
             itemsComboBox.getSelectionModel().clearSelection();                    
-            itemsComboBox.getSelectionModel().selectFirst();
-            
+            itemsComboBox.getSelectionModel().selectFirst();      
             
         
         }
-               
+        
+        
     
+        
     }
+    
+    //function to fill the customer combo box. Remember customer is sundry debtors
+    private void fillCustomerComboBox(){
+       / EntityManager em = EntityManagerHelper
+            
+    }
+    
 
     private void initializeSaleBill() {
         //first thing is get a saleBillNumber;
@@ -486,11 +510,11 @@ public class SaleBillController implements Initializable {
 
                     @Override
                     public void handle(KeyEvent t) {
-                        System.out.println("inside key handle event");
-                        System.out.println(t.getCode());
+                     //   System.out.println("inside key handle event");
+                       // System.out.println(t.getCode());
                         if (t.getCode() == KeyCode.ENTER) {
                             commitEdit(Double.parseDouble(textField.getText()));
-                            System.out.println("enter key pressed");
+                         //   System.out.println("enter key pressed");
                         } else if (t.getCode() == KeyCode.ESCAPE) {
                             cancelEdit();
                         }
