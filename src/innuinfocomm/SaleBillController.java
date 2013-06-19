@@ -262,12 +262,14 @@ public class SaleBillController implements Initializable {
                     item.setItemName(t1.getItemName());
                     item.setItemUnitName(t1.getItemFirstUnit().getUnitName());
                     item.setItemVatPerc(t1.getItemVatPerc());
-                    item.setItemQnty(1.0);
                     item.setItemRate(t1.getItemRate());
+                    item.setItemQnty(1.0);
+                    
                     item.setRemark("");
-                    item.setItemVatRs(0.0);
+                    //item.setItemVatRs(0.0);
                     item.setSaleBillNo(s);
-                    item.setTotal(0.0);
+                    System.out.println(item.getTotal());
+                    //item.setTotal(0.0);
                     //saleItemList.add(item);
                     data.add(item);
                     //data = FXCollections.observableArrayList(saleItemList);
