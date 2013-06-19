@@ -81,7 +81,7 @@ public class ImportInventoryController {
             
             
             ArrayList<String> groupList = new ArrayList<String>();
-           ArrayList<String> unitGroup = new ArrayList<String>();
+            ArrayList<String> unitGroup = new ArrayList<String>();
             HashMap unitMap = new HashMap();
              HashMap subGroupMap = new HashMap();
             
@@ -98,9 +98,10 @@ public class ImportInventoryController {
                 
                 //set group
                 ItemGroup group = new ItemGroup();
-                String gr = row.getCell(1).getStringCellValue();
+                String gr = row.getCell(1).getStringCellValue().trim();
                 group.setItemGroupName(gr);
                 group.setItemGroupParent(0);
+                
                 if( !groupList.contains(gr)){
                     //save to database
                     group.setItemGroupId(null);
@@ -127,7 +128,7 @@ public class ImportInventoryController {
                 String subGr = null;
                 
                 try{
-                     subGr =    row.getCell(2).getStringCellValue();
+                     subGr =    row.getCell(2).getStringCellValue().trim();
                 
                 //subgroup exists
                 if(subGr.length()!=0){
@@ -139,7 +140,7 @@ public class ImportInventoryController {
                         subgroup.setItemGroupId(null);
                         subgroup.setItemGroupParent(group.getItemGroupId());
                         subGroupMap.put(subGr,group.getItemGroupId());
-                        groupList.add(subGr);
+                        groupList.add(subGr.trim());
                         em.getTransaction().begin();
                         em.persist(subgroup);
                         em.getTransaction().commit();
@@ -165,7 +166,8 @@ public class ImportInventoryController {
                 //now the groups are set
                 //now set the 
                 Units firstUnit = new Units();
-                String funit = row.getCell(3).getStringCellValue();
+                String funit = row.getCell(3).getStringCellValue().trim();
+                
                 //TODO code here in case first unit does not exist
                 
                 //firstUnit.setId(null);
@@ -198,7 +200,7 @@ public class ImportInventoryController {
                 Units secondUnit = new Units();
                 String sunit  = null;
                 try{
-                    sunit= row.getCell(4).getStringCellValue();
+                    sunit= row.getCell(4).getStringCellValue().trim();
 
                     ///if unit exists
                     if(sunit.length() > 0){

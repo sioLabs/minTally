@@ -141,6 +141,7 @@ public class SaleBillController implements Initializable {
 
     @FXML
     void handleSaveBtn(ActionEvent event) {
+        //save the item to db here
     }
     
     private  ObservableList<SalebillItem> data = FXCollections.observableArrayList();
@@ -246,9 +247,9 @@ public class SaleBillController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends ItemGroup> ov, ItemGroup t, ItemGroup t1) {
                 //now set the subgroup items here 
-                   System.out.println("group combox box value hanged");
-                   System.out.println("old value = "+t.getItemGroupName());
-                   System.out.println("new value = "+t1.getItemGroupName());
+//                   System.out.println("group combox box value hanged");
+//                   System.out.println("old value = "+t.getItemGroupName());
+//                   System.out.println("new value = "+t1.getItemGroupName());
                    fillSubGroupComboBox();
            
             }
@@ -338,6 +339,7 @@ public class SaleBillController implements Initializable {
         Query q  = em.createNamedQuery("ItemGroup.findByItemGroupParent");
         q.setParameter("itemGroupParent", 0);
         ArrayList<ItemGroup> groups = new ArrayList<ItemGroup>(q.getResultList());        
+        //System.out.println(groups.get(0)+"\n"+groups.get(1)+"\n"+groups.get(2));
         groupComboBox.getItems().clear();
         groupComboBox.getItems().addAll(groups);
         groupComboBox.getSelectionModel().clearSelection();
@@ -354,9 +356,9 @@ public class SaleBillController implements Initializable {
         EntityManager em = EntityManagerHelper.getInstance().getEm();
         Query q  = em.createNamedQuery("ItemGroup.findByItemGroupParent");
         q.setParameter("itemGroupParent", group.getItemGroupId());
-        em.getTransaction().begin();
+        // em.getTransaction().begin();
         ArrayList<ItemGroup> subGroup = new ArrayList<ItemGroup>(q.getResultList());
-        em.getTransaction().commit();
+        //em.getTransaction().commit();
         
         if(subGroup.size()<1){  //this means that no subgroup exist
        //     System.out.println("inside the nosubgroup condition");
@@ -364,11 +366,12 @@ public class SaleBillController implements Initializable {
             fillItemsComboBox();
             return ;
         }
-        System.out.println("group has subgroups" + subGroup.size());
+      //  System.out.println("group has subgroups" + subGroup.size());
         subGroupComboBox.getItems().clear();
         subGroupComboBox.getItems().addAll(subGroup);
         subGroupComboBox.getSelectionModel().clearSelection();
         subGroupComboBox.getSelectionModel().selectFirst();
+        fillItemsComboBox();
     
     }
     
@@ -424,7 +427,7 @@ public class SaleBillController implements Initializable {
         //System.out.println(l.getGroupName()+ " "+ l.getId());
         
         ArrayList<Ledger> custList = new ArrayList<Ledger>(q.getResultList());
-        System.out.println(custList.size());
+        //System.out.println(custList.size());
         customerComboBox.getItems().clear();
         customerComboBox.getItems().addAll(custList);
         customerComboBox.getSelectionModel().clearSelection();
