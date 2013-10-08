@@ -12,6 +12,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -207,7 +208,7 @@ public class SalebillItem implements Serializable {
     }
 
     @JoinColumn(name = "sale_bill_no", referencedColumnName = "sale_bill_no")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,cascade = CascadeType.PERSIST)
     public SaleBill getSaleBillNo() {
         return saleBillNo;
     }

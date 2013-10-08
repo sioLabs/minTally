@@ -56,13 +56,13 @@ public class SaleBill implements Serializable {
     @Basic(optional = false)
     @Column(name = "sale_bill_customer")
     private int saleBillCustomer;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "sale_bill_site")
     private String saleBillSite;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "sale_bil_remark")
     private String saleBilRemark;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "sale_bill_company")
     private String saleBillCompany;
     @Basic(optional = false)
@@ -77,7 +77,7 @@ public class SaleBill implements Serializable {
     @Basic(optional = false)
     @Column(name = "sale_bill_total_amount")
     private double saleBillTotalAmount;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "saleBillNo")
+    @OneToMany( mappedBy = "saleBillNo",cascade = CascadeType.PERSIST)
     private Collection<SalebillItem> salebillItemCollection;
 
     public SaleBill() {

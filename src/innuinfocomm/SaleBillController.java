@@ -2,6 +2,7 @@ package innuinfocomm;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -142,6 +143,66 @@ public class SaleBillController implements Initializable {
     @FXML
     void handleSaveBtn(ActionEvent event) {
         //save the item to db here
+        SaleBill s = new SaleBill();
+        s.setSaleBillDate(new Date());
+        s.setSaleBilRemark(remarksTextBox.getText());
+        s.setSaleBillCompany(companyTextBox.getText());
+        if(customerComboBox.getSelectionModel().isEmpty())
+            s.setSaleBillCustomer(99);
+        else
+            s.setSaleBillCustomer(customerComboBox.getSelectionModel().getSelectedItem().getLedgerId());
+            
+//        s.setSaleBillCustomer(customerComboBox.getSelectionModel().getSelectedItem().getLedgerId());
+        if(discountTextBox.getText().trim().isEmpty())
+            s.setSaleBillDiscount(0.0);
+        else
+            s.setSaleBillDiscount(Double.parseDouble(discountTextBox.getText()));
+        
+        //set SaleBillNo
+        s.setSaleBillNo(Integer.parseInt(billNoTextbox.getText()));
+        
+        if(siteComboBox.getSelectionModel().isEmpty())
+            s.setSaleBillSite(null);
+        else
+            s.setSaleBillSite(siteComboBox.getSelectionModel().getSelectedItem());
+        
+        if(totalTextBox.getText().trim().isEmpty())
+            s.setSaleBillTotalAmount(0.0);
+        else        
+            s.setSaleBillTotalAmount(Double.parseDouble(totalTextBox.getText()));
+        
+        if(vatTextBox.getText().trim().isEmpty())
+            s.setSaleBillTotalvat(0.0);
+        else
+            s.setSaleBillTotalvat(Double.parseDouble(vatTextBox.getText()));
+        
+        
+        //Now generate the item List
+        SalebillItem[] item = SaleItemTableView.getItems().toArray(new SalebillItem[0]);
+        //SalebillItem[] item = (SalebillItem[])SaleItemTableView.getItems().toArray();
+        
+        ArrayList<SalebillItem> items = new ArrayList<SalebillItem>(Arrays.asList(item));
+        s.setSalebillItemCollection(items);
+        s.setSalebillfrieghtCharges(Double.parseDouble(frieghtTextBox.getText()));
+        
+        EntityManager em = EntityManagerHelper.getInstance().getEm();
+          try{
+        em.getTransaction().begin();
+        em.persist(s);
+        em.getTransaction().commit();
+        }catch(Exception ex){
+            //errorLabel.setVisible(true);
+            ex.printStackTrace();
+              System.out.println("error in saving data");
+        }
+        
+                
+        
+        
+        
+        
+        
+        
     }
     
     private  ObservableList<SalebillItem> data = FXCollections.observableArrayList();
