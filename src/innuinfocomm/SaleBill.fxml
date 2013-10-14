@@ -48,11 +48,11 @@
             <Label text="Cutomer:" />
             <ComboBox fx:id="customerComboBox" prefWidth="231.0">
               <items>
-                <FXCollections fx:factory="observableArrayList">
+                <!--<FXCollections fx:factory="observableArrayList">
                   <String fx:value="Item 1" />
                   <String fx:value="Item 2" />
                   <String fx:value="Item 3" />
-                </FXCollections>
+                </FXCollections>-->
               </items>
             </ComboBox>
           </children>
@@ -62,11 +62,6 @@
             <Label text="Site:" />
             <ComboBox fx:id="siteComboBox" prefWidth="154.0">
               <items>
-                <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Item 1" />
-                  <String fx:value="Item 2" />
-                  <String fx:value="Item 3" />
-                </FXCollections>
               </items>
             </ComboBox>
           </children>

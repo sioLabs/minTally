@@ -12,6 +12,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -71,6 +73,7 @@ public class SalebillItem implements Serializable {
     
     private DoubleProperty itemVatPerc = new SimpleDoubleProperty();
 
+    @Transient
     public String getItemUnitName() {
         return itemUnitName.getValue();
     }
@@ -79,6 +82,7 @@ public class SalebillItem implements Serializable {
         this.itemUnitName.set(itemUnitName);
     }
 
+    @Transient
     public Double getItemVatPerc() {
         return itemVatPerc.getValue();
     }
@@ -207,7 +211,7 @@ public class SalebillItem implements Serializable {
     }
 
     @JoinColumn(name = "sale_bill_no", referencedColumnName = "sale_bill_no")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,cascade = CascadeType.PERSIST)
     public SaleBill getSaleBillNo() {
         return saleBillNo;
     }

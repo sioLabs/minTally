@@ -11,17 +11,21 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import utils.EntityManagerHelper;
 
 /**
  *
@@ -56,13 +60,13 @@ public class SaleBill implements Serializable {
     @Basic(optional = false)
     @Column(name = "sale_bill_customer")
     private int saleBillCustomer;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "sale_bill_site")
     private String saleBillSite;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "sale_bil_remark")
     private String saleBilRemark;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "sale_bill_company")
     private String saleBillCompany;
     @Basic(optional = false)
@@ -77,8 +81,21 @@ public class SaleBill implements Serializable {
     @Basic(optional = false)
     @Column(name = "sale_bill_total_amount")
     private double saleBillTotalAmount;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "saleBillNo")
+    @OneToMany( mappedBy = "saleBillNo",cascade = CascadeType.PERSIST)
     private Collection<SalebillItem> salebillItemCollection;
+    
+    @Transient
+    private String custName;
+    
+    public String getCustName(){
+        return this.custName;
+    }
+    
+    public void setCustName(String name){
+        
+        //EntityManger em = 
+        this.custName = name;
+    }
 
     public SaleBill() {
     }
@@ -90,7 +107,8 @@ public class SaleBill implements Serializable {
     public SaleBill(Integer saleBillNo, Date saleBillDate, int saleBillCustomer, String saleBillSite, String saleBilRemark, String saleBillCompany, double saleBillTotalvat, double salebillfrieghtCharges, double saleBillDiscount, double saleBillTotalAmount) {
         this.saleBillNo = saleBillNo;
         this.saleBillDate = saleBillDate;
-        this.saleBillCustomer = saleBillCustomer;
+        //this.saleBillCustomer = saleBillCustomer;
+        this.setSaleBillCustomer(saleBillCustomer);
         this.saleBillSite = saleBillSite;
         this.saleBilRemark = saleBilRemark;
         this.saleBillCompany = saleBillCompany;
@@ -113,6 +131,7 @@ public class SaleBill implements Serializable {
     }
 
     public void setSaleBillDate(Date saleBillDate) {
+        
         this.saleBillDate = saleBillDate;
     }
 
@@ -122,6 +141,11 @@ public class SaleBill implements Serializable {
 
     public void setSaleBillCustomer(int saleBillCustomer) {
         this.saleBillCustomer = saleBillCustomer;
+          EntityManager em = EntityManagerHelper.getInstance().getEm();
+          Query q = em.createNamedQuery("Ledger.findByLedgerId");
+          q.setParameter("ledgerId", saleBillCustomer);
+          Ledger l = (Ledger)q.getSingleResult();
+          setCustName(l.getLedgerPersonName()); 
     }
 
     public String getSaleBillSite() {
@@ -141,6 +165,7 @@ public class SaleBill implements Serializable {
     }
 
     public String getSaleBillCompany() {
+              
         return saleBillCompany;
     }
 
@@ -188,6 +213,8 @@ public class SaleBill implements Serializable {
     public void setSalebillItemCollection(Collection<SalebillItem> salebillItemCollection) {
         this.salebillItemCollection = salebillItemCollection;
     }
+    
+
 
     @Override
     public int hashCode() {
