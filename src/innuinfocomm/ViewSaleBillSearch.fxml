@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="861.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.ViewSaleBillSearchController">
+  <children>
+    <Label layoutX="364.0" layoutY="14.0" text="View All SaleBills by Date">
+      <font>
+        <Font size="16.0" />
+      </font>
+    </Label>
+    <Label layoutX="86.0" layoutY="79.0" text="Pick a Date:" />
+    <GridPane fx:id="dateGridPane" layoutX="153.0" layoutY="76.0" prefHeight="27.0" prefWidth="200.0">
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+  </children>
+  <stylesheets>
+    <URL value="@../DatePicker.css" />
+  </stylesheets>
+</AnchorPane>

@@ -46,6 +46,7 @@
                         <Button fx:id="createNewPayableBtn" disable="true" layoutX="102.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleCreateNewPayableBtn" text="Payable" />
                         <Button id="createNewPurchaseBtn" fx:id="createNewContraVoucher" layoutX="22.0" layoutY="119.0" mnemonicParsing="false" onAction="#handleCreateNewContraVoucher" text="Contra" />
                         <Button id="createNewPurchaseBtn" fx:id="createNewJournalVoucher" layoutX="102.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleCreateNewJournalVoucher" text="Journal" />
+                        <Button fx:id="viewSaleBillBtn" layoutX="22.0" layoutY="161.0" mnemonicParsing="false" onAction="#handleViewSaleBillBtn" text="View Sale Bill" />
                       </children>
                     </AnchorPane>
                   </content>

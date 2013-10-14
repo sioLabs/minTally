@@ -222,5 +222,15 @@ public class MainWindowController {
         mainContentTabPane.getTabs().add(tab);
         
     }
+    
+    @FXML 
+    public void handleViewSaleBillBtn() throws IOException{
+            
+     Parent rootNew = FXMLLoader.load(getClass().getResource("ViewSaleBillSearch.fxml"));
+        Tab tab = new Tab("View Sale Bills");
+        tab.setContent(rootNew);
+        mainContentTabPane.getTabs().add(tab);
+        
+    }
 
 }

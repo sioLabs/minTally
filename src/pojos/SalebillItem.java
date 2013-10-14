@@ -23,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -72,6 +73,7 @@ public class SalebillItem implements Serializable {
     
     private DoubleProperty itemVatPerc = new SimpleDoubleProperty();
 
+    @Transient
     public String getItemUnitName() {
         return itemUnitName.getValue();
     }
@@ -80,6 +82,7 @@ public class SalebillItem implements Serializable {
         this.itemUnitName.set(itemUnitName);
     }
 
+    @Transient
     public Double getItemVatPerc() {
         return itemVatPerc.getValue();
     }

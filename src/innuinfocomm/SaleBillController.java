@@ -625,10 +625,19 @@ public class SaleBillController implements Initializable {
            
           }//end create textfield
            
-            
+          
+           @FXML
+           public void handleViewSaleBillBtn(){
+     
+            }
+           
+           
            private String getString() {
                     return getItem() == null ? "" : getItem().toString();
            }
+           
+           
+          
 
     }
 
