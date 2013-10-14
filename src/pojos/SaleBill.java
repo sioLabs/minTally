@@ -143,7 +143,7 @@ public class SaleBill implements Serializable {
         this.saleBillCustomer = saleBillCustomer;
           EntityManager em = EntityManagerHelper.getInstance().getEm();
           Query q = em.createNamedQuery("Ledger.findByLedgerId");
-          q.setParameter(":LedgerID", saleBillCustomer);
+          q.setParameter("ledgerId", saleBillCustomer);
           Ledger l = (Ledger)q.getSingleResult();
           setCustName(l.getLedgerPersonName()); 
     }

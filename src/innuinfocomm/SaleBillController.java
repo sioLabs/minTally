@@ -1,5 +1,7 @@
 package innuinfocomm;
 
+import java.awt.Event;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,12 +29,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.util.Callback;
 import org.javafxdata.control.*;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentEvent.EventType;
 import pojos.ItemGroup;
 import pojos.Items;
 import pojos.Ledger;
@@ -299,8 +304,8 @@ public class SaleBillController implements Initializable {
         subGroupComboBox.getItems().clear();        
         itemsComboBox.getItems().clear();
         //customerComboBox.getItems().clear();
-                
-        System.out.println("\n in initialize func");
+          fillCustomerComboBox();
+        //System.out.println("\n in initialize func");
         fillGroupComboBox();
         
         groupComboBox.valueProperty().addListener(new ChangeListener<ItemGroup>(){
@@ -375,7 +380,7 @@ public class SaleBillController implements Initializable {
         
         
         });
-        
+       
         
         
         
@@ -392,6 +397,7 @@ public class SaleBillController implements Initializable {
     
     }
     
+
     private void fillGroupComboBox(){
     
    //     System.out.println("fillGroupComboBox");
@@ -480,12 +486,15 @@ public class SaleBillController implements Initializable {
     //function to fill the customer combo box. Remember customer is sundry debtors
     private void fillCustomerComboBox(){
         EntityManager em = EntityManagerHelper.getInstance().getEm();
-        Query q = em.createNamedQuery("Ledger.findByLedgerType");
-        Query q1 = em.createNamedQuery("LedgerGroup.findByGroupName");
-        q1.setParameter("groupName", "Sundry Debtors");
-        LedgerGroup l  = (LedgerGroup)q1.getSingleResult();
-        q.setParameter("ledgerType", l.getId());
+        //Query q = em.createNamedQuery("Ledger.findByLedgerType");
+        Query q = em.createNamedQuery("Ledger.findAll");
+        //Query q1 = em.createNamedQuery("LedgerGroup.findByGroupName");
+        //q1.setParameter("groupName", "Sundry Debtors");
+        //LedgerGroup l  = (LedgerGroup)q1.getSingleResult();
+        //q.setParameter("ledgerType", l.getId());
         //System.out.println(l.getGroupName()+ " "+ l.getId());
+        
+        customerComboBox.setOnKeyReleased(new KeyHandler());
         
         ArrayList<Ledger> custList = new ArrayList<Ledger>(q.getResultList());
         //System.out.println(custList.size());
@@ -493,8 +502,57 @@ public class SaleBillController implements Initializable {
         customerComboBox.getItems().addAll(custList);
         customerComboBox.getSelectionModel().clearSelection();
         customerComboBox.getSelectionModel().selectFirst();
-        
+        customerComboBox.setEditable(true);
+        //customerComboBox.fireEvent();
             
+    }
+    
+    private class KeyHandler implements EventHandler<KeyEvent>{
+
+        private SingleSelectionModel<Ledger> sm;
+        private String s;
+        
+        public KeyHandler(){
+            sm = customerComboBox.getSelectionModel();
+            s = "";
+        }
+        @Override
+        public void handle(KeyEvent event) {
+            
+            if( event.getCode() == KeyCode.BACK_SPACE && s.length()>0)
+                s = s.substring( 0, s.length() - 1 );
+            else s += event.getText();
+
+            if( s.length() == 0 ) {
+             //   fillCustomerComboBox();
+                sm.selectFirst();
+                return;
+            }
+            System.out.println( s );
+            ArrayList<Ledger> searchList = new ArrayList<Ledger>();
+            for( Ledger item: customerComboBox.getItems() ) {
+                if( item.getLedgerName().contains(s ) ) 
+                    searchList.add(item);              
+                     //sm.select( item );
+                    //customerComboBox.
+            }
+            
+            
+                
+            if(searchList.size() != 0 ){
+            customerComboBox.getItems().clear();
+            customerComboBox.getItems().addAll(searchList);
+            }
+            
+            if(searchList.size() == 1){
+                customerComboBox.getSelectionModel().selectFirst();
+            }
+            
+            //customerComboBox.fireEvent();
+            //customerComboBox.setSelectionModel(sm);
+            
+        }
+        
     }
     
 
