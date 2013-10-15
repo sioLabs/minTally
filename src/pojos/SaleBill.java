@@ -81,7 +81,8 @@ public class SaleBill implements Serializable {
     @Basic(optional = false)
     @Column(name = "sale_bill_total_amount")
     private double saleBillTotalAmount;
-    @OneToMany( mappedBy = "saleBillNo",cascade = CascadeType.PERSIST)
+    
+    @OneToMany( mappedBy = "saleBillNo",cascade = CascadeType.ALL)
     private Collection<SalebillItem> salebillItemCollection;
     
     @Transient
@@ -138,14 +139,19 @@ public class SaleBill implements Serializable {
     public int getSaleBillCustomer() {
         return saleBillCustomer;
     }
-
-    public void setSaleBillCustomer(int saleBillCustomer) {
-        this.saleBillCustomer = saleBillCustomer;
+    
+    //set custName after the Id is created.
+    public void setCustNameNow(){
           EntityManager em = EntityManagerHelper.getInstance().getEm();
           Query q = em.createNamedQuery("Ledger.findByLedgerId");
           q.setParameter("ledgerId", saleBillCustomer);
           Ledger l = (Ledger)q.getSingleResult();
           setCustName(l.getLedgerPersonName()); 
+    }
+
+    public void setSaleBillCustomer(int saleBillCustomer) {
+        this.saleBillCustomer = saleBillCustomer;
+        
     }
 
     public String getSaleBillSite() {

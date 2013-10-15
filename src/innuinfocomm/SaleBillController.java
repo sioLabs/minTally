@@ -148,7 +148,8 @@ public class SaleBillController implements Initializable {
     @FXML
     void handleSaveBtn(ActionEvent event) {
         //save the item to db here
-        SaleBill s = new SaleBill();
+       // SaleBill s = new SaleBill();
+        //s.setSaleBillNo(Integer.parseInt(billNoTextbox.getText()));
         s.setSaleBillDate(new Date());
         s.setSaleBilRemark(remarksTextBox.getText());
         s.setSaleBillCompany(companyTextBox.getText());
@@ -188,13 +189,14 @@ public class SaleBillController implements Initializable {
         
         ArrayList<SalebillItem> items = new ArrayList<SalebillItem>(Arrays.asList(item));
         s.setSalebillItemCollection(items);
+        
         s.setSalebillfrieghtCharges(Double.parseDouble(frieghtTextBox.getText()));
         
         EntityManager em = EntityManagerHelper.getInstance().getEm();
           try{
-        em.getTransaction().begin();
-        em.persist(s);
-        em.getTransaction().commit();
+                em.getTransaction().begin();
+                em.persist(s);
+                em.getTransaction().commit();
         }catch(Exception ex){
             //errorLabel.setVisible(true);
             ex.printStackTrace();
@@ -494,7 +496,7 @@ public class SaleBillController implements Initializable {
         //q.setParameter("ledgerType", l.getId());
         //System.out.println(l.getGroupName()+ " "+ l.getId());
         
-        customerComboBox.setOnKeyReleased(new KeyHandler());
+        //customerComboBox.setOnKeyReleased(new KeyHandler());
         
         ArrayList<Ledger> custList = new ArrayList<Ledger>(q.getResultList());
         //System.out.println(custList.size());
@@ -502,59 +504,60 @@ public class SaleBillController implements Initializable {
         customerComboBox.getItems().addAll(custList);
         customerComboBox.getSelectionModel().clearSelection();
         customerComboBox.getSelectionModel().selectFirst();
-        customerComboBox.setEditable(true);
+        //customerComboBox.setEditable(true);
         //customerComboBox.fireEvent();
             
     }
     
-    private class KeyHandler implements EventHandler<KeyEvent>{
-
-        private SingleSelectionModel<Ledger> sm;
-        private String s;
-        
-        public KeyHandler(){
-            sm = customerComboBox.getSelectionModel();
-            s = "";
-        }
-        @Override
-        public void handle(KeyEvent event) {
-            
-            if( event.getCode() == KeyCode.BACK_SPACE && s.length()>0)
-                s = s.substring( 0, s.length() - 1 );
-            else s += event.getText();
-
-            if( s.length() == 0 ) {
-             //   fillCustomerComboBox();
-                sm.selectFirst();
-                return;
-            }
-            System.out.println( s );
-            ArrayList<Ledger> searchList = new ArrayList<Ledger>();
-            for( Ledger item: customerComboBox.getItems() ) {
-                if( item.getLedgerName().contains(s ) ) 
-                    searchList.add(item);              
-                     //sm.select( item );
-                    //customerComboBox.
-            }
-            
-            
-                
-            if(searchList.size() != 0 ){
-            customerComboBox.getItems().clear();
-            customerComboBox.getItems().addAll(searchList);
-            }
-            
-            if(searchList.size() == 1){
-                customerComboBox.getSelectionModel().selectFirst();
-            }
-            
-            //customerComboBox.fireEvent();
-            //customerComboBox.setSelectionModel(sm);
-            
-        }
-        
-    }
-    
+//  Code for the key handler class
+//    private class KeyHandler implements EventHandler<KeyEvent>{
+//
+//        private SingleSelectionModel<Ledger> sm;
+//        private String s;
+//        
+//        public KeyHandler(){
+//            sm = customerComboBox.getSelectionModel();
+//            s = "";
+//        }
+//        @Override
+//        public void handle(KeyEvent event) {
+//            
+//            if( event.getCode() == KeyCode.BACK_SPACE && s.length()>0)
+//                s = s.substring( 0, s.length() - 1 );
+//            else s += event.getText();
+//
+//            if( s.length() == 0 ) {
+//             //   fillCustomerComboBox();
+//                sm.selectFirst();
+//                return;
+//            }
+//            System.out.println( s );
+//            ArrayList<Ledger> searchList = new ArrayList<Ledger>();
+//            for( Ledger item: customerComboBox.getItems() ) {
+//                if( item.getLedgerName().contains(s ) ) 
+//                    searchList.add(item);              
+//                     //sm.select( item );
+//                    //customerComboBox.
+//            }
+//            
+//            
+//                
+//            if(searchList.size() != 0 ){
+//            customerComboBox.getItems().clear();
+//            customerComboBox.getItems().addAll(searchList);
+//            }
+//            
+//            if(searchList.size() == 1){
+//                customerComboBox.getSelectionModel().selectFirst();
+//            }
+//            
+//            //customerComboBox.fireEvent();
+//            //customerComboBox.setSelectionModel(sm);
+//            
+//        }
+//        
+//    }
+//    
 
     private void initializeSaleBill() {
         //first thing is get a saleBillNumber;
