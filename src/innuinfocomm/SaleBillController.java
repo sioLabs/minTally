@@ -566,6 +566,7 @@ public class SaleBillController implements Initializable {
         EntityManager em = EntityManagerHelper.getInstance().getEm();
         
         Integer nextValue = (Integer)em.createQuery("select max(s.saleBillNo) from SaleBill s").getSingleResult();
+        nextValue++;
         if(nextValue!=null)
             billNoTextbox.setText(nextValue+"");
         else
