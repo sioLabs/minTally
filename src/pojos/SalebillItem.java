@@ -211,7 +211,7 @@ public class SalebillItem implements Serializable {
     }
 
     @JoinColumn(name = "sale_bill_no", referencedColumnName = "sale_bill_no")
-    @ManyToOne(optional = false,cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     public SaleBill getSaleBillNo() {
         return saleBillNo;
     }

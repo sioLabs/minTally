@@ -102,8 +102,15 @@ public class ViewSaleBillSearchController implements Initializable {
                 Query query = em.createNamedQuery("SaleBill.findBySaleBillDate");
                 query.setParameter("saleBillDate", d);
                 ArrayList<SaleBill> saleBills =  new ArrayList<SaleBill>(query.getResultList());
+                System.out.println(saleBills.size());
+                
+               
                 if(saleBills != null)
+                {      for(SaleBill s : saleBills)
+                        s.setCustNameNow();
                     fillSaleBillTable(saleBills);
+                    
+                }
                 else
                     return;                       
                 
@@ -112,6 +119,7 @@ public class ViewSaleBillSearchController implements Initializable {
     private void fillSaleBillTable(ArrayList<SaleBill> saleBills) {
          data = FXCollections.observableArrayList(saleBills);
          SaleBillTableView.setItems(data);
-         SaleBillTableView.getSelectionModel().clearSelection();        
+         SaleBillTableView.getSelectionModel().clearSelection();   
+         
     }
 }

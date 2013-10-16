@@ -1,0 +1,42 @@
+15-10-13
+
+	Today I have to work on the the View Customer. First I am going to set
+	all the customer in the simple list. The search functionality will not be
+	there and it will added as an issue of enhancement.
+
+	There is no message that the item is saved sucessfully.
+
+	Also there are 2 reults per save. One contains the Value and One is empty
+	Also the viewer shows the wrong bill no. Why is that. The SaleBill no is correct in the
+	database but wrong in the viewer. On restarting the System, it shows the correct
+	bill number but the customer name is not there. It may due to the customer name is not set
+	in the SaleBill Class.  
+
+	Now the viewer is getting the Customer Name. Next Problem is why there are 2 saves.
+	One with whole value and one empty.:
+	I did a cascade.Merge. This is now throwing an Exception. I think the problem is here
+	only as a new object is created by a Child Object.
+
+	Back to square one. The Items are saving but 2 times.
+	Solved the problem. I was creating a new SaleBill item and that was the problem.
+
+
+=======================================================================================
+	The new SaleBill number that is generated is one less. Corrected It
+
+	I downloaded a minTally Software. BusyWIn. It will help as a guide to what to develop 
+	finally. I will make a feature list from this software and then implement this in my 
+	program.
+
+	1. Create a Company should be the first option.
+	2. Create a Super User
+	3. Now there are Features and Options. Screen 3
+
+	This is good. They have planned everything and now I just have to find the logic for it
+	also create the UI like them. I will see there db structure and then design our db like 
+	them only
+	
+	I have to create a textbox like the search box in the ensemble. On typing in the text box 
+	the items will come and add automatically. So I have to look into the customized TableView
+	also. 
+
