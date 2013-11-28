@@ -1,0 +1,98 @@
+15-10-13
+
+	Today I have to work on the the View Customer. First I am going to set
+	all the customer in the simple list. The search functionality will not be
+	there and it will added as an issue of enhancement.
+
+	There is no message that the item is saved sucessfully.
+
+	Also there are 2 reults per save. One contains the Value and One is empty
+	Also the viewer shows the wrong bill no. Why is that. The SaleBill no is correct in the
+	database but wrong in the viewer. On restarting the System, it shows the correct
+	bill number but the customer name is not there. It may due to the customer name is not set
+	in the SaleBill Class.  
+
+	Now the viewer is getting the Customer Name. Next Problem is why there are 2 saves.
+	One with whole value and one empty.:
+	I did a cascade.Merge. This is now throwing an Exception. I think the problem is here
+	only as a new object is created by a Child Object.
+
+	Back to square one. The Items are saving but 2 times.
+	Solved the problem. I was creating a new SaleBill item and that was the problem.
+
+
+=======================================================================================
+	The new SaleBill number that is generated is one less. Corrected It
+
+	I downloaded a minTally Software. BusyWIn. It will help as a guide to what to develop 
+	finally. I will make a feature list from this software and then implement this in my 
+	program.
+
+	1. Create a Company should be the first option.
+	2. Create a Super User
+	3. Now there are Features and Options. Screen 3
+
+	This is good. They have planned everything and now I just have to find the logic for it
+	also create the UI like them. I will see there db structure and then design our db like 
+	them only
+	
+	I have to create a textbox like the search box in the ensemble. On typing in the text box 
+	the items will come and add automatically. So I have to look into the customized TableView
+	also. 
+==========================================================================================
+18-10-2013
+
+A chart of account consists of many accounts. 
+The accounts are classified into few categories : They are
+
+Income
+
+Expenses
+
+Assets 
+
+Liabilities
+
+Equity
+
+Now Any account will be in these categories only.
+
+
+=========Stop here and think now=================
+
+Trading software will take the toll of 
+
+1. Inventory management
+	a. Addition of Items
+	b. Removal of Items
+	c. Mass Import
+	d. Mass Export
+	e. Edit an Item
+	f. View the Items / Stock Update
+
+2. Accounts Management
+	a. Accounts Categories
+	b. Creation of Accounts
+	c. Deletion of Accounts
+	d. Viewing the Accounts
+
+3. Reports Management
+	a. Receievable
+	b. Payable
+	c. Balance Sheet
+	d. Trail Balakce Sheet
+	e. Profit Loss A/c
+	f. Sale Book
+	g. Purchase Book
+	
+
+4. Transactions
+	a. Sale Invoice
+	b. Purchase Invoice
+	c. Journal Entry
+	d. Payment 
+	e. Receipt
+	f. Contra
+
+==================================================================
+The above is the total structure that I have to implement.v1 will be only this and all major things can be done with it.

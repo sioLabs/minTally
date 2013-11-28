@@ -23,6 +23,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -655,7 +656,7 @@ public class SaleBillController implements Initializable {
                private ListView<Items>  itemsList;
                
                EntityManager em = EntityManagerHelper.getInstance().getEm();
-               
+             
               
                public EditingItemNameCell() {}
                
@@ -713,9 +714,9 @@ public class SaleBillController implements Initializable {
                         itemsListContainer.setHideOnEscape(true);
                         itemsListContainer.getContent().addAll(itemsList);
                         
-                       Stage stage = new Stage();
-                       stage.setScene(new Scene(new Group(new Text(10,10,"Hello World"))));
-                       stage.show();
+                       Parent parent = getParent();
+                       
+                       
                        
                        
                         
