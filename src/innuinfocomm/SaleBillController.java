@@ -3,6 +3,7 @@ package innuinfocomm;
 import java.awt.Event;
 import java.awt.event.MouseEvent;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -21,6 +22,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -29,11 +32,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ListView;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
-import org.javafxdata.control.*;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.swing.event.DocumentEvent;
@@ -45,7 +51,11 @@ import pojos.LedgerGroup;
 import pojos.SaleBill;
 import pojos.SalebillItem;
 import utils.EntityManagerHelper;
-
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import org.datafx.reader.DataReader;
+import org.datafx.reader.JdbcSource;
+import org.datafx.reader.converter.JdbcConverter;
 
 
 public class SaleBillController implements Initializable {
@@ -139,6 +149,11 @@ public class SaleBillController implements Initializable {
     
     @FXML
     private ComboBox<ItemGroup> subGroupComboBox;
+    
+    /*
+     * popused to contain a listview
+     */
+    private  Popup itemsListContainer = new Popup();
     
 
     @FXML
@@ -256,6 +271,18 @@ public class SaleBillController implements Initializable {
         vatRsTableCol.setCellValueFactory(new PropertyValueFactory<SalebillItem,Double>("itemVatRs"));
         
         SaleItemTableView.setEditable(true);
+        
+        itemNameTableCol.setEditable(true);
+        Callback<TableColumn<SalebillItem,String>, TableCell<SalebillItem, String>> itNameCellfactory = 
+                    new Callback<TableColumn<SalebillItem, String>, TableCell<SalebillItem, String>>() {
+                        
+            @Override
+            public TableCell<SalebillItem, String> call(TableColumn<SalebillItem, String> p) {
+                return new EditingItemNameCell();
+            }
+
+        };
+        itemNameTableCol.setCellFactory(itNameCellfactory);
         
         //////////QUANTITY TABLE CELL
         quantityTableCol.setEditable(true);
@@ -613,6 +640,105 @@ public class SaleBillController implements Initializable {
          }
         vatTextBox.setText(String.format("%.2f", vat));
     }
+    
+         
+           @FXML
+           public void handleViewSaleBillBtn(){
+     
+            }
+           
+           
+           
+           ////////////////EditingItemnamecell////////////
+             class EditingItemNameCell extends TableCell<SalebillItem, String>{
+               private TextField textField;
+               private ListView<Items>  itemsList;
+               
+               EntityManager em = EntityManagerHelper.getInstance().getEm();
+               
+              
+               public EditingItemNameCell() {}
+               
+               @Override
+               public void updateItem(String name, boolean empty){
+                   if(empty){
+                       setText(null);
+                       setGraphic(null);
+                   }else{
+                       if(textField != null){
+                           String query = getString();
+                       }
+                   }
+               }
+               @Override
+               public void startEdit(){
+                   super.startEdit();
+                   if(textField == null)
+                       createTextField();
+                   setGraphic(textField);
+                   setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                   textField.selectAll();
+               }
+               @Override 
+               public void cancelEdit(){
+                   super.cancelEdit();
+                   setText(String.valueOf(getItem()));
+                   setContentDisplay(ContentDisplay.TEXT_ONLY);
+               }
+               
+               
+               
+                  //textfield creation and settings
+           private void createTextField(){
+                textField = new TextField(getString());
+                textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
+                textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+                    @Override
+                    public void handle(KeyEvent t) {
+                     //   System.out.println("inside key handle event");
+                       // System.out.println(t.getCode());
+                        itemsList = new ListView<Items>();
+                         
+                        EntityManager em = EntityManagerHelper.getInstance().getEm();
+                        Query q  = em.createNamedQuery("Items.findByItemName");
+                        q.setParameter("itemName",textField.getText());
+                        ArrayList<Items> itList = new ArrayList<Items>(q.getResultList());
+                        itemsList.getItems().clear();
+                        itemsList.getItems().addAll(itList);
+                        itemsList.getSelectionModel().clearSelection();
+                        itemsList.getSelectionModel().selectFirst();
+                        
+                        itemsListContainer.setAutoFix(true);
+                        itemsListContainer.setHideOnEscape(true);
+                        itemsListContainer.getContent().addAll(itemsList);
+                        
+                       Stage stage = new Stage();
+                       stage.setScene(new Scene(new Group(new Text(10,10,"Hello World"))));
+                       stage.show();
+                       
+                       
+                        
+                        
+                        
+                        if (t.getCode() == KeyCode.ENTER) {
+                            commitEdit(textField.getText());
+                         //   System.out.println("enter key pressed");
+                        } else if (t.getCode() == KeyCode.ESCAPE) {
+                            cancelEdit();
+                        }
+                    }
+                });
+           }
+               
+                 private String getString() {
+                    return getItem() == null ? "" : getItem().toString();
+            }
+       }
+           
+     
+
+           ////////////////////////////////////
            
 }
 
@@ -686,21 +812,11 @@ public class SaleBillController implements Initializable {
            
            
           }//end create textfield
-           
-          
-           @FXML
-           public void handleViewSaleBillBtn(){
-     
-            }
-           
-           
+         
            private String getString() {
                     return getItem() == null ? "" : getItem().toString();
            }
-           
-           
-          
 
     }
 
-
+    
