@@ -180,3 +180,46 @@ ALTER TABLE `salebill_item`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--inserting the ledger groups
+INSERT INTO `ledger_group_table` (`id`, `group_name`) VALUES
+(1, 'Capital Accounts'),
+(2, 'Current Assets'),
+(3, 'Bank Accounts'),
+(4, 'Bank OD A/c'),
+(5, 'Cash - In - Hand'),
+(6, 'Current Liabilities'),
+(7, 'Deposits (Asset)'),
+(8, 'Direct Expenses'),
+(9, 'Duties and Taxes'),
+(10, 'Direct Incomes'),
+(11, 'Loans and Advances (Asset)'),
+(12, 'Fixed Assets'),
+(13, 'Provisions'),
+(14, 'Indirect Expenses'),
+(15, 'Reserves and Surplus'),
+(16, 'Indirect Incomes'),
+(17, 'Secured Loans'),
+(18, 'Investments'),
+(19, 'Stock-in-Hand'),
+(20, 'Loans (Liability)'),
+(21, 'Sundry Creditors'),
+(22, 'Misc. Expenses (Asset)'),
+(23, 'Sundry Debtors'),
+(24, 'Purchase Accounts'),
+(25, 'Unsecured Loans'),
+(26, 'Sales Accounts'),
+(27, 'Suspense A/c');
+
+
+-- inserting the ledgers
+INSERT INTO `ledger_table` (`ledger_id`, `ledger_name`, `ledger_person_name`, `ledger_type`, `ledger_open_bal`, `ledger_open_bal_type`, `ledger_present_bal`, `ledger_present_bal_type`, `ledger_address`, `ledger_contact_no`, `ledger_contact_email`, `ledger_vat_tin`, `ledger_cst_tin`, `ledger_create_date`, `ledger_modification_date`) VALUES
+(1, 'Cash', 'Self', 8, '1000', 0, '1000', 0, '', '', '', '', '', '0000-00-00', '0000-00-00'),
+(2, 'Ashutosh Singh', 'Ashutosh Singh', 21, '10000', 0, '10000', 0, 'CDAC\nJuhu	', '9021813612', 'dh_ashu@outlook.com', '123456', '123456', '2013-05-23', '2013-05-23'),
+(3, 'Deepak Seth', 'Deepak Seth', 9, '1000', 0, '1000', 0, 'ola	', '9389331908', 'virus.virus99@gmail.com', '1234546', '2345678', '2013-05-23', '2013-05-23'),
+(4, 'B V Singh', 'B V Singh', 3, '10000', 1, '10000', 1, 'Luickow\nMau garvi	', '9335048062', 'sucrotechengineers@gmail.com', '123445', '1234567', '2013-05-23', '2013-05-23'),
+(8, 'Nirmal Parwate', 'nirmal Parwate', 2, '2000', 1, '2000', 1, 'sadhlkhasfkjhkj	', '812612', 'nirmal@gmail.com', '', '', '2013-05-25', '2013-05-25'),
+(9, 'Sadhna Singh', 'SadhnaSingh', 8, '50000', 1, '50000', 1, 'sadfjkdsfkl', '9389331908', 'sadhna@gmail.com', '132324324', '12232324', '2013-05-25', '2013-05-25'),
+(10, 'Nikhil Rajput', NULL, 4, '1000', 1, '1000', 1, NULL, NULL, NULL, NULL, NULL, '2013-05-25', '2013-05-25'),
+(11, 'mc', 'n', 0, '10000', 1, '10000', 1, 'fdsff', '98999999999', 'nia@gmail.com', '', '', '2013-06-13', '2013-06-13');
+

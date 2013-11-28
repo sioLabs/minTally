@@ -96,3 +96,9 @@ Trading software will take the toll of
 
 ==================================================================
 The above is the total structure that I have to implement.v1 will be only this and all major things can be done with it.
+
+There is a double book keeping system. Every entry will lead to 2 times of entry. does it needs to be implemented in software or 
+software will just calculate it. Consider if it a payment is made then
+our income will increase in a particular account and receivables 
+will be decreased. So a paymnet will be made against an account how to reflect this in the software that a payment has been made like for Invoice# 302
+Now this invoice will be settled. The receivables table will be calculated again now and we will see that a particular salebill is not there now. So the receivable will be less now. We income will be searched it will be increased because the following bills have been completed. The reports are gonna fuck me but I am gonna do it anyway. 
