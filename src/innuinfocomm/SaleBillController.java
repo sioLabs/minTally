@@ -154,7 +154,7 @@ public class SaleBillController implements Initializable {
     /*
      * popused to contain a listview
      */
-    private  Popup itemsListContainer = new Popup();
+    //private  Popup itemsListContainer = new Popup();
     
 
     @FXML
@@ -274,17 +274,17 @@ public class SaleBillController implements Initializable {
         SaleItemTableView.setEditable(true);
         
         itemNameTableCol.setEditable(true);
-        Callback<TableColumn<SalebillItem,String>, TableCell<SalebillItem, String>> itNameCellfactory = 
-                    new Callback<TableColumn<SalebillItem, String>, TableCell<SalebillItem, String>>() {
-                        
-            @Override
-            public TableCell<SalebillItem, String> call(TableColumn<SalebillItem, String> p) {
-                return new EditingItemNameCell();
-            }
-
-        };
-        itemNameTableCol.setCellFactory(itNameCellfactory);
-        
+//        Callback<TableColumn<SalebillItem,String>, TableCell<SalebillItem, String>> itNameCellfactory = 
+//                    new Callback<TableColumn<SalebillItem, String>, TableCell<SalebillItem, String>>() {
+//                        
+//            @Override
+//            public TableCell<SalebillItem, String> call(TableColumn<SalebillItem, String> p) {
+//                return new EditingItemNameCell();
+//            }
+//
+//        };
+//        itemNameTableCol.setCellFactory(itNameCellfactory);
+//        
         //////////QUANTITY TABLE CELL
         quantityTableCol.setEditable(true);
         //quantityTableCol.setCellFactory(TextFieldTableCell.);
@@ -594,11 +594,17 @@ public class SaleBillController implements Initializable {
         EntityManager em = EntityManagerHelper.getInstance().getEm();
         
         Integer nextValue = (Integer)em.createQuery("select max(s.saleBillNo) from SaleBill s").getSingleResult();
-        nextValue++;
+        
         if(nextValue!=null)
+        {
+            nextValue++;
             billNoTextbox.setText(nextValue+"");
+        }
         else
             billNoTextbox.setText(1+"");
+        
+        
+        
         
         s.setSaleBillDate(new Date());          
         
@@ -710,12 +716,12 @@ public class SaleBillController implements Initializable {
                         itemsList.getSelectionModel().clearSelection();
                         itemsList.getSelectionModel().selectFirst();
                         
-                        itemsListContainer.setAutoFix(true);
-                        itemsListContainer.setHideOnEscape(true);
-                        itemsListContainer.getContent().addAll(itemsList);
-                        
-                       Parent parent = getParent();
-                       
+//                        itemsListContainer.setAutoFix(true);
+//                        itemsListContainer.setHideOnEscape(true);
+//                        itemsListContainer.getContent().addAll(itemsList);
+//                        
+//                       Parent parent = getParent();
+//                       
                        
                        
                        
