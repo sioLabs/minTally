@@ -37,6 +37,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
@@ -57,6 +58,7 @@ import javafx.stage.Stage;
 import org.datafx.reader.DataReader;
 import org.datafx.reader.JdbcSource;
 import org.datafx.reader.converter.JdbcConverter;
+import utils.ItemSearchBox;
 
 
 public class SaleBillController implements Initializable {
@@ -66,6 +68,9 @@ public class SaleBillController implements Initializable {
 
     @FXML
     private URL location;
+    
+    @FXML
+    private AnchorPane anchorPane;
 
     SaleBill s = new SaleBill();
     @FXML
@@ -274,16 +279,29 @@ public class SaleBillController implements Initializable {
         SaleItemTableView.setEditable(true);
         
         itemNameTableCol.setEditable(true);
-//        Callback<TableColumn<SalebillItem,String>, TableCell<SalebillItem, String>> itNameCellfactory = 
-//                    new Callback<TableColumn<SalebillItem, String>, TableCell<SalebillItem, String>>() {
-//                        
-//            @Override
-//            public TableCell<SalebillItem, String> call(TableColumn<SalebillItem, String> p) {
-//                return new EditingItemNameCell();
-//            }
-//
-//        };
-//        itemNameTableCol.setCellFactory(itNameCellfactory);
+        Callback<TableColumn<SalebillItem,String>, TableCell<SalebillItem, String>> itNameCellfactory = 
+                    new Callback<TableColumn<SalebillItem, String>, TableCell<SalebillItem, String>>() {
+                        
+            @Override
+            public TableCell<SalebillItem, String> call(TableColumn<SalebillItem, String> p) {
+                return new ItemSearchBox();
+            }
+
+        };
+        itemNameTableCol.setCellFactory(itNameCellfactory);
+        itemNameTableCol.setOnEditCommit(new EventHandler<CellEditEvent<SalebillItem, String>>() {
+
+            @Override
+            public void handle(CellEditEvent<SalebillItem, String> t) {
+                System.out.println("on edit commit itemname" + t.getNewValue());
+                SalebillItem edit = t.getTableView().getSelectionModel().getSelectedItem();
+                edit.setItemName(t.getNewValue());
+                t.getTableView().setVisible(false);
+                t.getTableView().setVisible(true);
+                //edit = new 
+            }
+        });
+        
 //        
         //////////QUANTITY TABLE CELL
         quantityTableCol.setEditable(true);
@@ -620,6 +638,10 @@ public class SaleBillController implements Initializable {
         dateTextBox.setEditable(false);
         
         fillCustomerComboBox();
+        
+//        ItemSearchBox mySearchBox = new ItemSearchBox();
+  //      anchorPane.getChildren().add(mySearchBox);
+        
         
     }
 

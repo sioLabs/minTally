@@ -11,7 +11,7 @@
 <?import javafx.scene.text.*?>
 <?import utils.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.SaleBillController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.SaleBillController">
   <children>
     <Label layoutX="382.0" layoutY="14.0" text="Sale Bill">
       <effect>
@@ -48,6 +48,7 @@
             <Label text="Cutomer:" />
             <ComboBox fx:id="customerComboBox" prefWidth="231.0">
               <items>
+                <FXCollections fx:factory="observableArrayList" />
                 <!--<FXCollections fx:factory="observableArrayList">
                   <String fx:value="Item 1" />
                   <String fx:value="Item 2" />
@@ -62,6 +63,7 @@
             <Label text="Site:" />
             <ComboBox fx:id="siteComboBox" prefWidth="154.0">
               <items>
+                <FXCollections fx:factory="observableArrayList" />
               </items>
             </ComboBox>
           </children>
