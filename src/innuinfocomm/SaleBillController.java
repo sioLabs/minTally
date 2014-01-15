@@ -1,9 +1,7 @@
 package innuinfocomm;
 
-import java.awt.Event;
-import java.awt.event.MouseEvent;
+
 import java.net.URL;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -22,9 +20,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -58,6 +53,7 @@ import javafx.stage.Stage;
 import org.datafx.reader.DataReader;
 import org.datafx.reader.JdbcSource;
 import org.datafx.reader.converter.JdbcConverter;
+import pojos.ConverterUtil;
 import utils.ItemSearchBox;
 
 
@@ -223,19 +219,12 @@ public class SaleBillController implements Initializable {
             ex.printStackTrace();
               System.out.println("error in saving data");
         }
-        
-                
-        
-        
-        
-        
-        
-        
     }
     
     private  ObservableList<SalebillItem> data = FXCollections.observableArrayList();
    // private ArrayList<SalebillItem> saleItemList = new ArrayList<SalebillItem>();
 
+    private ItemSearchBox selectedItem;
 
     @FXML
     public void initialize(URL location, ResourceBundle r) {
@@ -284,21 +273,24 @@ public class SaleBillController implements Initializable {
                         
             @Override
             public TableCell<SalebillItem, String> call(TableColumn<SalebillItem, String> p) {
-                return new ItemSearchBox();
+                selectedItem =  new ItemSearchBox();
+                return selectedItem;
             }
 
         };
         itemNameTableCol.setCellFactory(itNameCellfactory);
+        //itemNameTableCol.bv o
         itemNameTableCol.setOnEditCommit(new EventHandler<CellEditEvent<SalebillItem, String>>() {
 
             @Override
             public void handle(CellEditEvent<SalebillItem, String> t) {
-                System.out.println("on edit commit itemname" + t.getNewValue());
+                System.out.println("on edit commit itemname" + selectedItem.getSelectedItem());
                 SalebillItem edit = t.getTableView().getSelectionModel().getSelectedItem();
-                edit.setItemName(t.getNewValue());
+                //edit.setItemName(t.getNewValue());
+                ConverterUtil cu = new ConverterUtil();
+                edit = cu.Items2SalebillItem(selectedItem.getSelectedItem());
                 t.getTableView().setVisible(false);
                 t.getTableView().setVisible(true);
-                //edit = new 
             }
         });
         
@@ -391,7 +383,10 @@ public class SaleBillController implements Initializable {
             public void changed(ObservableValue<? extends Items> ov, Items t, Items t1) {
                 if((t!=null) &&(t1!=null)){
                     SalebillItem item = new SalebillItem();
-                    item.setItemId(t1.getItemId());
+                    data.add(item);
+                    SaleItemTableView.setItems(data);
+                    SaleItemTableView.getSelectionModel().clearSelection();
+    /*                item.setItemId(t1.getItemId());
                     item.setItemName(t1.getItemName());
                     item.setItemUnitName(t1.getItemFirstUnit().getUnitName());
                     item.setItemVatPerc(t1.getItemVatPerc());
@@ -408,7 +403,7 @@ public class SaleBillController implements Initializable {
                     //data = FXCollections.observableArrayList(saleItemList);
                     SaleItemTableView.setItems(data);
                     SaleItemTableView.getSelectionModel().clearSelection();
-                    setTotalTextBox();
+                    setTotalTextBox();*/
                 }
             }
         
@@ -679,93 +674,93 @@ public class SaleBillController implements Initializable {
            
            
            ////////////////EditingItemnamecell////////////
-             class EditingItemNameCell extends TableCell<SalebillItem, String>{
-               private TextField textField;
-               private ListView<Items>  itemsList;
-               
-               EntityManager em = EntityManagerHelper.getInstance().getEm();
-             
-              
-               public EditingItemNameCell() {}
-               
-               @Override
-               public void updateItem(String name, boolean empty){
-                   if(empty){
-                       setText(null);
-                       setGraphic(null);
-                   }else{
-                       if(textField != null){
-                           String query = getString();
-                       }
-                   }
-               }
-               @Override
-               public void startEdit(){
-                   super.startEdit();
-                   if(textField == null)
-                       createTextField();
-                   setGraphic(textField);
-                   setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                   textField.selectAll();
-               }
-               @Override 
-               public void cancelEdit(){
-                   super.cancelEdit();
-                   setText(String.valueOf(getItem()));
-                   setContentDisplay(ContentDisplay.TEXT_ONLY);
-               }
-               
-               
-               
-                  //textfield creation and settings
-           private void createTextField(){
-                textField = new TextField(getString());
-                textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
-                textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-                    @Override
-                    public void handle(KeyEvent t) {
-                     //   System.out.println("inside key handle event");
-                       // System.out.println(t.getCode());
-                        itemsList = new ListView<Items>();
-                         
-                        EntityManager em = EntityManagerHelper.getInstance().getEm();
-                        Query q  = em.createNamedQuery("Items.findByItemName");
-                        q.setParameter("itemName",textField.getText());
-                        ArrayList<Items> itList = new ArrayList<Items>(q.getResultList());
-                        itemsList.getItems().clear();
-                        itemsList.getItems().addAll(itList);
-                        itemsList.getSelectionModel().clearSelection();
-                        itemsList.getSelectionModel().selectFirst();
-                        
-//                        itemsListContainer.setAutoFix(true);
-//                        itemsListContainer.setHideOnEscape(true);
-//                        itemsListContainer.getContent().addAll(itemsList);
+//             class EditingItemNameCell extends TableCell<SalebillItem, String>{
+//               private TextField textField;
+//               private ListView<Items>  itemsList;
+//               
+//               EntityManager em = EntityManagerHelper.getInstance().getEm();
+//             
+//              
+//               public EditingItemNameCell() {}
+//               
+//               @Override
+//               public void updateItem(String name, boolean empty){
+//                   if(empty){
+//                       setText(null);
+//                       setGraphic(null);
+//                   }else{
+//                       if(textField != null){
+//                           String query = getString();
+//                       }
+//                   }
+//               }
+//               @Override
+//               public void startEdit(){
+//                   super.startEdit();
+//                   if(textField == null)
+//                       createTextField();
+//                   setGraphic(textField);
+//                   setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+//                   textField.selectAll();
+//               }
+//               @Override 
+//               public void cancelEdit(){
+//                   super.cancelEdit();
+//                   setText(String.valueOf(getItem()));
+//                   setContentDisplay(ContentDisplay.TEXT_ONLY);
+//               }
+//               
+//               
+//               
+//                  //textfield creation and settings
+//           private void createTextField(){
+//                textField = new TextField(getString());
+//                textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
+//                textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+//
+//                    @Override
+//                    public void handle(KeyEvent t) {
+//                     //   System.out.println("inside key handle event");
+//                       // System.out.println(t.getCode());
+//                        itemsList = new ListView<Items>();
+//                         
+//                        EntityManager em = EntityManagerHelper.getInstance().getEm();
+//                        Query q  = em.createNamedQuery("Items.findByItemName");
+//                        q.setParameter("itemName",textField.getText());
+//                        ArrayList<Items> itList = new ArrayList<Items>(q.getResultList());
+//                        itemsList.getItems().clear();
+//                        itemsList.getItems().addAll(itList);
+//                        itemsList.getSelectionModel().clearSelection();
+//                        itemsList.getSelectionModel().selectFirst();
 //                        
-//                       Parent parent = getParent();
+////                        itemsListContainer.setAutoFix(true);
+////                        itemsListContainer.setHideOnEscape(true);
+////                        itemsListContainer.getContent().addAll(itemsList);
+////                        
+////                       Parent parent = getParent();
+////                       
 //                       
-                       
-                       
-                       
-                        
-                        
-                        
-                        if (t.getCode() == KeyCode.ENTER) {
-                            commitEdit(textField.getText());
-                         //   System.out.println("enter key pressed");
-                        } else if (t.getCode() == KeyCode.ESCAPE) {
-                            cancelEdit();
-                        }
-                    }
-                });
-           }
-               
-                 private String getString() {
-                    return getItem() == null ? "" : getItem().toString();
-            }
-       }
-           
-     
+//                       
+//                       
+//                        
+//                        
+//                        
+//                        if (t.getCode() == KeyCode.ENTER) {
+//                            commitEdit(textField.getText());
+//                         //   System.out.println("enter key pressed");
+//                        } else if (t.getCode() == KeyCode.ESCAPE) {
+//                            cancelEdit();
+//                        }
+//                    }
+//                });
+//           }
+//               
+//                 private String getString() {
+//                    return getItem() == null ? "" : getItem().toString();
+//            }
+//       }
+//           
+//     
 
            ////////////////////////////////////
            

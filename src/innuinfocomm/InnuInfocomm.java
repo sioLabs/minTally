@@ -22,7 +22,7 @@ public class InnuInfocomm extends Application {
         
         
         Scene scene = new Scene(root);
-        
+        stage.setFullScreen(true);
         stage.setScene(scene);
         stage.show();
     }

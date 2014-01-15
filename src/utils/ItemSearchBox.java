@@ -42,6 +42,7 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
     private SimpleDoubleProperty itemTextWidth = new SimpleDoubleProperty(100);
     private ChangeListener<Boolean> focusOutListener;
     private ListView<Items> itemsListView = new ListView<Items>();
+    private Items selectedItem;
 
     public ItemSearchBox() {
         super();
@@ -49,11 +50,13 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
          configureItemSearchBox();
     }
     
+    public Items getSelectedItem(){
+        return selectedItem;
+    }
     
     
     private void configureItemSearchBox(){
         popup = new Popup();
-        
         popup.setAutoHide(true);
         popup.setAutoFix(true);
         popup.setHideOnEscape(true);
@@ -82,7 +85,10 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
                 System.out.println("Clicked on "+itemsListView.getSelectionModel().getSelectedItem());
                 Items i = itemsListView.getSelectionModel().getSelectedItem();
                     System.out.println("Item Selected is :" + i);
-                    updateItem(i.getItemName(), false);
+                    selectedItem = i;
+                    commitEdit(selectedItem.getItemName());
+                    //updateItem(i.getItemName(), false);
+                    
                     hidePopup();
             }
              
@@ -95,7 +101,9 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
                     //Enter pressed
                     Items i = itemsListView.getSelectionModel().getSelectedItem();
                     System.out.println("Item Selected is :" + i);
-                    updateItem(i.getItemName(), false);
+                    selectedItem = i;
+                    commitEdit(selectedItem.getItemName());
+                    //updateItem(i.getItemName(), false);
                     hidePopup();
                 }
             }
@@ -111,7 +119,11 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
 
             @Override
             public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean t1) {
-                System.out.println("changed focus: "+ itemTextField.getText());
+                System.out.println("focus chaneged");
+                //if(t1){
+                  
+                //}
+                  
             }
         };
          
@@ -126,7 +138,7 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
         
            itemsListView.getItems().clear();
         
-           System.out.println("in initiate:" + text);
+           //System.out.println("in initiate:" + text);
             
             //write the code to get the items List from the db and then 
             //show it here 
@@ -197,6 +209,7 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
     private void createTextField() {
         //itemTextField = new TextField(getString());
         //itemTextField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
+        
     }
 
     private String getString() {
@@ -216,7 +229,7 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
          * @author Sai.Dandem
          * 
          * @param <ItemType>
-         */
+//         */
         public static interface Cell {
                 Node getNode();
 
