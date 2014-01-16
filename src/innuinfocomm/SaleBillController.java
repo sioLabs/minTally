@@ -164,9 +164,8 @@ public class SaleBillController implements Initializable {
 
     @FXML
     void handleSaveBtn(ActionEvent event) {
-        //save the item to db here
-       // SaleBill s = new SaleBill();
-        //s.setSaleBillNo(Integer.parseInt(billNoTextbox.getText()));
+        
+        
         s.setSaleBillDate(new Date());
         s.setSaleBilRemark(remarksTextBox.getText());
         s.setSaleBillCompany(companyTextBox.getText());
@@ -201,13 +200,30 @@ public class SaleBillController implements Initializable {
         
         
         //Now generate the item List
-        SalebillItem[] item = SaleItemTableView.getItems().toArray(new SalebillItem[0]);
+        System.out.println(data.size() + "buton click size");
+        int sind = 0;
+         for(sind = 0 ; sind<data.size();sind++){
+             if(data.get(sind).getSaleBillNo() == null)
+             {
+                 System.out.println(sind + "break point");
+                 break;
+             }               
+         }
+         data.remove(sind,data.size());
+         System.out.println(data.size() + "final size");
+         
+        //SalebillItem[] item = SaleItemTableView.getItems().toArray(new SalebillItem[0]);
+            SalebillItem[] item = data.toArray(new SalebillItem[0]);
+
         //SalebillItem[] item = (SalebillItem[])SaleItemTableView.getItems().toArray();
         
         ArrayList<SalebillItem> items = new ArrayList<SalebillItem>(Arrays.asList(item));
         s.setSalebillItemCollection(items);
-        
-        s.setSalebillfrieghtCharges(Double.parseDouble(frieghtTextBox.getText()));
+
+       if(frieghtTextBox.getText().trim().length() != 0 )
+            s.setSalebillfrieghtCharges(Double.parseDouble(frieghtTextBox.getText()));
+       else
+            s.setSalebillfrieghtCharges(0.0);
         
         EntityManager em = EntityManagerHelper.getInstance().getEm();
           try{
@@ -236,10 +252,11 @@ public class SaleBillController implements Initializable {
         int ind = SaleItemTableView.getSelectionModel().getSelectedIndex();
         System.out.println(ind + "index");
         SalebillItem edit = new ConverterUtil().Items2SalebillItem(selectedItem);
+        edit.setSaleBillNo(s);
         data.remove(ind);
         data.add(ind, edit);
         SaleItemTableView.getItems().add(new SalebillItem());
-        
+        setTotalTextBox();
     }
     
 
@@ -333,7 +350,13 @@ public class SaleBillController implements Initializable {
 
                     @Override
                     public void handle(TableColumn.CellEditEvent<SalebillItem, Double> t) {
-                        //biolerplate code
+                       //code to update the  total and the VAT%
+                        SalebillItem edit = (SalebillItem) t.getTableView().getItems().get(t.getTablePosition().getRow());
+                        edit.setItemQnty(t.getNewValue());
+                        
+                        setTotalTextBox();
+                        t.getTableView().getColumns().get(0).setVisible(false);
+                        t.getTableView().getColumns().get(0).setVisible(true);
                     }               
         });
         
@@ -404,9 +427,13 @@ public class SaleBillController implements Initializable {
         {
             nextValue++;
             billNoTextbox.setText(nextValue+"");
+            s.setSaleBillNo(nextValue);
         }
         else
+        {
             billNoTextbox.setText(1+"");
+            s.setSaleBillNo(1);
+        }
         
         
         

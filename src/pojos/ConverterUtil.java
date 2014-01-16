@@ -22,6 +22,8 @@ public class ConverterUtil {
         sbItem.setItemUnit(input.getItemFirstUnit().getId());
         sbItem.setItemUnitName(input.getItemFirstUnit().getUnitName());
         sbItem.setItemVatPerc(input.getItemVatPerc());
+        sbItem.setTotal(input.getItemRate());
+        sbItem.setItemVatRs(input.getItemRate()*input.getItemVatPerc()/100);
         //sbItem.set
         
         
