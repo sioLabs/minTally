@@ -1,6 +1,7 @@
 package innuinfocomm;
 
 
+import com.google.common.eventbus.EventBus;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,6 +59,9 @@ import utils.ItemSearchBox;
 
 
 public class SaleBillController implements Initializable {
+    
+    //eventBus 
+    EventBus eventBus = new EventBus();
 
     @FXML
     private ResourceBundle resources;
@@ -273,7 +277,8 @@ public class SaleBillController implements Initializable {
                         
             @Override
             public TableCell<SalebillItem, String> call(TableColumn<SalebillItem, String> p) {
-                selectedItem =  new ItemSearchBox();
+                selectedItem =  new ItemSearchBox(eventBus);
+                eventBus.register(selectedItem);              
                 return selectedItem;
             }
 

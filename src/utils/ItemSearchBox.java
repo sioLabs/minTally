@@ -4,6 +4,8 @@
  */
 package utils;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -43,9 +45,11 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
     private ChangeListener<Boolean> focusOutListener;
     private ListView<Items> itemsListView = new ListView<Items>();
     private Items selectedItem;
+    private EventBus eventBus;
 
-    public ItemSearchBox() {
+    public ItemSearchBox(EventBus e) {
         super();
+         this.eventBus = e; 
          setAlignment(Pos.CENTER);
          configureItemSearchBox();
     }
@@ -95,13 +99,14 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
          });
          itemsListView.setOnKeyPressed(new EventHandler<KeyEvent>(){
 
-            @Override
+            @Override @Subscribe
             public void handle(KeyEvent t) {
                 if(KeyCode.ENTER.equals(t.getCode())){
                     //Enter pressed
                     Items i = itemsListView.getSelectionModel().getSelectedItem();
                     System.out.println("Item Selected is :" + i);
                     selectedItem = i;
+                    eventBus.post(selectedItem);
                     commitEdit(selectedItem.getItemName());
                     //updateItem(i.getItemName(), false);
                     hidePopup();
