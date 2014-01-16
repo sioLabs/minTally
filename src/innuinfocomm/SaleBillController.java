@@ -231,30 +231,14 @@ public class SaleBillController implements Initializable {
     public void setSelectedItem(Items userSelectedItem){
         //System.out.println(userSelectedItem.getItemName() + "ullo");
         System.out.println("in setSelection");
-        selectedItem = userSelectedItem;
-           int ind = SaleItemTableView.getSelectionModel().getSelectedIndex();
-           //SaleItemTableView.setItems(null);
-           System.out.println(ind);
-            data.remove(ind);
-            SalebillItem edit = new ConverterUtil().Items2SalebillItem(selectedItem);
-            //edit.setRemark("");
-            data.add(ind, edit);
-            int size = data.size();
-            //SaleItemTableView.getItems().add(new SalebillItem());
-            data.add(new SalebillItem());
-            
-            /*
-            if((ind < size -1) &&  (ind != 0)){
-                data.remove(size);
-                data.remove(size-1);
-                data.add(new SalebillItem());
-            }
-             
-            */
-            
-    
-            
         
+        selectedItem = userSelectedItem;
+        int ind = SaleItemTableView.getSelectionModel().getSelectedIndex();
+        System.out.println(ind + "index");
+        SalebillItem edit = new ConverterUtil().Items2SalebillItem(selectedItem);
+        data.remove(ind);
+        data.add(ind, edit);
+        SaleItemTableView.getItems().add(new SalebillItem());
         
     }
     
@@ -300,8 +284,6 @@ public class SaleBillController implements Initializable {
         totalTableCol.setCellValueFactory(new PropertyValueFactory<SalebillItem,Double>("total"));
         vatPercTableCol.setCellValueFactory(new PropertyValueFactory<SalebillItem,Double>("itemVatPerc"));
         vatRsTableCol.setCellValueFactory(new PropertyValueFactory<SalebillItem,Double>("itemVatRs"));
-        
-        SaleItemTableView.setEditable(true);
         SaleItemTableView.setFocusTraversable(true);
         
         itemNameTableCol.setEditable(true);
@@ -375,7 +357,10 @@ public class SaleBillController implements Initializable {
         
         });
        
-        
+        itemNameTableCol.setEditable(true);
+        data.add(new SalebillItem());
+        SaleItemTableView.setEditable(true);
+        SaleItemTableView.setItems(data);
         
         
    }
