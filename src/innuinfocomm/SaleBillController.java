@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -52,12 +53,19 @@ import pojos.SalebillItem;
 import utils.EntityManagerHelper;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import org.apache.poi.ss.formula.functions.Columns;
 import org.datafx.reader.DataReader;
 import org.datafx.reader.JdbcSource;
 import org.datafx.reader.converter.JdbcConverter;
+import org.eclipse.persistence.jpa.internal.jpql.parser.UpdateItem;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import pojos.ConverterUtil;
 import utils.ItemSearchBox;
 
+
+
+
+////////////////////////////////Cellfactories
 
 public class SaleBillController implements Initializable {
     
@@ -235,8 +243,43 @@ public class SaleBillController implements Initializable {
     @Subscribe
     public void setSelectedItem(Items userSelectedItem){
         //System.out.println(userSelectedItem.getItemName() + "ullo");
+        System.out.println("in setSelection");
         selectedItem = userSelectedItem;
+           int ind = SaleItemTableView.getSelectionModel().getSelectedIndex();
+           //SaleItemTableView.setItems(null);
+           System.out.println(ind);
+            data.remove(ind);
+            SalebillItem edit = new ConverterUtil().Items2SalebillItem(selectedItem);
+            //edit.setRemark("");
+            data.add(ind, edit);
+            int size = data.size();
+            //SaleItemTableView.getItems().add(new SalebillItem());
+            data.add(new SalebillItem());
+            
+            /*
+            if((ind < size -1) &&  (ind != 0)){
+                data.remove(size);
+                data.remove(size-1);
+                data.add(new SalebillItem());
+            }
+            
+            */
+            
+    
+            
+        
+        
     }
+    
+    private void checkLastRow() {
+        
+        
+  //      System.out.println(size + "size");
+        
+              
+            
+    }
+           
 
     @FXML
     public void initialize(URL location, ResourceBundle r) {
@@ -286,7 +329,7 @@ public class SaleBillController implements Initializable {
                         
             @Override
             public TableCell<SalebillItem, String> call(TableColumn<SalebillItem, String> p) {
-                selectedItemSearchBox =  new ItemSearchBox(eventBus);
+                selectedItemSearchBox =  new ItemSearchBox(eventBus,p.getTableView().getSelectionModel().getSelectedIndex());
                 eventBus.register(selectedItemSearchBox);              
                 return selectedItemSearchBox;
             }
@@ -300,12 +343,13 @@ public class SaleBillController implements Initializable {
             public void handle(CellEditEvent<SalebillItem, String> t) {
         
                 System.out.println("on edit commit itemname :: " + selectedItem.getItemName());
-                SalebillItem edit = t.getTableView().getSelectionModel().getSelectedItem();
-                //edit.setItemName(t.getNewValue());
-                ConverterUtil cu = new ConverterUtil();
-                edit = cu.Items2SalebillItem(selectedItem);
-                t.getTableView().setVisible(false);
-                t.getTableView().setVisible(true);
+                int ind = t.getTableView().getSelectionModel().getSelectedIndex();
+                data.remove(ind);
+                SalebillItem edit = new ConverterUtil().Items2SalebillItem(selectedItem);
+                data.add(ind, edit);
+                t.getTableView().getSelectionModel().clearSelection();
+                t.getTableView().getSelectionModel().select(ind);
+
             }
         });
         
@@ -397,28 +441,13 @@ public class SaleBillController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Items> ov, Items t, Items t1) {
                 if((t!=null) &&(t1!=null)){
+                    //adding a blank item.
                     SalebillItem item = new SalebillItem();
                     data.add(item);
+
                     SaleItemTableView.setItems(data);
                     SaleItemTableView.getSelectionModel().clearSelection();
-    /*                item.setItemId(t1.getItemId());
-                    item.setItemName(t1.getItemName());
-                    item.setItemUnitName(t1.getItemFirstUnit().getUnitName());
-                    item.setItemVatPerc(t1.getItemVatPerc());
-                    item.setItemRate(t1.getItemRate());
-                    item.setItemQnty(1.0);
                     
-                    item.setRemark("");
-                    //item.setItemVatRs(0.0);
-                    item.setSaleBillNo(s);
-                    System.out.println(item.getTotal());
-                    //item.setTotal(0.0);
-                    //saleItemList.add(item);
-                    data.add(item);
-                    //data = FXCollections.observableArrayList(saleItemList);
-                    SaleItemTableView.setItems(data);
-                    SaleItemTableView.getSelectionModel().clearSelection();
-                    setTotalTextBox();*/
                 }
             }
         
@@ -777,12 +806,8 @@ public class SaleBillController implements Initializable {
 //     
 
            ////////////////////////////////////
-           
+
 }
-
-
-////////////////////////////////Cellfactories
-
  class EditingQntyCell extends TableCell<SalebillItem,Double>{
            private TextField textField;
            

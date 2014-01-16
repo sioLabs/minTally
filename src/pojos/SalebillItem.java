@@ -172,7 +172,7 @@ public class SalebillItem implements Serializable {
     public Double getItemRate() {
         return itemRate.getValue();
     }
-
+    
     public void setItemRate(Double itemRate) {
         this.itemRate.setValue(itemRate);
     }

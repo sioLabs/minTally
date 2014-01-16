@@ -46,10 +46,12 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
     private ListView<Items> itemsListView = new ListView<Items>();
     private Items selectedItem;
     private EventBus eventBus ;
+    private int rowInd;
 
-    public ItemSearchBox(EventBus e) {
+    public ItemSearchBox(EventBus e, int rowInd) {
         super();
          this.eventBus = e; 
+         this.rowInd = rowInd;
          setAlignment(Pos.CENTER);
          configureItemSearchBox();
     }
@@ -91,7 +93,7 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
                     System.out.println("Item Selected is :" + i);
                     selectedItem = i;
                     eventBus.post(selectedItem);
-                    commitEdit(selectedItem.getItemName());
+                    //commitEdit(selectedItem.getItemName());
                     //updateItem(i.getItemName(), false);
                     
                     hidePopup();
@@ -107,9 +109,11 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
                     Items i = itemsListView.getSelectionModel().getSelectedItem();
                     System.out.println("Item Selected is :" + i);
                     selectedItem = i;
+                    setText(getString());
+                    setContentDisplay(ContentDisplay.TEXT_ONLY);
                     eventBus.post(selectedItem);
-                    commitEdit(selectedItem.getItemName());
-                    //updateItem(i.getItemName(), false);
+                    //commitEdit(selectedItem.getItemName());
+                   // updateItem(i.getItemName(), false);
                     hidePopup();
                 }
             }
@@ -125,7 +129,7 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
 
             @Override
             public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean t1) {
-                System.out.println("focus chaneged");
+               // System.out.println("focus chaneged");
                 //if(t1){
                   
                 //}
