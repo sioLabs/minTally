@@ -156,19 +156,6 @@ public class SaleBillController implements Initializable {
     @FXML
     private TextField vatTextBox;
     
-    @FXML
-    private ComboBox<Items> itemsComboBox;
-    
-    @FXML 
-    private ComboBox<ItemGroup> groupComboBox;
-    
-    @FXML
-    private ComboBox<ItemGroup> subGroupComboBox;
-    
-    /*
-     * popused to contain a listview
-     */
-    //private  Popup itemsListContainer = new Popup();
     
 
     @FXML
@@ -262,7 +249,7 @@ public class SaleBillController implements Initializable {
                 data.remove(size-1);
                 data.add(new SalebillItem());
             }
-            
+             
             */
             
     
@@ -271,14 +258,7 @@ public class SaleBillController implements Initializable {
         
     }
     
-    private void checkLastRow() {
-        
-        
-  //      System.out.println(size + "size");
-        
-              
-            
-    }
+
            
 
     @FXML
@@ -293,10 +273,10 @@ public class SaleBillController implements Initializable {
         assert dateTextBox != null : "fx:id=\"dateTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert discountTextBox != null : "fx:id=\"discountTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert frieghtTextBox != null : "fx:id=\"frieghtTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
-        assert groupComboBox != null : "fx:id=\"groupComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
+        //assert groupComboBox != null : "fx:id=\"groupComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert invoiceRadioBtn != null : "fx:id=\"invoiceRadioBtn\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert itemNameTableCol != null : "fx:id=\"itemNameTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
-        assert itemsComboBox != null : "fx:id=\"itemsCombobox\" was not injected: check your FXML file 'SaleBill.fxml'.";
+        //assert itemsComboBox != null : "fx:id=\"itemsCombobox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert printBtn != null : "fx:id=\"printBtn\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert quantityTableCol != null : "fx:id=\"quantityTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert rateTableCol != null : "fx:id=\"rateTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
@@ -304,7 +284,7 @@ public class SaleBillController implements Initializable {
         assert remarksTextBox != null : "fx:id=\"remarksTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert saveBtn != null : "fx:id=\"saveBtn\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert siteComboBox != null : "fx:id=\"siteComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
-        assert subGroupComboBox != null : "fx:id=\"subGroupComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
+        //assert subGroupComboBox != null : "fx:id=\"subGroupComboBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert totalTableCol != null : "fx:id=\"totalTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert totalTextBox != null : "fx:id=\"totalTextBox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert unitTableCol != null : "fx:id=\"unitTableCol\" was not injected: check your FXML file 'SaleBill.fxml'.";
@@ -322,6 +302,7 @@ public class SaleBillController implements Initializable {
         vatRsTableCol.setCellValueFactory(new PropertyValueFactory<SalebillItem,Double>("itemVatRs"));
         
         SaleItemTableView.setEditable(true);
+        SaleItemTableView.setFocusTraversable(true);
         
         itemNameTableCol.setEditable(true);
         Callback<TableColumn<SalebillItem,String>, TableCell<SalebillItem, String>> itNameCellfactory = 
@@ -370,90 +351,16 @@ public class SaleBillController implements Initializable {
 
                     @Override
                     public void handle(TableColumn.CellEditEvent<SalebillItem, Double> t) {
-                        System.out.println("on edit commit called " + t.getNewValue());
-                        SalebillItem edit = (SalebillItem) t.getTableView().getItems().get(t.getTablePosition().getRow());
-                        edit.setItemQnty(t.getNewValue());
-                        
-                        setTotalTextBox();
-                        t.getTableView().getColumns().get(0).setVisible(false);
-                        t.getTableView().getColumns().get(0).setVisible(true);
-                        //t.getTableView().getItems()
-                        //t.getTableView().getSelectionModel().clearSelection();
-                        //t.getTableView().getSelectionModel().clearSelection();
+                        //biolerplate code
                     }               
         });
         
-        /////////UNIT TABLE CELL
-//        unitTableCol.setCellFactory(new Callback<TableCoumn<SalebillItem,String>,TableCell<SalebillItem,String>>(){
-//
-//            
-//            @Override
-//            public TableCell<SalebillItem, String> call(TableColumn<SalebillItem,String> p ) {
-//                
-//            }
-//
-//        
-//        
-//        });
-        
+     
 
         initializeSaleBill();
-        //itemsComboBox = new ComboBox<>();
-        groupComboBox.getItems().clear();
-        subGroupComboBox.getItems().clear();        
-        itemsComboBox.getItems().clear();
-        //customerComboBox.getItems().clear();
+
           fillCustomerComboBox();
-        //System.out.println("\n in initialize func");
-        fillGroupComboBox();
-        
-        groupComboBox.valueProperty().addListener(new ChangeListener<ItemGroup>(){
 
-            @Override
-            public void changed(ObservableValue<? extends ItemGroup> ov, ItemGroup t, ItemGroup t1) {
-                //now set the subgroup items here 
-//                   System.out.println("group combox box value hanged");
-//                   System.out.println("old value = "+t.getItemGroupName());
-//                   System.out.println("new value = "+t1.getItemGroupName());
-                   fillSubGroupComboBox();
-           
-            }
-        
-        
-        });
-        
-        subGroupComboBox.valueProperty().addListener(new ChangeListener<ItemGroup>(){
-
-            @Override
-            public void changed(ObservableValue<? extends ItemGroup> ov, ItemGroup t, ItemGroup t1) {
-                if((t1!=null))
-                        {
-                            System.out.println("subgroup value changed to "+t1.getItemGroupName());
-                            fillItemsComboBox();
-                        }
-            }
-        
-        
-        });
-        
-        itemsComboBox.valueProperty().addListener(new ChangeListener<Items>(){
-
-            @Override
-            public void changed(ObservableValue<? extends Items> ov, Items t, Items t1) {
-                if((t!=null) &&(t1!=null)){
-                    //adding a blank item.
-                    SalebillItem item = new SalebillItem();
-                    data.add(item);
-
-                    SaleItemTableView.setItems(data);
-                    SaleItemTableView.getSelectionModel().clearSelection();
-                    
-                }
-            }
-        
-            
-        });
-        
         customerComboBox.valueProperty().addListener(new ChangeListener<Ledger>(){
 
             @Override
@@ -484,103 +391,11 @@ public class SaleBillController implements Initializable {
     }
     
 
-    private void fillGroupComboBox(){
-    
-   //     System.out.println("fillGroupComboBox");
-        //get all the item group with parent id as 0;
-        EntityManager em = EntityManagerHelper.getInstance().getEm();
-        Query q  = em.createNamedQuery("ItemGroup.findByItemGroupParent");
-        q.setParameter("itemGroupParent", 0);
-        ArrayList<ItemGroup> groups = new ArrayList<ItemGroup>(q.getResultList());        
-        //System.out.println(groups.get(0)+"\n"+groups.get(1)+"\n"+groups.get(2));
-        groupComboBox.getItems().clear();
-        groupComboBox.getItems().addAll(groups);
-        groupComboBox.getSelectionModel().clearSelection();
-        groupComboBox.getSelectionModel().selectFirst();
-        
-    
-    }
-    
-    private void fillSubGroupComboBox(){
-        //get the selected value in the group Combo Box
-   //     System.out.println("fill subgroup combo box");
-        ItemGroup group = groupComboBox.getSelectionModel().getSelectedItem();
-        
-        EntityManager em = EntityManagerHelper.getInstance().getEm();
-        Query q  = em.createNamedQuery("ItemGroup.findByItemGroupParent");
-        q.setParameter("itemGroupParent", group.getItemGroupId());
-        // em.getTransaction().begin();
-        ArrayList<ItemGroup> subGroup = new ArrayList<ItemGroup>(q.getResultList());
-        //em.getTransaction().commit();
-        
-        if(subGroup.size()<1){  //this means that no subgroup exist
-       //     System.out.println("inside the nosubgroup condition");
-            subGroupComboBox.getItems().clear();
-            fillItemsComboBox();
-            return ;
-        }
-      //  System.out.println("group has subgroups" + subGroup.size());
-        subGroupComboBox.getItems().clear();
-        subGroupComboBox.getItems().addAll(subGroup);
-        subGroupComboBox.getSelectionModel().clearSelection();
-        subGroupComboBox.getSelectionModel().selectFirst();
-        fillItemsComboBox();
-    
-    }
-    
-    private void fillItemsComboBox(){
-   //     System.out.println("Inside fill items");
-        //itemsComboBox.getItems().removeAll(itemsComboBox.getItems());
-       
-        //check if the number of items in subgorup. 
-        if(subGroupComboBox.getItems().size() < 1){
- //           System.out.println("No sub groups exist");
-            //the get the items according to the selected group
-            ItemGroup group = groupComboBox.getSelectionModel().getSelectedItem();
-            ArrayList<Items> items1 = new ArrayList<Items>(group.getItemsCollection1());
-   //         System.out.println(group.getItemGroupName()+"\n" + group.getItemsCollection().size()+" "+group.getItemsCollection1().size()+"\n"+items1.size());
-            itemsComboBox.getItems().clear();
-            itemsComboBox.getItems().addAll(items1);
-            itemsComboBox.getSelectionModel().clearSelection();
-            itemsComboBox.getSelectionModel().selectFirst();
-            
-        
-        }else{
-            //get the select subgroup and list items from that 
-            //EntityManager em = EntityManagerHelper.getInstance().getEm();
-            //em.getTransaction().begin();
-            ItemGroup group = subGroupComboBox.getSelectionModel().getSelectedItem();
-            
-    //        System.out.println("group has subgroup and subgroup has items");
-    //        System.out.println("subgroup = " +group.getItemGroupName());
-            //System.out.println(group.getItemGroupName() + "\n"+group.getItemsCollection().size()+"\n "+group.getItemsCollection1().size());
-            ArrayList<Items> items1 = new ArrayList<Items>(group.getItemsCollection());
-      //      System.out.println(items1.size() + "num items ");
-            itemsComboBox.getItems().clear();
-            itemsComboBox.getItems().addAll(items1);
-            itemsComboBox.getSelectionModel().clearSelection();                    
-            itemsComboBox.getSelectionModel().selectFirst();      
-            
-        
-        }
-        
-        
-    
-        
-    }
-    
-    //function to fill the customer combo box. Remember customer is sundry debtors
+//function to fill the customer combo box. Remember customer is sundry debtors
     private void fillCustomerComboBox(){
         EntityManager em = EntityManagerHelper.getInstance().getEm();
-        //Query q = em.createNamedQuery("Ledger.findByLedgerType");
+     
         Query q = em.createNamedQuery("Ledger.findAll");
-        //Query q1 = em.createNamedQuery("LedgerGroup.findByGroupName");
-        //q1.setParameter("groupName", "Sundry Debtors");
-        //LedgerGroup l  = (LedgerGroup)q1.getSingleResult();
-        //q.setParameter("ledgerType", l.getId());
-        //System.out.println(l.getGroupName()+ " "+ l.getId());
-        
-        //customerComboBox.setOnKeyReleased(new KeyHandler());
         
         ArrayList<Ledger> custList = new ArrayList<Ledger>(q.getResultList());
         //System.out.println(custList.size());
@@ -588,60 +403,9 @@ public class SaleBillController implements Initializable {
         customerComboBox.getItems().addAll(custList);
         customerComboBox.getSelectionModel().clearSelection();
         customerComboBox.getSelectionModel().selectFirst();
-        //customerComboBox.setEditable(true);
-        //customerComboBox.fireEvent();
-            
+        
     }
     
-//  Code for the key handler class
-//    private class KeyHandler implements EventHandler<KeyEvent>{
-//
-//        private SingleSelectionModel<Ledger> sm;
-//        private String s;
-//        
-//        public KeyHandler(){
-//            sm = customerComboBox.getSelectionModel();
-//            s = "";
-//        }
-//        @Override
-//        public void handle(KeyEvent event) {
-//            
-//            if( event.getCode() == KeyCode.BACK_SPACE && s.length()>0)
-//                s = s.substring( 0, s.length() - 1 );
-//            else s += event.getText();
-//
-//            if( s.length() == 0 ) {
-//             //   fillCustomerComboBox();
-//                sm.selectFirst();
-//                return;
-//            }
-//            System.out.println( s );
-//            ArrayList<Ledger> searchList = new ArrayList<Ledger>();
-//            for( Ledger item: customerComboBox.getItems() ) {
-//                if( item.getLedgerName().contains(s ) ) 
-//                    searchList.add(item);              
-//                     //sm.select( item );
-//                    //customerComboBox.
-//            }
-//            
-//            
-//                
-//            if(searchList.size() != 0 ){
-//            customerComboBox.getItems().clear();
-//            customerComboBox.getItems().addAll(searchList);
-//            }
-//            
-//            if(searchList.size() == 1){
-//                customerComboBox.getSelectionModel().selectFirst();
-//            }
-//            
-//            //customerComboBox.fireEvent();
-//            //customerComboBox.setSelectionModel(sm);
-//            
-//        }
-//        
-//    }
-//    
 
     private void initializeSaleBill() {
         //first thing is get a saleBillNumber;
@@ -665,8 +429,6 @@ public class SaleBillController implements Initializable {
         s.setSaleBillDate(new Date());          
         
         
-        s.setSaleBillDate(new Date());
-        
         Calendar c = Calendar.getInstance();
         int month = c.get(Calendar.MONTH)+1;
         int day = c.get(Calendar.DAY_OF_MONTH);
@@ -677,8 +439,6 @@ public class SaleBillController implements Initializable {
         
         fillCustomerComboBox();
         
-//        ItemSearchBox mySearchBox = new ItemSearchBox();
-  //      anchorPane.getChildren().add(mySearchBox);
         
         
     }
@@ -716,98 +476,12 @@ public class SaleBillController implements Initializable {
            
            
            
-           ////////////////EditingItemnamecell////////////
-//             class EditingItemNameCell extends TableCell<SalebillItem, String>{
-//               private TextField textField;
-//               private ListView<Items>  itemsList;
-//               
-//               EntityManager em = EntityManagerHelper.getInstance().getEm();
-//             
-//              
-//               public EditingItemNameCell() {}
-//               
-//               @Override
-//               public void updateItem(String name, boolean empty){
-//                   if(empty){
-//                       setText(null);
-//                       setGraphic(null);
-//                   }else{
-//                       if(textField != null){
-//                           String query = getString();
-//                       }
-//                   }
-//               }
-//               @Override
-//               public void startEdit(){
-//                   super.startEdit();
-//                   if(textField == null)
-//                       createTextField();
-//                   setGraphic(textField);
-//                   setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-//                   textField.selectAll();
-//               }
-//               @Override 
-//               public void cancelEdit(){
-//                   super.cancelEdit();
-//                   setText(String.valueOf(getItem()));
-//                   setContentDisplay(ContentDisplay.TEXT_ONLY);
-//               }
-//               
-//               
-//               
-//                  //textfield creation and settings
-//           private void createTextField(){
-//                textField = new TextField(getString());
-//                textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
-//                textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//
-//                    @Override
-//                    public void handle(KeyEvent t) {
-//                     //   System.out.println("inside key handle event");
-//                       // System.out.println(t.getCode());
-//                        itemsList = new ListView<Items>();
-//                         
-//                        EntityManager em = EntityManagerHelper.getInstance().getEm();
-//                        Query q  = em.createNamedQuery("Items.findByItemName");
-//                        q.setParameter("itemName",textField.getText());
-//                        ArrayList<Items> itList = new ArrayList<Items>(q.getResultList());
-//                        itemsList.getItems().clear();
-//                        itemsList.getItems().addAll(itList);
-//                        itemsList.getSelectionModel().clearSelection();
-//                        itemsList.getSelectionModel().selectFirst();
-//                        
-////                        itemsListContainer.setAutoFix(true);
-////                        itemsListContainer.setHideOnEscape(true);
-////                        itemsListContainer.getContent().addAll(itemsList);
-////                        
-////                       Parent parent = getParent();
-////                       
-//                       
-//                       
-//                       
-//                        
-//                        
-//                        
-//                        if (t.getCode() == KeyCode.ENTER) {
-//                            commitEdit(textField.getText());
-//                         //   System.out.println("enter key pressed");
-//                        } else if (t.getCode() == KeyCode.ESCAPE) {
-//                            cancelEdit();
-//                        }
-//                    }
-//                });
-//           }
-//               
-//                 private String getString() {
-//                    return getItem() == null ? "" : getItem().toString();
-//            }
-//       }
-//           
-//     
-
-           ////////////////////////////////////
 
 }
+
+
+
+//Qnty Cell Editor
  class EditingQntyCell extends TableCell<SalebillItem,Double>{
            private TextField textField;
            
