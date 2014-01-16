@@ -45,7 +45,7 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
     private ChangeListener<Boolean> focusOutListener;
     private ListView<Items> itemsListView = new ListView<Items>();
     private Items selectedItem;
-    private EventBus eventBus;
+    private EventBus eventBus ;
 
     public ItemSearchBox(EventBus e) {
         super();
@@ -90,6 +90,7 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
                 Items i = itemsListView.getSelectionModel().getSelectedItem();
                     System.out.println("Item Selected is :" + i);
                     selectedItem = i;
+                    eventBus.post(selectedItem);
                     commitEdit(selectedItem.getItemName());
                     //updateItem(i.getItemName(), false);
                     

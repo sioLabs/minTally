@@ -2,6 +2,7 @@ package innuinfocomm;
 
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -228,10 +229,18 @@ public class SaleBillController implements Initializable {
     private  ObservableList<SalebillItem> data = FXCollections.observableArrayList();
    // private ArrayList<SalebillItem> saleItemList = new ArrayList<SalebillItem>();
 
-    private ItemSearchBox selectedItem;
+    private ItemSearchBox selectedItemSearchBox;
+    private Items selectedItem;
+    
+    @Subscribe
+    public void setSelectedItem(Items userSelectedItem){
+        //System.out.println(userSelectedItem.getItemName() + "ullo");
+        selectedItem = userSelectedItem;
+    }
 
     @FXML
     public void initialize(URL location, ResourceBundle r) {
+        eventBus.register(this);
         assert SaleItemTableView != null : "fx:id=\"SaleItemTableView\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert billNoTextbox != null : "fx:id=\"billNoTextbox\" was not injected: check your FXML file 'SaleBill.fxml'.";
         assert challanRadioBtn != null : "fx:id=\"challanRadioBtn\" was not injected: check your FXML file 'SaleBill.fxml'.";
@@ -277,9 +286,9 @@ public class SaleBillController implements Initializable {
                         
             @Override
             public TableCell<SalebillItem, String> call(TableColumn<SalebillItem, String> p) {
-                selectedItem =  new ItemSearchBox(eventBus);
-                eventBus.register(selectedItem);              
-                return selectedItem;
+                selectedItemSearchBox =  new ItemSearchBox(eventBus);
+                eventBus.register(selectedItemSearchBox);              
+                return selectedItemSearchBox;
             }
 
         };
@@ -287,13 +296,14 @@ public class SaleBillController implements Initializable {
         //itemNameTableCol.bv o
         itemNameTableCol.setOnEditCommit(new EventHandler<CellEditEvent<SalebillItem, String>>() {
 
-            @Override
+            @Override 
             public void handle(CellEditEvent<SalebillItem, String> t) {
-                System.out.println("on edit commit itemname" + selectedItem.getSelectedItem());
+        
+                System.out.println("on edit commit itemname :: " + selectedItem.getItemName());
                 SalebillItem edit = t.getTableView().getSelectionModel().getSelectedItem();
                 //edit.setItemName(t.getNewValue());
                 ConverterUtil cu = new ConverterUtil();
-                edit = cu.Items2SalebillItem(selectedItem.getSelectedItem());
+                edit = cu.Items2SalebillItem(selectedItem);
                 t.getTableView().setVisible(false);
                 t.getTableView().setVisible(true);
             }
@@ -433,7 +443,6 @@ public class SaleBillController implements Initializable {
         
         
    }
-    
     
     
     
