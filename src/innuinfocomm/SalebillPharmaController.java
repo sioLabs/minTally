@@ -111,7 +111,7 @@ public class SalebillPharmaController {
     @FXML
     private TextField vatTextBox;
 
-    private ObservableList<ItemsPharmaProperty> data = FXCollections.o
+    private ObservableList<ItemsPharmaProperty> data = FXCollections.observableArrayList();
     
     
     @FXML
