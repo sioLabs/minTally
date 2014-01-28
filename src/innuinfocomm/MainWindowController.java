@@ -132,7 +132,7 @@ public class MainWindowController {
     
     @FXML
     void handleCreateNewSaleBillBtn() throws IOException{
-        Parent rootNew = FXMLLoader.load(getClass().getResource("SaleBill.fxml"));
+        Parent rootNew = FXMLLoader.load(getClass().getResource("SalebillPharma.fxml"));
         Tab tab = new Tab("Create New Sale Bill");
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);

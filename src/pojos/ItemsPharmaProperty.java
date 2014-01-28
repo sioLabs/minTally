@@ -11,7 +11,7 @@ import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import sun.java2d.pipe.SpanShapeRenderer;
+
 
 /**
  *
@@ -31,7 +31,9 @@ public class ItemsPharmaProperty {
     FloatProperty vat = new SimpleFloatProperty();
             
 
-    
+    public ItemsPharmaProperty(){
+        
+    }
     public ItemsPharmaProperty( int id, String dm, String make, String batch, String date, String desc, int pack, float mrp, float rate, float vat) {
         this.id.set(id);
         this.DM.set(dm);
@@ -44,6 +46,8 @@ public class ItemsPharmaProperty {
         this.rate.set(rate);
         this.vat.set(vat);
     }
+
+
     
   public ItemsPharma getModelObj() throws ParseException{
      
@@ -93,12 +97,12 @@ public class ItemsPharmaProperty {
         this.date = date;
     }
 
-    public StringProperty getDescription() {
-        return description;
+    public String getDescription() {
+        return description.get();
     }
 
-    public void setDescription(StringProperty description) {
-        this.description = description;
+    public void setDescription(String description) {
+        this.description.set(description);
     }
 
     public IntegerProperty getPack() {

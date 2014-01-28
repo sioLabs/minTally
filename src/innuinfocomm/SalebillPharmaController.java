@@ -2,6 +2,9 @@ package innuinfocomm;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -10,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import pojos.ItemsPharmaProperty;
 
 
 public class SalebillPharmaController {
@@ -21,13 +25,13 @@ public class SalebillPharmaController {
     private URL location;
 
     @FXML
-    private TableColumn<?, ?> AmountTableColumn;
+    private TableColumn<ItemsPharmaProperty, Float> AmountTableColumn;
 
     @FXML
     private TextField CDamtTextBox;
 
     @FXML
-    private TableColumn<?, ?> batchTableColumn;
+    private TableColumn<ItemsPharmaProperty, String> batchTableColumn;
 
     @FXML
     private TextField billNoTextbox;
@@ -45,49 +49,49 @@ public class SalebillPharmaController {
     private TextArea deliveryTextArea;
 
     @FXML
-    private TableColumn<?, ?> descTableColumn;
+    private TableColumn<ItemsPharmaProperty, String> descTableColumn;
 
     @FXML
     private TextField discountTextBox;
 
     @FXML
-    private TableColumn<?, ?> dmTableColumn;
+    private TableColumn<ItemsPharmaProperty, String> dmTableColumn;
 
     @FXML
     private Label errorLabel;
 
     @FXML
-    private TableColumn<?, ?> expTableColumn;
+    private TableColumn<ItemsPharmaProperty, String> expTableColumn;
 
     @FXML
     private TextField finalAmtTextBox;
 
     @FXML
-    private TableColumn<?, ?> makeTableColumn;
+    private TableColumn<ItemsPharmaProperty, String> makeTableColumn;
 
     @FXML
-    private TableColumn<?, ?> mrpTableColumn;
+    private TableColumn<ItemsPharmaProperty, Float> mrpTableColumn;
 
     @FXML
-    private TableColumn<?, ?> packTableColumn;
+    private TableColumn<ItemsPharmaProperty, Integer> packTableColumn;
 
     @FXML
-    private ComboBox<?> paymentComboBox;
+    private ComboBox<String> paymentComboBox;
 
     @FXML
     private Button printBtn;
 
     @FXML
-    private TableColumn<?, ?> qntyTableColumn;
+    private TableColumn<ItemsPharmaProperty, Float> qntyTableColumn;
 
     @FXML
-    private TableColumn<?, ?> rateTableColumn;
+    private TableColumn<ItemsPharmaProperty, Float> rateTableColumn;
 
     @FXML
     private Button resetBtn;
 
     @FXML
-    private TableView<?> saleItemTableview;
+    private TableView<ItemsPharmaProperty> saleItemTableview;
 
     @FXML
     private Button saveBtn;
@@ -107,7 +111,9 @@ public class SalebillPharmaController {
     @FXML
     private TextField vatTextBox;
 
-
+    private ObservableList<ItemsPharmaProperty> data = FXCollections.o
+    
+    
     @FXML
     void initialize() {
         assert AmountTableColumn != null : "fx:id=\"AmountTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
@@ -140,7 +146,32 @@ public class SalebillPharmaController {
         assert vat5AmtLabel != null : "fx:id=\"vat5AmtLabel\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert vatTextBox != null : "fx:id=\"vatTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
 
+       initializeSaleBill();
+        
+    }
+    
+        @FXML
+    void handlePrintBtn(ActionEvent event) {
+            
+    }
 
+    @FXML
+    void handleResetBtn(ActionEvent event) {
+    }
+
+    @FXML
+    void handleSaveBtn(ActionEvent event) {
+        System.out.println("Button Clicked");
+        saleItemTableview.getItems().get(0).setDescription("Hello Wolrd");
+        data.add(new ItemsPharmaProperty());
+       // data.get(0).setDescription("Hello World");
+        
+    }
+
+    private void initializeSaleBill() {
+       saleItemTableview.setItems(data);
+       data.add(new ItemsPharmaProperty());
+       
     }
 
 }
