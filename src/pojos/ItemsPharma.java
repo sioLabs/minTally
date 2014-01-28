@@ -42,6 +42,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ItemsPharma.findByMrp", query = "SELECT i FROM ItemsPharma i WHERE i.mrp = :mrp"),
     @NamedQuery(name = "ItemsPharma.findByRateFraction", query = "SELECT i FROM ItemsPharma i WHERE i.rateFraction = :rateFraction")})
 public class ItemsPharma implements Serializable {
+    @Basic(optional = false)
+    @Column(name = "vat")
+    private float vat = 5;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,7 +88,7 @@ public class ItemsPharma implements Serializable {
         this.id = id;
     }
 
-    public ItemsPharma(Integer id, String dM, String make, String batch, String expDate, String description, int pack, float mrp, float rateFraction) throws ParseException {
+    public ItemsPharma(Integer id, String dM, String make, String batch, String expDate, String description, int pack, float mrp, float rateFraction ) throws ParseException {
         this.id = id;
         this.dM = dM;
         this.make = make;
@@ -197,6 +200,14 @@ public class ItemsPharma implements Serializable {
     public ItemsPharmaProperty getPropertyObj(){
         
         return new ItemsPharmaProperty(id,  dM, make, batch, dateFormatter.format(expDate), description, pack, mrp, mrp);
+    }
+
+    public float getVat() {
+        return vat;
+    }
+
+    public void setVat(float vat) {
+        this.vat = vat;
     }
     
   

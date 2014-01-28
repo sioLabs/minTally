@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="626.0000999999975" prefWidth="935.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.SalebillPharmaController">
+  <children>
+    <Label layoutX="387.0" layoutY="14.0" text="Create New Sale Bill">
+      <effect>
+        <DropShadow color="#1a1a1a8a" height="69.57142857142857" radius="27.20238095238095" width="41.238095238095234">
+          <input>
+            <Lighting>
+              <bumpInput>
+                <Shadow />
+              </bumpInput>
+              <light>
+                <javafx.scene.effect.Light.Distant />
+              </light>
+            </Lighting>
+          </input>
+        </DropShadow>
+      </effect>
+      <font>
+        <Font name="System Bold" size="16.0" />
+      </font>
+    </Label>
+    <HBox id="HBox" alignment="CENTER" layoutX="42.0" layoutY="62.0" spacing="10.0">
+      <children>
+        <Label text="Bill No :">
+          <font>
+            <Font size="14.0" fx:id="x1" />
+          </font>
+        </Label>
+        <TextField fx:id="billNoTextbox" disable="true" prefWidth="53.0" />
+        <Label font="$x1" text="Date :" />
+        <TextField fx:id="dateTextBox" disable="true" prefWidth="85.0" />
+      </children>
+    </HBox>
+    <HBox id="HBox" alignment="CENTER" layoutX="44.0" layoutY="111.0" spacing="5.0">
+      <children>
+        <Label font="$x1" text="Customer :" />
+        <TextField fx:id="customerTextBox" prefWidth="178.0" promptText="Search here" />
+        <Label font="$x1" text="License No :" />
+        <TextField fx:id="custLicTextBox" prefWidth="167.0" promptText="" />
+        <Label font="$x1" text="Mode of Payment :" />
+        <ComboBox fx:id="paymentComboBox" prefHeight="21.0" prefWidth="92.0" promptText="Select Mode">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+      </children>
+    </HBox>
+    <TableView fx:id="saleItemTableview" layoutX="42.0" layoutY="156.0" prefHeight="243.0" prefWidth="870.0">
+      <columns>
+        <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="54.0" text="MRP" fx:id="mrpTableColumn" />
+        <TableColumn editable="false" prefWidth="75.0" text="D.M." fx:id="dmTableColumn" />
+        <TableColumn editable="false" prefWidth="75.0" text="Make" fx:id="makeTableColumn" />
+        <TableColumn editable="false" prefWidth="75.0" text="Batch" fx:id="batchTableColumn" />
+        <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="53.0" text="Exp" fx:id="expTableColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="320.0" text="Product Description" fx:id="descTableColumn" />
+        <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="41.0" text="Pack" fx:id="packTableColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="48.0" text="Qnty" fx:id="qntyTableColumn" />
+        <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="52.0" text="Rate" fx:id="rateTableColumn" />
+        <TableColumn editable="false" prefWidth="75.0" text="Amount" fx:id="AmountTableColumn" />
+      </columns>
+    </TableView>
+    <HBox id="HBox" alignment="CENTER" layoutX="42.0" layoutY="413.0" spacing="20.0">
+      <children>
+        <Label fx:id="vat5AmtLabel" font="$x1" text="Vat amt on 5% product" />
+        <Label id="vat125AmtLAbel" fx:id="vat125AmtLabel" font="$x1" text="Vat amt on 12.5% product" />
+      </children>
+    </HBox>
+    <Label font="$x1" layoutX="717.0" layoutY="409.0" text="Total Amount :" />
+    <TextField fx:id="totalTextBox" layoutX="820.0" layoutY="409.0" prefWidth="92.0" />
+    <Label font="$x1" layoutX="711.0" layoutY="435.0" text="(+) CD 2% amt :" />
+    <TextField fx:id="CDamtTextBox" layoutX="820.0" layoutY="434.0" prefWidth="92.0" />
+    <Label font="$x1" layoutX="725.0" layoutY="458.0" text="(+) VAT Amt :" />
+    <TextField fx:id="vatTextBox" layoutX="820.0" layoutY="456.0" prefWidth="92.0" />
+    <Label font="$x1" layoutX="729.0" layoutY="488.0" text="(-) Discount :" />
+    <TextField fx:id="discountTextBox" layoutX="820.0" layoutY="488.0" prefWidth="92.0" />
+    <Label font="$x1" layoutX="675.0" layoutY="522.0" text="Net Amount Payable : " />
+    <TextField fx:id="finalAmtTextBox" layoutX="820.0" layoutY="522.0" prefWidth="92.0" />
+    <Label font="$x1" layoutX="42.0" layoutY="458.0" text="Delivery Address:" />
+    <TextArea fx:id="deliveryTextArea" layoutX="42.0" layoutY="479.0" prefHeight="56.0" prefWidth="326.0" promptText="Enter delivery location. Leave blank if not applied" wrapText="true" />
+    <Button fx:id="saveBtn" layoutX="44.0" layoutY="567.0" mnemonicParsing="false" prefWidth="85.0" text="Save" />
+    <Button fx:id="printBtn" layoutX="149.0" layoutY="567.0" mnemonicParsing="false" prefWidth="85.0" text="Print" />
+    <Button fx:id="resetBtn" layoutX="257.0" layoutY="567.0" mnemonicParsing="false" prefWidth="85.0" text="Reset" />
+    <Label fx:id="errorLabel" layoutX="346.0" layoutY="66.0" text="Error Label :" textFill="#cc0000" visible="false">
+      <font>
+        <Font size="16.0" fx:id="x2" />
+      </font>
+    </Label>
+    <Label fx:id="successLabel" font="$x2" layoutX="347.0" layoutY="66.0" text="Irem Saved Successfully" textFill="#009918" visible="false" />
+  </children>
+</AnchorPane>
