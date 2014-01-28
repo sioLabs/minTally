@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="457.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.AddNewPharmaItemController">
+  <children>
+    <Label layoutX="251.0" layoutY="14.0" text="Add New Item">
+      <effect>
+        <DropShadow>
+          <input>
+            <InnerShadow>
+              <input>
+                <Lighting>
+                  <bumpInput>
+                    <Shadow />
+                  </bumpInput>
+                  <light>
+                    <javafx.scene.effect.Light.Distant />
+                  </light>
+                </Lighting>
+              </input>
+            </InnerShadow>
+          </input>
+        </DropShadow>
+      </effect>
+      <font>
+        <Font size="16.0" />
+      </font>
+    </Label>
+    <Label layoutX="44.0" layoutY="64.0" prefHeight="21.999908447265625" text="Item ID :">
+      <font>
+        <Font size="14.0" fx:id="x1" />
+      </font>
+    </Label>
+    <TextField fx:id="itemIdTextBox" disable="true" layoutX="100.0" layoutY="64.0" prefWidth="46.0" />
+    <Label font="$x1" layoutX="293.0" layoutY="69.0" prefHeight="21.999908447265625" text="DM :" />
+    <TextField fx:id="DMTextBox" layoutX="331.0" layoutY="69.0" prefWidth="139.0" />
+    <Label font="$x1" layoutX="44.0" layoutY="107.0" prefHeight="21.999908447265625" text="Make :" />
+    <TextField fx:id="makeTextBox" layoutX="100.0" layoutY="107.0" prefWidth="147.0" />
+    <Label font="$x1" layoutX="281.0" layoutY="106.0" prefHeight="21.999908447265625" text="Batch :" />
+    <TextField fx:id="batchTextBox" layoutX="331.0" layoutY="107.0" prefWidth="139.0" />
+    <Label font="$x1" layoutX="45.0" layoutY="143.0" prefHeight="21.999908447265625" text="Expiry Date :" />
+    <TextField id="expDateTextBix" fx:id="expDateTextBox" layoutX="130.0" layoutY="143.0" prefWidth="119.0" promptText="DD/MM/YYYY" />
+    <Label font="$x1" layoutX="46.0" layoutY="181.0" prefHeight="21.999908447265625" text="Description :" />
+    <TextArea fx:id="descTextArea" layoutX="44.0" layoutY="203.0" prefHeight="61.0" prefWidth="276.0" wrapText="true" />
+    <Label font="$x1" layoutX="261.0" layoutY="142.0" prefHeight="22.000099999997474" text="Pack Size :" />
+    <TextField fx:id="packTextBox" layoutX="331.0" layoutY="143.0" prefWidth="139.0" />
+    <Label font="$x1" layoutX="341.0" layoutY="203.0" prefHeight="21.999908447265625" text="MRP : " />
+    <TextField fx:id="mrpTextBox" layoutX="381.0" layoutY="203.0" prefWidth="89.0" />
+    <Label font="$x1" layoutX="341.0" layoutY="234.0" prefHeight="21.999908447265625" text="Rate : " />
+    <TextField fx:id="rateTextBox" layoutX="381.0" layoutY="234.0" prefWidth="89.0" promptText="Rate %" />
+    <Button fx:id="addNewItemButton" layoutX="47.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleAddButtonClick" prefWidth="89.0" text="Add" />
+    <Label fx:id="errorLabel" layoutX="47.0" layoutY="305.0" text="Error:" textFill="RED" visible="false" />
+    <Label id="errorLabel" fx:id="successLabel" layoutX="46.0" layoutY="315.0" text="Item Added Successfully!" textFill="#0c9900" visible="false">
+      <font>
+        <Font size="15.0" />
+      </font>
+    </Label>
+    <Button fx:id="resetBtn" layoutX="341.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleResetBtn" prefWidth="89.0" text="Reset" />
+  </children>
+</AnchorPane>

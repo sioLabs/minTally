@@ -114,7 +114,7 @@ public class MainWindowController {
     
     @FXML 
     void handleAddItemBtn() throws IOException{
-        Parent rootNew = FXMLLoader.load(getClass().getResource("AddItem.fxml"));
+        Parent rootNew = FXMLLoader.load(getClass().getResource("AddNewPharmaItem.fxml"));
         Tab tab = new Tab("Add an Item");
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);
