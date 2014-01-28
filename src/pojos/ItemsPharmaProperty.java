@@ -28,9 +28,11 @@ public class ItemsPharmaProperty {
     IntegerProperty pack = new SimpleIntegerProperty();
     FloatProperty mrp = new SimpleFloatProperty();
     FloatProperty rate = new SimpleFloatProperty();
+    FloatProperty vat = new SimpleFloatProperty();
+            
 
     
-    public ItemsPharmaProperty( int id, String dm, String make, String batch, String date, String desc, int pack, float mrp, float rate) {
+    public ItemsPharmaProperty( int id, String dm, String make, String batch, String date, String desc, int pack, float mrp, float rate, float vat) {
         this.id.set(id);
         this.DM.set(dm);
         this.make.set(make);
@@ -40,11 +42,12 @@ public class ItemsPharmaProperty {
         this.pack.set(pack);
         this.mrp.set(mrp);
         this.rate.set(rate);
+        this.vat.set(vat);
     }
     
   public ItemsPharma getModelObj() throws ParseException{
      
-      return new ItemsPharma(id.get(), DM.get(), make.get(), batch.get(), date.get(), description.get(), pack.get(),mrp.get(), rate.get());
+      return new ItemsPharma(id.get(), DM.get(), make.get(), batch.get(), date.get(), description.get(), pack.get(),mrp.get(), rate.get(), vat.get());
       
       
    

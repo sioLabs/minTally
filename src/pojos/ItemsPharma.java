@@ -88,7 +88,7 @@ public class ItemsPharma implements Serializable {
         this.id = id;
     }
 
-    public ItemsPharma(Integer id, String dM, String make, String batch, String expDate, String description, int pack, float mrp, float rateFraction ) throws ParseException {
+    public ItemsPharma(Integer id, String dM, String make, String batch, String expDate, String description, int pack, float mrp, float rateFraction, float vat ) throws ParseException {
         this.id = id;
         this.dM = dM;
         this.make = make;
@@ -98,6 +98,7 @@ public class ItemsPharma implements Serializable {
         this.pack = pack;
         this.mrp = mrp;
         this.rateFraction = rateFraction;
+        this.vat = vat;
     }
 
     public Integer getId() {
@@ -199,7 +200,7 @@ public class ItemsPharma implements Serializable {
     
     public ItemsPharmaProperty getPropertyObj(){
         
-        return new ItemsPharmaProperty(id,  dM, make, batch, dateFormatter.format(expDate), description, pack, mrp, mrp);
+        return new ItemsPharmaProperty(id,  dM, make, batch, dateFormatter.format(expDate), description, pack, mrp,rateFraction,vat);
     }
 
     public float getVat() {
