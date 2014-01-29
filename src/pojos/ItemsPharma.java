@@ -43,6 +43,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ItemsPharma.findByRateFraction", query = "SELECT i FROM ItemsPharma i WHERE i.rateFraction = :rateFraction")})
 public class ItemsPharma implements Serializable {
     @Basic(optional = false)
+    @Column(name = "pack")
+    private String pack;
+    @Basic(optional = false)
     @Column(name = "vat")
     private float vat = 5;
     private static final long serialVersionUID = 1L;
@@ -68,9 +71,6 @@ public class ItemsPharma implements Serializable {
     @Column(name = "description")
     private String description;
     @Basic(optional = false)
-    @Column(name = "pack")
-    private int pack;
-    @Basic(optional = false)
     @Column(name = "mrp")
     private float mrp;
     @Basic(optional = false)
@@ -88,7 +88,7 @@ public class ItemsPharma implements Serializable {
         this.id = id;
     }
 
-    public ItemsPharma(Integer id, String dM, String make, String batch, String expDate, String description, int pack, float mrp, float rateFraction, float vat ) throws ParseException {
+    public ItemsPharma(Integer id, String dM, String make, String batch, String expDate, String description, String pack, float mrp, float rateFraction, float vat ) throws ParseException {
         this.id = id;
         this.dM = dM;
         this.make = make;
@@ -149,14 +149,6 @@ public class ItemsPharma implements Serializable {
         this.description = description;
     }
 
-    public int getPack() {
-        return pack;
-    }
-
-    public void setPack(int pack) {
-        this.pack = pack;
-    }
-
     public float getMrp() {
         return mrp;
     }
@@ -209,6 +201,14 @@ public class ItemsPharma implements Serializable {
 
     public void setVat(float vat) {
         this.vat = vat;
+    }
+
+    public String getPack() {
+        return pack;
+    }
+
+    public void setPack(String pack) {
+        this.pack = pack;
     }
     
   

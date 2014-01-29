@@ -91,8 +91,8 @@ public class AddNewPharmaItemController {
         
         
         String packS = packTextBox.getText();
-        int pack = Integer.parseInt(packS);
-        item.setPack(pack);
+        //int pack = Integer.parseInt(packS);
+        item.setPack(packS);
         
         String mrpS = mrpTextBox.getText();
         float mrp = Float.parseFloat(mrpS);

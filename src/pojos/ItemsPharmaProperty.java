@@ -19,22 +19,22 @@ import javafx.beans.property.StringProperty;
  */
 public class ItemsPharmaProperty {
 
-    IntegerProperty id = new SimpleIntegerProperty();
-    StringProperty DM = new SimpleStringProperty();
-    StringProperty make = new SimpleStringProperty();
-    StringProperty batch = new SimpleStringProperty();
-    StringProperty date = new SimpleStringProperty();
-    StringProperty description = new SimpleStringProperty();
-    IntegerProperty pack = new SimpleIntegerProperty();
-    FloatProperty mrp = new SimpleFloatProperty();
-    FloatProperty rate = new SimpleFloatProperty();
-    FloatProperty vat = new SimpleFloatProperty();
+    SimpleIntegerProperty id = new SimpleIntegerProperty();
+    SimpleStringProperty DM = new SimpleStringProperty();
+    SimpleStringProperty make = new SimpleStringProperty();
+    SimpleStringProperty batch = new SimpleStringProperty();
+    SimpleStringProperty date = new SimpleStringProperty();
+    SimpleStringProperty description = new SimpleStringProperty();
+    SimpleStringProperty pack = new SimpleStringProperty();
+    SimpleFloatProperty mrp = new SimpleFloatProperty();
+    SimpleFloatProperty rate = new SimpleFloatProperty();
+    SimpleFloatProperty vat = new SimpleFloatProperty();
             
 
     public ItemsPharmaProperty(){
         
     }
-    public ItemsPharmaProperty( int id, String dm, String make, String batch, String date, String desc, int pack, float mrp, float rate, float vat) {
+    public ItemsPharmaProperty( int id, String dm, String make, String batch, String date, String desc, String pack, float mrp, float rate, float vat) {
         this.id.set(id);
         this.DM.set(dm);
         this.make.set(make);
@@ -57,43 +57,43 @@ public class ItemsPharmaProperty {
    
   }
 
-    public IntegerProperty getId() {
+    public SimpleIntegerProperty getId() {
         return id;
     }
 
-    public void setId(IntegerProperty id) {
+    public void setId(SimpleIntegerProperty id) {
         this.id = id;
     }
 
-    public StringProperty getDM() {
+    public SimpleStringProperty getDM() {
         return DM;
     }
 
-    public void setDM(StringProperty DM) {
+    public void setDM(SimpleStringProperty DM) {
         this.DM = DM;
     }
 
-    public StringProperty getMake() {
+    public SimpleStringProperty getMake() {
         return make;
     }
 
-    public void setMake(StringProperty make) {
+    public void setMake(SimpleStringProperty make) {
         this.make = make;
     }
 
-    public StringProperty getBatch() {
+    public SimpleStringProperty getBatch() {
         return batch;
     }
 
-    public void setBatch(StringProperty batch) {
+    public void setBatch(SimpleStringProperty batch) {
         this.batch = batch;
     }
 
-    public StringProperty getDate() {
+    public SimpleStringProperty getDate() {
         return date;
     }
 
-    public void setDate(StringProperty date) {
+    public void setDate(SimpleStringProperty date) {
         this.date = date;
     }
 
@@ -105,28 +105,28 @@ public class ItemsPharmaProperty {
         this.description.set(description);
     }
 
-    public IntegerProperty getPack() {
-        return pack;
+    public String getPack() {
+        return pack.get();
     }
 
-    public void setPack(IntegerProperty pack) {
-        this.pack = pack;
+    public void setPack(String pack) {
+        this.pack.set(pack);
     }
 
-    public FloatProperty getMrp() {
+    public SimpleFloatProperty getMrp() {
         return mrp;
     }
 
-    public void setMrp(FloatProperty mrp) {
+    public void setMrp(SimpleFloatProperty mrp) {
         this.mrp = mrp;
     }
 
-    public FloatProperty getRate() {
+    public SimpleFloatProperty getRate() {
         return rate;
     }
 
 
-    public void setRate(FloatProperty rate) {
+    public void setRate(SimpleFloatProperty rate) {
         this.rate = rate;
     }
 

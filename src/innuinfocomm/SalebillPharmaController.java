@@ -1,7 +1,9 @@
 package innuinfocomm;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,7 +15,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import pojos.ItemsPharma;
 import pojos.ItemsPharmaProperty;
+import utils.EntityManagerHelper;
 
 
 public class SalebillPharmaController {
@@ -145,6 +152,14 @@ public class SalebillPharmaController {
         assert vat125AmtLabel != null : "fx:id=\"vat125AmtLabel\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert vat5AmtLabel != null : "fx:id=\"vat5AmtLabel\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert vatTextBox != null : "fx:id=\"vatTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
+        
+        mrpTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharmaProperty, Float>("mrp"));
+        dmTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharmaProperty,String>("DM"));
+        makeTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharmaProperty,String>("make"));
+        rateTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharmaProperty,Float>("rate"));
+        descTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharmaProperty,String>("description"));
+        
+                
 
        initializeSaleBill();
         
@@ -157,20 +172,37 @@ public class SalebillPharmaController {
 
     @FXML
     void handleResetBtn(ActionEvent event) {
+        data.get(0).setDescription("Refresged data"); 
+        saleItemTableview.getColumns().get(0).setVisible(false);
+        saleItemTableview.getColumns().get(0).setVisible(true);
     }
 
     @FXML
     void handleSaveBtn(ActionEvent event) {
         System.out.println("Button Clicked");
-        saleItemTableview.getItems().get(0).setDescription("Hello Wolrd");
         data.add(new ItemsPharmaProperty());
+        data.get(0).setBatch(new SimpleStringProperty("check 123"));
+//        saleItemTableview.getColumns().get(0).setVisible(false);
+//        saleItemTableview.getColumns().get(0).setVisible(true);
+        
+        
        // data.get(0).setDescription("Hello World");
         
     }
 
     private void initializeSaleBill() {
-       saleItemTableview.setItems(data);
-       data.add(new ItemsPharmaProperty());
+       saleItemTableview.setItems(data);    
+       
+       //get the items from the db here
+              EntityManager em = EntityManagerHelper.getInstance().getEm();
+        Query q = em.createNamedQuery("ItemsPharma.findAll");
+        ArrayList<ItemsPharma>  iList = new ArrayList(q.getResultList());
+        
+        
+        for(ItemsPharma i : iList){
+            data.add(i.getPropertyObj());
+        }
+       
        
     }
 
