@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,11 +18,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ItemsPharma.findAll", query = "SELECT i FROM ItemsPharma i"),
+    @NamedQuery(name = "Items.findByItemsPharmaNameLike", query = "SELECT i FROM ItemsPharma i WHERE i.description LIKE  :description"),
     @NamedQuery(name = "ItemsPharma.findNextId", query = "SELECT MAX(i.id) FROM ItemsPharma i"),
     @NamedQuery(name = "ItemsPharma.findById", query = "SELECT i FROM ItemsPharma i WHERE i.id = :id"),
     @NamedQuery(name = "ItemsPharma.findByDM", query = "SELECT i FROM ItemsPharma i WHERE i.dM = :dM"),
@@ -42,37 +47,50 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ItemsPharma.findByMrp", query = "SELECT i FROM ItemsPharma i WHERE i.mrp = :mrp"),
     @NamedQuery(name = "ItemsPharma.findByRateFraction", query = "SELECT i FROM ItemsPharma i WHERE i.rateFraction = :rateFraction")})
 public class ItemsPharma implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemPharmaId")
+    private List<SaleBillPharmaItem> saleBillPharmaItemList;
+    
     @Basic(optional = false)
     @Column(name = "pack")
     private String pack;
+    
     @Basic(optional = false)
     @Column(name = "vat")
     private float vat = 5;
     private static final long serialVersionUID = 1L;
+    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
+
     @Basic(optional = false)
     @Column(name = "d_m_")
     private String dM;
+
     @Basic(optional = false)
     @Column(name = "make")
     private String make;
+    
     @Basic(optional = false)
     @Column(name = "batch")
     private String batch;
+
+    @Temporal(TemporalType.DATE)
     @Basic(optional = false)
     @Column(name = "exp_date")
-    @Temporal(TemporalType.DATE)
-    private Date expDate;
-    @Basic(optional = false)
-    @Column(name = "description")
+            private Date expDate;
+
     private String description;
+    
     @Basic(optional = false)
     @Column(name = "mrp")
-    private float mrp;
+        private float mrp;
+    
     @Basic(optional = false)
     @Column(name = "rate_fraction")
     private float rateFraction;
@@ -101,7 +119,8 @@ public class ItemsPharma implements Serializable {
         this.vat = vat;
     }
 
-    public Integer getId() {
+
+        public Integer getId() {
         return id;
     }
 
@@ -109,7 +128,7 @@ public class ItemsPharma implements Serializable {
         this.id = id;
     }
 
-    public String getDM() {
+        public String getDM() {
         return dM;
     }
 
@@ -117,7 +136,7 @@ public class ItemsPharma implements Serializable {
         this.dM = dM;
     }
 
-    public String getMake() {
+        public String getMake() {
         return make;
     }
 
@@ -125,7 +144,7 @@ public class ItemsPharma implements Serializable {
         this.make = make;
     }
 
-    public String getBatch() {
+        public String getBatch() {
         return batch;
     }
 
@@ -133,7 +152,7 @@ public class ItemsPharma implements Serializable {
         this.batch = batch;
     }
 
-    public Date getExpDate() {
+        public Date getExpDate() {
         return expDate;
     }
 
@@ -141,6 +160,8 @@ public class ItemsPharma implements Serializable {
         this.expDate = expDate;
     }
 
+    @Basic(optional = false)
+    @Column(name = "description")
     public String getDesc() {
         return description;
     }
@@ -149,7 +170,7 @@ public class ItemsPharma implements Serializable {
         this.description = description;
     }
 
-    public float getMrp() {
+        public float getMrp() {
         return mrp;
     }
 
@@ -157,7 +178,7 @@ public class ItemsPharma implements Serializable {
         this.mrp = mrp;
     }
 
-    public float getRateFraction() {
+        public float getRateFraction() {
         return rateFraction;
     }
 
@@ -187,15 +208,15 @@ public class ItemsPharma implements Serializable {
 
     @Override
     public String toString() {
-        return "pojos.ItemsPharma[ id=" + id + " ]";
+        return description;
     }
     
-    public ItemsPharmaProperty getPropertyObj(){
-        
-        return new ItemsPharmaProperty(id,  dM, make, batch, dateFormatter.format(expDate), description, pack, mrp,rateFraction,vat);
-    }
+//    public ItemsPharmaProperty getPropertyObj(){
+//        
+//        return new ItemsPharmaProperty(id,  dM, make, batch, dateFormatter.format(expDate), description, pack, mrp,rateFraction,vat);
+//    }
 
-    public float getVat() {
+        public float getVat() {
         return vat;
     }
 
@@ -203,12 +224,21 @@ public class ItemsPharma implements Serializable {
         this.vat = vat;
     }
 
-    public String getPack() {
+        public String getPack() {
         return pack;
     }
 
     public void setPack(String pack) {
         this.pack = pack;
+    }
+
+    @XmlTransient
+    public List<SaleBillPharmaItem> getSaleBillPharmaItemList() {
+        return saleBillPharmaItemList;
+    }
+
+    public void setSaleBillPharmaItemList(List<SaleBillPharmaItem> saleBillPharmaItemList) {
+        this.saleBillPharmaItemList = saleBillPharmaItemList;
     }
     
   

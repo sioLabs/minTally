@@ -11,9 +11,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -25,26 +23,24 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.stage.Popup;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import pojos.Items;
-import pojos.SalebillItem;
+import pojos.ItemsPharma;
 
 /**
  *
  * @author ashutoshsingh
  */
-public class ItemSearchBox extends TableCell<SalebillItem, String> {
+public class ItemSearchBox extends TableCell<ItemsPharma, String> {
     
     private SimpleStringProperty itemName = new SimpleStringProperty();
     private Popup popup;
     private ItemTextField itemTextField;
     private SimpleDoubleProperty itemTextWidth = new SimpleDoubleProperty(100);
     private ChangeListener<Boolean> focusOutListener;
-    private ListView<Items> itemsListView = new ListView<Items>();
-    private Items selectedItem;
+    private ListView<ItemsPharma> itemsListView = new ListView<ItemsPharma>();
+    private ItemsPharma selectedItem;
     private EventBus eventBus ;
     private int rowInd;
 
@@ -56,7 +52,7 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
          configureItemSearchBox();
     }
     
-    public Items getSelectedItem(){
+    public ItemsPharma getSelectedItem(){
         return selectedItem;
     }
     
@@ -68,6 +64,7 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
         popup.setHideOnEscape(true);
         
          addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+                        @Override
                         public void handle(KeyEvent event) {
                               if (KeyCode.TAB.equals(event.getCode())) {
                                         hidePopup();
@@ -89,12 +86,12 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
             @Override
             public void handle(MouseEvent t) {
                 System.out.println("Clicked on "+itemsListView.getSelectionModel().getSelectedItem());
-                Items i = itemsListView.getSelectionModel().getSelectedItem();
+                ItemsPharma i = itemsListView.getSelectionModel().getSelectedItem();
                     System.out.println("Item Selected is :" + i);
                     selectedItem = i;
                     eventBus.post(selectedItem);
-                    //commitEdit(selectedItem.getItemName());
-                    //updateItem(i.getItemName(), false);
+                    commitEdit(selectedItem.getDesc());
+                    updateItem(i.getDesc(), false);
                     
                     hidePopup();
             }
@@ -102,11 +99,11 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
          });
          itemsListView.setOnKeyPressed(new EventHandler<KeyEvent>(){
 
-            @Override @Subscribe
+            @Override 
             public void handle(KeyEvent t) {
                 if(KeyCode.ENTER.equals(t.getCode())){
                     //Enter pressed
-                    Items i = itemsListView.getSelectionModel().getSelectedItem();
+                    ItemsPharma i = itemsListView.getSelectionModel().getSelectedItem();
                     System.out.println("Item Selected is :" + i);
                     selectedItem = i;
                     setText(getString());
@@ -154,9 +151,9 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
             //show it here 
             text = "%"+text+"%";
             EntityManager em = EntityManagerHelper.getInstance().getEm();
-            Query q = em.createNamedQuery("Items.findByItemsNameLike");
-            q.setParameter("itemName", text);
-            ArrayList<Items> list = new ArrayList(q.getResultList());
+            Query q = em.createNamedQuery("Items.findByItemsPharmaNameLike");
+            q.setParameter("description", text);
+            ArrayList<ItemsPharma> list = new ArrayList(q.getResultList());
             System.out.println(list.size()+ " items found");
             itemsListView.getItems().addAll(list);
         //}
@@ -183,10 +180,11 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
               public void updateItem(String item, boolean empty) {
                   super.updateItem(item, empty);
 
-                  System.out.println("in update item");
+                    
+                  System.out.println("in update item" + empty);
                   if (empty) {
                       setText(null);
-                      setGraphic(null);
+                      setGraphic(itemTextField);
                   } else {
                       if (isEditing()) {
                           if (itemTextField != null) {
@@ -217,8 +215,8 @@ public class ItemSearchBox extends TableCell<SalebillItem, String> {
                }
 
     private void createTextField() {
-        //itemTextField = new TextField(getString());
-        //itemTextField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
+  //   itemTextField = new ItemTextField();
+   //    itemTextField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
         
     }
 

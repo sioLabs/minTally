@@ -1,26 +1,33 @@
 package innuinfocomm;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import pojos.ConverterUtil;
 import pojos.ItemsPharma;
-import pojos.ItemsPharmaProperty;
+import pojos.ItemsPharma;
+import pojos.SalebillItem;
 import utils.EntityManagerHelper;
+import utils.ItemSearchBox;
 
 
 public class SalebillPharmaController {
@@ -32,13 +39,13 @@ public class SalebillPharmaController {
     private URL location;
 
     @FXML
-    private TableColumn<ItemsPharmaProperty, Float> AmountTableColumn;
+    private TableColumn<ItemsPharma, Float> AmountTableColumn;
 
     @FXML
     private TextField CDamtTextBox;
 
     @FXML
-    private TableColumn<ItemsPharmaProperty, String> batchTableColumn;
+    private TableColumn<ItemsPharma, String> batchTableColumn;
 
     @FXML
     private TextField billNoTextbox;
@@ -56,31 +63,31 @@ public class SalebillPharmaController {
     private TextArea deliveryTextArea;
 
     @FXML
-    private TableColumn<ItemsPharmaProperty, String> descTableColumn;
+    private TableColumn<ItemsPharma, String> descTableColumn;
 
     @FXML
     private TextField discountTextBox;
 
     @FXML
-    private TableColumn<ItemsPharmaProperty, String> dmTableColumn;
+    private TableColumn<ItemsPharma, String> dmTableColumn;
 
     @FXML
     private Label errorLabel;
 
     @FXML
-    private TableColumn<ItemsPharmaProperty, String> expTableColumn;
+    private TableColumn<ItemsPharma, String> expTableColumn;
 
     @FXML
     private TextField finalAmtTextBox;
 
     @FXML
-    private TableColumn<ItemsPharmaProperty, String> makeTableColumn;
+    private TableColumn<ItemsPharma, String> makeTableColumn;
 
     @FXML
-    private TableColumn<ItemsPharmaProperty, Float> mrpTableColumn;
+    private TableColumn<ItemsPharma, Float> mrpTableColumn;
 
     @FXML
-    private TableColumn<ItemsPharmaProperty, Integer> packTableColumn;
+    private TableColumn<ItemsPharma, Integer> packTableColumn;
 
     @FXML
     private ComboBox<String> paymentComboBox;
@@ -89,16 +96,16 @@ public class SalebillPharmaController {
     private Button printBtn;
 
     @FXML
-    private TableColumn<ItemsPharmaProperty, Float> qntyTableColumn;
+    private TableColumn<ItemsPharma, Float> qntyTableColumn;
 
     @FXML
-    private TableColumn<ItemsPharmaProperty, Float> rateTableColumn;
+    private TableColumn<ItemsPharma, Float> rateTableColumn;
 
     @FXML
     private Button resetBtn;
 
     @FXML
-    private TableView<ItemsPharmaProperty> saleItemTableview;
+    private TableView<ItemsPharma> saleItemTableview;
 
     @FXML
     private Button saveBtn;
@@ -110,7 +117,7 @@ public class SalebillPharmaController {
     private TextField totalTextBox;
 
     @FXML
-    private Label vat125AmtLabel;
+     private Label vat125AmtLabel;
 
     @FXML
     private Label vat5AmtLabel;
@@ -118,11 +125,13 @@ public class SalebillPharmaController {
     @FXML
     private TextField vatTextBox;
 
-    private ObservableList<ItemsPharmaProperty> data = FXCollections.observableArrayList();
-    
-    
+    private ObservableList<ItemsPharma> data = FXCollections.observableArrayList();
+     private ItemSearchBox selectedItemSearchBox;
+     EventBus eventBus = new EventBus();
+    private ItemsPharma selectedItem;
     @FXML
     void initialize() {
+        eventBus.register(this);
         assert AmountTableColumn != null : "fx:id=\"AmountTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert CDamtTextBox != null : "fx:id=\"CDamtTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert batchTableColumn != null : "fx:id=\"batchTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
@@ -153,17 +162,53 @@ public class SalebillPharmaController {
         assert vat5AmtLabel != null : "fx:id=\"vat5AmtLabel\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert vatTextBox != null : "fx:id=\"vatTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         
-        mrpTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharmaProperty, Float>("mrp"));
-        dmTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharmaProperty,String>("DM"));
-        makeTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharmaProperty,String>("make"));
-        rateTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharmaProperty,Float>("rate"));
-        descTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharmaProperty,String>("description"));
+        mrpTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma, Float>("mrp"));
+        dmTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma,String>("DM"));
+        makeTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma,String>("make"));
+        rateTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma,Float>("rate"));
+        descTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma,String>("description"));
+        
+        descTableColumn.setEditable(true);
+        //textbox for the description
+          Callback<TableColumn<ItemsPharma,String>, TableCell<ItemsPharma, String>> itNameCellfactory = 
+                    new Callback<TableColumn<ItemsPharma, String>, TableCell<ItemsPharma, String>>() {
+
+            @Override
+            public TableCell<ItemsPharma, String> call(TableColumn<ItemsPharma, String> p) {
+                selectedItemSearchBox =  new ItemSearchBox(eventBus,p.getTableView().getSelectionModel().getSelectedIndex());
+                eventBus.register(selectedItemSearchBox);              
+                return selectedItemSearchBox;
+            }
+        };
+          descTableColumn.setCellFactory(itNameCellfactory);
+          descTableColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<ItemsPharma, String>>() {
+
+            @Override
+            public void handle(TableColumn.CellEditEvent<ItemsPharma, String> t) {
+                System.out.println("on edit commit itemname :: " + selectedItem);
+               
+                
+            }
+        });
+        
         
                 
 
        initializeSaleBill();
         
     }
+    
+    @Subscribe
+    public void setSelectedItem(ItemsPharma userSelectedItem){
+        System.out.println(userSelectedItem);
+        selectedItem = userSelectedItem;         
+        int ind = saleItemTableview.getSelectionModel().getSelectedIndex();
+        System.out.println(ind);
+        data.remove(ind);
+        data.add(ind, selectedItem);
+        
+    }
+            
     
         @FXML
     void handlePrintBtn(ActionEvent event) {
@@ -172,37 +217,28 @@ public class SalebillPharmaController {
 
     @FXML
     void handleResetBtn(ActionEvent event) {
-        data.get(0).setDescription("Refresged data"); 
-        saleItemTableview.getColumns().get(0).setVisible(false);
-        saleItemTableview.getColumns().get(0).setVisible(true);
+
+     
     }
 
     @FXML
     void handleSaveBtn(ActionEvent event) {
         System.out.println("Button Clicked");
-        data.add(new ItemsPharmaProperty());
-        data.get(0).setBatch(new SimpleStringProperty("check 123"));
-//        saleItemTableview.getColumns().get(0).setVisible(false);
-//        saleItemTableview.getColumns().get(0).setVisible(true);
-        
-        
-       // data.get(0).setDescription("Hello World");
+     //   data.add(new ItemsPharma());      
+     
         
     }
 
     private void initializeSaleBill() {
        saleItemTableview.setItems(data);    
+       ItemsPharma i = new ItemsPharma();
+       i.setDesc("Check this out");
+       data.add(i);
        
-       //get the items from the db here
-              EntityManager em = EntityManagerHelper.getInstance().getEm();
-        Query q = em.createNamedQuery("ItemsPharma.findAll");
-        ArrayList<ItemsPharma>  iList = new ArrayList(q.getResultList());
-        
-        
-        for(ItemsPharma i : iList){
-            data.add(i.getPropertyObj());
-        }
-       
+//       //get the items from the db here
+//        EntityManager em = EntityManagerHelper.getInstance().getEm();
+//        Query q = em.createNamedQuery("ItemsPharma.findAll");
+//        ArrayList<ItemsPharma>  iList = new ArrayList(q.getResultList());
        
     }
 

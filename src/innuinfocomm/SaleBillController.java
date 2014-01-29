@@ -304,19 +304,19 @@ public class SaleBillController implements Initializable {
         SaleItemTableView.setFocusTraversable(true);
         
         itemNameTableCol.setEditable(true);
-        Callback<TableColumn<SalebillItem,String>, TableCell<SalebillItem, String>> itNameCellfactory = 
-                    new Callback<TableColumn<SalebillItem, String>, TableCell<SalebillItem, String>>() {
-                        
-            @Override
-            public TableCell<SalebillItem, String> call(TableColumn<SalebillItem, String> p) {
-                selectedItemSearchBox =  new ItemSearchBox(eventBus,p.getTableView().getSelectionModel().getSelectedIndex());
-                eventBus.register(selectedItemSearchBox);              
-                return selectedItemSearchBox;
-            }
-
-        };
-        itemNameTableCol.setCellFactory(itNameCellfactory);
-        //itemNameTableCol.bv o
+//        Callback<TableColumn<SalebillItem,String>, TableCell<SalebillItem, String>> itNameCellfactory = 
+//                    new Callback<TableColumn<SalebillItem, String>, TableCell<SalebillItem, String>>() {
+//                        
+////            @Override
+////            public TableCell<SalebillItem, String> call(TableColumn<SalebillItem, String> p) {
+////                selectedItemSearchBox =  new ItemSearchBox(eventBus,p.getTableView().getSelectionModel().getSelectedIndex());
+////                eventBus.register(selectedItemSearchBox);              
+////                return selectedItemSearchBox;
+////            }
+//
+//        };
+//        itemNameTableCol.setCellFactory(itNameCellfactory);
+        
         itemNameTableCol.setOnEditCommit(new EventHandler<CellEditEvent<SalebillItem, String>>() {
 
             @Override 
