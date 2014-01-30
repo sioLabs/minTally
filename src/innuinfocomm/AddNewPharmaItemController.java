@@ -63,8 +63,11 @@ public class AddNewPharmaItemController {
      
      @FXML
      private Label successLabel;
+     
+    @FXML
+    private TextField stockTextBox;
 
-      private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/mm/yyyy");
+      private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
       private int nextId;
 
     @FXML
@@ -105,6 +108,10 @@ public class AddNewPharmaItemController {
          String desc= descTextArea.getText();
          item.setDesc(desc);
                  
+         String stockS = stockTextBox.getText();
+         if(stockS!=null){
+             item.setStockStrips(Integer.parseInt(stockS));
+         }
          
          EntityManager em = EntityManagerHelper.getInstance().getEm();
         boolean flag = false;
@@ -140,6 +147,7 @@ public class AddNewPharmaItemController {
          descTextArea.setText(null);
          batchTextBox.setText(null);
          DMTextBox.setText(null);
+         stockTextBox.setText(null);
          
          
          
@@ -158,7 +166,7 @@ public class AddNewPharmaItemController {
         assert mrpTextBox != null : "fx:id=\"mrpTextBox\" was not injected: check your FXML file 'AddNewPharmaItem.fxml'.";
         assert packTextBox != null : "fx:id=\"packTextBox\" was not injected: check your FXML file 'AddNewPharmaItem.fxml'.";
         assert rateTextBox != null : "fx:id=\"rateTextBox\" was not injected: check your FXML file 'AddNewPharmaItem.fxml'.";
-
+        assert stockTextBox != null : "fx:id=\"rateTextBox\" was not injected: check your FXML file 'AddNewPharmaItem.fxml'.";
         setNextId();
     }
     
