@@ -93,7 +93,7 @@ public class SalebillPharmaController {
     private TableColumn<ItemsPharma, Float> mrpTableColumn;
 
     @FXML
-    private TableColumn<ItemsPharma, Integer> packTableColumn;
+    private TableColumn<ItemsPharma, String> packTableColumn;
 
     @FXML
     private ComboBox<String> paymentComboBox;
@@ -193,7 +193,8 @@ public class SalebillPharmaController {
         mrpTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma, Float>("mrp"));
         dmTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma,String>("DM"));
         makeTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma,String>("make"));
-        rateTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma,Float>("rate"));
+        packTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma, String>("pack"));
+        rateTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma,Float>("rateFraction"));
         descTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma,String>("description"));
         
         descTableColumn.setEditable(true);
