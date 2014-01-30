@@ -47,6 +47,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ItemsPharma.findByMrp", query = "SELECT i FROM ItemsPharma i WHERE i.mrp = :mrp"),
     @NamedQuery(name = "ItemsPharma.findByRateFraction", query = "SELECT i FROM ItemsPharma i WHERE i.rateFraction = :rateFraction")})
 public class ItemsPharma implements Serializable {
+    @Basic(optional = false)
+    @Column(name = "stock_strips")
+    private int stockStrips;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemPharmaId")
     private List<SaleBillPharmaItem> saleBillPharmaItemList;
@@ -99,7 +102,7 @@ public class ItemsPharma implements Serializable {
 
     
     @Transient
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/mm/yyyy");
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
     
     public ItemsPharma() {
     }
@@ -240,6 +243,14 @@ public class ItemsPharma implements Serializable {
 
     public void setSaleBillPharmaItemList(List<SaleBillPharmaItem> saleBillPharmaItemList) {
         this.saleBillPharmaItemList = saleBillPharmaItemList;
+    }
+
+    public int getStockStrips() {
+        return stockStrips;
+    }
+
+    public void setStockStrips(int stockStrips) {
+        this.stockStrips = stockStrips;
     }
     
   
