@@ -85,6 +85,8 @@ public class ItemsPharma implements Serializable {
     @Column(name = "exp_date")
             private Date expDate;
 
+    @Basic(optional = false)
+    @Column(name = "description")
     private String description;
     
     @Basic(optional = false)
@@ -160,8 +162,7 @@ public class ItemsPharma implements Serializable {
         this.expDate = expDate;
     }
 
-    @Basic(optional = false)
-    @Column(name = "description")
+
     public String getDesc() {
         return description;
     }

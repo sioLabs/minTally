@@ -1,12 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package utils;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -33,7 +31,7 @@ import pojos.ItemsPharma;
  * @author ashutoshsingh
  */
 public class ItemSearchBox extends TableCell<ItemsPharma, String> {
-    
+
     private SimpleStringProperty itemName = new SimpleStringProperty();
     private Popup popup;
     private ItemTextField itemTextField;
@@ -62,7 +60,7 @@ public class ItemSearchBox extends TableCell<ItemsPharma, String> {
         popup.setAutoHide(true);
         popup.setAutoFix(true);
         popup.setHideOnEscape(true);
-        
+
          addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
                         @Override
                         public void handle(KeyEvent event) {
@@ -90,9 +88,7 @@ public class ItemSearchBox extends TableCell<ItemsPharma, String> {
                     System.out.println("Item Selected is :" + i);
                     selectedItem = i;
                     eventBus.post(selectedItem);
-                    commitEdit(selectedItem.getDesc());
-                    updateItem(i.getDesc(), false);
-                    
+                     updateItem(i.toString(), false);
                     hidePopup();
             }
              
@@ -104,13 +100,10 @@ public class ItemSearchBox extends TableCell<ItemsPharma, String> {
                 if(KeyCode.ENTER.equals(t.getCode())){
                     //Enter pressed
                     ItemsPharma i = itemsListView.getSelectionModel().getSelectedItem();
-                    System.out.println("Item Selected is :" + i);
+                    System.out.println("keyb Item Selected is :" + i);
                     selectedItem = i;
-                    setText(getString());
-                    setContentDisplay(ContentDisplay.TEXT_ONLY);
-                    eventBus.post(selectedItem);
-                    //commitEdit(selectedItem.getItemName());
-                   // updateItem(i.getItemName(), false);
+                    updateItem(i.toString(), false);
+                    eventBus.post(selectedItem);                   
                     hidePopup();
                 }
             }
@@ -121,22 +114,25 @@ public class ItemSearchBox extends TableCell<ItemsPharma, String> {
          //creating the itemname text field
          //TODO empty for now
          itemTextField = new ItemTextField();
+                 
          itemTextField.prefWidthProperty().bind(itemTextWidth);
-         this.focusOutListener = new ChangeListener<Boolean>() {
-
-            @Override
-            public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean t1) {
-               // System.out.println("focus chaneged");
-                //if(t1){
                   
-                //}
-                  
-            }
-        };
-         
-         itemTextField.focusedProperty().addListener(focusOutListener);
+//         this.focusOutListener = new ChangeListener<Boolean>() {
+//
+//            @Override
+//            public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean t1) {
+//               // System.out.println("focus chaneged");
+//                //if(t1){
+//                  
+//                //}
+//                  
+//            }
+//        };
+//         
+//         itemTextField.focusedProperty().addListener(focusOutListener);
          
          getChildren().addAll(itemTextField);
+         
          itemTextField.setVisible(true);
                 
     }
@@ -144,15 +140,19 @@ public class ItemSearchBox extends TableCell<ItemsPharma, String> {
     private void initiatePopUp(String text){
         
            itemsListView.getItems().clear();
-        
-           //System.out.println("in initiate:" + text);
-            
+         
             //write the code to get the items List from the db and then 
             //show it here 
+            text = text.trim();
             text = "%"+text+"%";
             EntityManager em = EntityManagerHelper.getInstance().getEm();
-            Query q = em.createNamedQuery("Items.findByItemsPharmaNameLike");
-            q.setParameter("description", text);
+            Query q  = null;
+            if(text.length() ==0 )
+                q = em.createNamedQuery("Items.findAll");
+            else
+            {q= em.createNamedQuery("Items.findByItemsPharmaNameLike");
+                q.setParameter("description", text);
+            }
             ArrayList<ItemsPharma> list = new ArrayList(q.getResultList());
             System.out.println(list.size()+ " items found");
             itemsListView.getItems().addAll(list);
@@ -176,59 +176,50 @@ public class ItemSearchBox extends TableCell<ItemsPharma, String> {
     }
     
     
+               //all the view is created by the update item. I have to show the selected Item now who calls the updateItem
+               //an event in popup will call the updateITem.
               @Override
               public void updateItem(String item, boolean empty) {
                   super.updateItem(item, empty);
-
-                    
-                  System.out.println("in update item" + empty);
+                   
+                  
                   if (empty) {
-                      setText(null);
-                      setGraphic(itemTextField);
-                  } else {
-                      if (isEditing()) {
-                          if (itemTextField != null) {
-                              itemTextField.setText(getString());
-                          }
-                          setGraphic(itemTextField);
-                          setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                      } else {
-                          setText(getString());
+                         setText(getString());
                           setContentDisplay(ContentDisplay.TEXT_ONLY);
-                      }
+                  } else {
+                          System.out.println(selectedItem.toString() + "update Item");
+                          setText(selectedItem.toString());
+                          setContentDisplay(ContentDisplay.TEXT_ONLY);
+                      
                   }
               }
-               @Override
+              
+              @Override
                public void startEdit(){
-                   super.startEdit();
-          //         if(itemTextField == null)
-            //           createTextField();
-                   setGraphic(itemTextField);
-                   setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                   itemTextField.selectAll();
+                  super.startEdit();
+                  this.requestFocus();
+                  setGraphic(itemTextField);
+                  setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                  itemTextField.selectAll();                 
                }
-               @Override 
-               public void cancelEdit(){
-                   super.cancelEdit();
-                   setText(String.valueOf(getItem()));
-                   setContentDisplay(ContentDisplay.TEXT_ONLY);
-               }
-
-    private void createTextField() {
-  //   itemTextField = new ItemTextField();
-   //    itemTextField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
-        
-    }
+//               @Override 
+//               public void cancelEdit(){
+//                   super.cancelEdit();
+//                   //setText(String.valueOf(getItem()));
+//                   //setContentDisplay(ContentDisplay.TEXT_ONLY);
+//               }
+//
+//    private void createTextField() {
+//  //   itemTextField = new ItemTextField();
+//   //    itemTextField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
+//        
+//    }
 
     private String getString() {
-         return getItem() == null ? "" : getItem().toString();
+         return selectedItem == null ? "" : selectedItem.toString();
+        
+        //return selectedItem.toString();
     }
-    
-    
-    
-    
-    
-    
     
     
      /**
@@ -255,6 +246,7 @@ public class ItemSearchBox extends TableCell<ItemsPharma, String> {
         public static class ItemTextField extends TextField implements Cell {
                 public ItemTextField() {
                         setEditable(true);
+                                
                         setPrefHeight(22);
                         setPromptText("Start Typing Item Name");
                 }

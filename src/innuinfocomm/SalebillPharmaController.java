@@ -5,7 +5,11 @@ import com.google.common.eventbus.Subscribe;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -25,6 +30,7 @@ import javax.persistence.Query;
 import pojos.ConverterUtil;
 import pojos.ItemsPharma;
 import pojos.ItemsPharma;
+import pojos.SaleBill;
 import pojos.SalebillItem;
 import utils.EntityManagerHelper;
 import utils.ItemSearchBox;
@@ -124,6 +130,8 @@ public class SalebillPharmaController {
 
     @FXML
     private TextField vatTextBox;
+    
+    private int currentSelectedIndex = -1;
 
     private ObservableList<ItemsPharma> data = FXCollections.observableArrayList();
      private ItemSearchBox selectedItemSearchBox;
@@ -162,6 +170,26 @@ public class SalebillPharmaController {
         assert vat5AmtLabel != null : "fx:id=\"vat5AmtLabel\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert vatTextBox != null : "fx:id=\"vatTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         
+        //selection listener for the tableview
+       saleItemTableview.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener<Integer>() {
+
+            @Override
+            public void onChanged(ListChangeListener.Change<? extends Integer> change) {
+                if(change.getList().size() > 0)
+                {
+                                currentSelectedIndex = change.getList().get(0);
+                    
+                }
+            }
+        });
+        
+
+            
+
+            
+        
+        
+        
         mrpTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma, Float>("mrp"));
         dmTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma,String>("DM"));
         makeTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma,String>("make"));
@@ -175,21 +203,15 @@ public class SalebillPharmaController {
 
             @Override
             public TableCell<ItemsPharma, String> call(TableColumn<ItemsPharma, String> p) {
-                selectedItemSearchBox =  new ItemSearchBox(eventBus,p.getTableView().getSelectionModel().getSelectedIndex());
+                
+                currentSelectedIndex = p.getTableView().getSelectionModel().getSelectedIndex();
+                selectedItemSearchBox =  new ItemSearchBox(eventBus,currentSelectedIndex);
+                System.out.println(p.getTableView().getSelectionModel().getSelectedIndex());
                 eventBus.register(selectedItemSearchBox);              
                 return selectedItemSearchBox;
             }
         };
           descTableColumn.setCellFactory(itNameCellfactory);
-          descTableColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<ItemsPharma, String>>() {
-
-            @Override
-            public void handle(TableColumn.CellEditEvent<ItemsPharma, String> t) {
-                System.out.println("on edit commit itemname :: " + selectedItem);
-               
-                
-            }
-        });
         
         
                 
@@ -200,15 +222,21 @@ public class SalebillPharmaController {
     
     @Subscribe
     public void setSelectedItem(ItemsPharma userSelectedItem){
-        System.out.println(userSelectedItem);
+        System.out.println(currentSelectedIndex);
         selectedItem = userSelectedItem;         
-        int ind = saleItemTableview.getSelectionModel().getSelectedIndex();
-        System.out.println(ind);
-        data.remove(ind);
-        data.add(ind, selectedItem);
+        //int ind = saleItemTableview.getSelectionModel().getSelectedIndex();
+        System.out.println(currentSelectedIndex + "index in controller");
+        data.remove(currentSelectedIndex); 
+        data.add(currentSelectedIndex, selectedItem);
+        System.out.println(selectedItem.getDesc() + "in con");
+         saleItemTableview.getColumns().get(0).setVisible(false);
+         saleItemTableview.getColumns().get(0).setVisible(true);
+
+       // data.add(new ItemsPharma());
         
     }
-            
+        
+    
     
         @FXML
     void handlePrintBtn(ActionEvent event) {
