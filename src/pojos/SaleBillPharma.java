@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -38,6 +40,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "SaleBillPharma.findByFinalAmt", query = "SELECT s FROM SaleBillPharma s WHERE s.finalAmt = :finalAmt"),
     @NamedQuery(name = "SaleBillPharma.findByDeliveryAddress", query = "SELECT s FROM SaleBillPharma s WHERE s.deliveryAddress = :deliveryAddress")})
 public class SaleBillPharma implements Serializable {
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Customer customerId;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,9 +52,7 @@ public class SaleBillPharma implements Serializable {
     @Basic(optional = false)
     @Column(name = "bill_date")
     private int billDate;
-    @Basic(optional = false)
-    @Column(name = "customer_id")
-    private int customerId;
+    
     @Basic(optional = false)
     @Column(name = "total_vat")
     private float totalVat;
@@ -74,7 +77,7 @@ public class SaleBillPharma implements Serializable {
         this.id = id;
     }
 
-    public SaleBillPharma(Integer id, int billDate, int customerId, float totalVat, float totalAmt, float finalAmt) {
+    public SaleBillPharma(Integer id, int billDate, Customer customerId, float totalVat, float totalAmt, float finalAmt) {
         this.id = id;
         this.billDate = billDate;
         this.customerId = customerId;
@@ -99,11 +102,11 @@ public class SaleBillPharma implements Serializable {
         this.billDate = billDate;
     }
 
-    public int getCustomerId() {
+    public Customer getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(Customer customerId) {
         this.customerId = customerId;
     }
 
@@ -180,5 +183,8 @@ public class SaleBillPharma implements Serializable {
     public String toString() {
         return "pojos.SaleBillPharma[ id=" + id + " ]";
     }
-    
+
+
+
+
 }
