@@ -34,6 +34,40 @@
           <children>
             <Accordion id="leftMenuAccordion" minWidth="103.0" prefHeight="570.0" prefWidth="103.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <expandedPane>
+                <TitledPane fx:id="ledgerMgmt" animated="false" text="Ledger Management">
+                  <content>
+                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <children>
+                        <VBox id="VBox" alignment="CENTER" prefHeight="478.0" prefWidth="204.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <children>
+                            <Button fx:id="addLedgerButton" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddLedgerButton" prefHeight="35.0" text="Add Customer" />
+                            <Button fx:id="viewAllLedgerButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleViewAllLedgerButton" prefHeight="35.0" text="View All" />
+                            <Button fx:id="addNewLedgerType" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddNewLedgerType" prefHeight="35.0" prefWidth="85.0" text="Add New Ledger Type" textAlignment="CENTER" wrapText="true" />
+                            <Button disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="View All Ledgers Type" wrapText="true" />
+                          </children>
+                        </VBox>
+                      </children>
+                    </AnchorPane>
+                  </content>
+                </TitledPane>
+              </expandedPane>
+              <panes>
+                <fx:reference source="ledgerMgmt" />
+                <TitledPane fx:id="x2" animated="false" text="Inventory Management">
+                  <content>
+                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <children>
+                        <VBox id="VBox" alignment="CENTER" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="478.0" prefWidth="204.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <children>
+                            <Button fx:id="AddItemBtn" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddItemBtn" prefHeight="35.0" prefWidth="116.0" text="Add New Item" wrapText="true" />
+                            <Button fx:id="viewAllItemsBtn" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleViewAllItemsBtn" prefHeight="35.0" text="View All Items" />
+                            <Button fx:id="importInventoryBtn" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleImportInventoryBtn" prefHeight="35.0" text="Import Inventory" />
+                          </children>
+                        </VBox>
+                      </children>
+                    </AnchorPane>
+                  </content>
+                </TitledPane>
                 <TitledPane fx:id="VoucherMgmt" animated="false" text="Vouchers">
                   <content>
                     <AnchorPane id="Content" disable="false" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -51,40 +85,6 @@
                     </AnchorPane>
                   </content>
                 </TitledPane>
-              </expandedPane>
-              <panes>
-                <TitledPane fx:id="ledgerMgmt" animated="false" text="Ledger Management">
-                  <content>
-                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                      <children>
-                        <VBox id="VBox" alignment="CENTER" prefHeight="478.0" prefWidth="204.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <children>
-                            <Button fx:id="addLedgerButton" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddLedgerButton" prefHeight="35.0" text="Add Ledger" />
-                            <Button fx:id="viewAllLedgerButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleViewAllLedgerButton" prefHeight="35.0" text="View All" />
-                            <Button fx:id="addNewLedgerType" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddNewLedgerType" prefHeight="35.0" prefWidth="85.0" text="Add New Ledger Type" textAlignment="CENTER" wrapText="true" />
-                            <Button disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="View All Ledgers Type" wrapText="true" />
-                          </children>
-                        </VBox>
-                      </children>
-                    </AnchorPane>
-                  </content>
-                </TitledPane>
-                <TitledPane fx:id="x2" animated="false" text="Inventory Management">
-                  <content>
-                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                      <children>
-                        <VBox id="VBox" alignment="CENTER" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="478.0" prefWidth="204.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <children>
-                            <Button fx:id="AddItemBtn" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddItemBtn" prefHeight="35.0" prefWidth="116.0" text="Add New Item" wrapText="true" />
-                            <Button fx:id="viewAllItemsBtn" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleViewAllItemsBtn" prefHeight="35.0" text="View All Items" />
-                            <Button fx:id="importInventoryBtn" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleImportInventoryBtn" prefHeight="35.0" text="Import Inventory" />
-                          </children>
-                        </VBox>
-                      </children>
-                    </AnchorPane>
-                  </content>
-                </TitledPane>
-                <fx:reference source="VoucherMgmt" />
                 <TitledPane fx:id="x1" animated="false" expanded="false" text="Reports">
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">

@@ -105,6 +105,7 @@ public class ItemsPharma implements Serializable {
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
     
     public ItemsPharma() {
+        
     }
 
     public ItemsPharma(Integer id) {
@@ -212,7 +213,7 @@ public class ItemsPharma implements Serializable {
 
     @Override
     public String toString() {
-        return description;
+        return description+"-"+batch;
     }
     
 //    public ItemsPharmaProperty getPropertyObj(){

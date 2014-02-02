@@ -12,6 +12,7 @@
     <class>pojos.ItemsPharma</class>
     <class>pojos.SaleBillPharmaItem</class>
     <class>pojos.SaleBillPharma</class>
+    <class>pojos.Customer</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/innuInfocomm?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.password" value=""/>

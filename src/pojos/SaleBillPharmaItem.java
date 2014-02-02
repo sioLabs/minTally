@@ -5,6 +5,7 @@
 package pojos;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -41,22 +43,105 @@ public class SaleBillPharmaItem implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @Column(name = "qnty")
-    private int qnty;
+    private String qnty;
     @Basic(optional = false)
     @Column(name = "item_rate")
-    private int itemRate;
+    private float  itemRate;
     @Basic(optional = false)
     @Column(name = "amt")
-    private int amt;
+    private float  amt;
     @Basic(optional = false)
     @Column(name = "item_vat_rs")
-    private int itemVatRs;
+    private float  itemVatRs;
     @JoinColumn(name = "sale_bill_no", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private SaleBillPharma saleBillNo;
     @JoinColumn(name = "item_pharma_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ItemsPharma itemPharmaId;
+
+    public String getItemName() {
+        return ItemName;
+    }
+
+    public void setItemName(String ItemName) {
+        this.ItemName = ItemName;
+    }
+
+    public float getMrp() {
+        return mrp;
+    }
+
+    public void setMrp(float mrp) {
+        this.mrp = mrp;
+    }
+
+    public String getMake() {
+        return make;
+    }
+
+    public void setMake(String make) {
+        this.make = make;
+    }
+
+    public String getBatch() {
+        return batch;
+    }
+
+    public void setBatch(String batch) {
+        this.batch = batch;
+    }
+
+    public String getDM() {
+        return DM;
+    }
+
+    public void setDM(String DM) {
+        this.DM = DM;
+    }
+
+    public String getExpDate() {
+        return expDate;
+    }
+
+    public void setExpDate(String expDate) {
+        this.expDate = expDate;
+    }
+
+    public String getPack() {
+        return pack;
+    }
+
+    public void setPack(String pack) {
+        this.pack = pack;
+    }
+    
+    @Transient
+    String ItemName;
+    
+    @Transient
+     float mrp;
+    
+    @Transient 
+    String make;
+    
+    @Transient 
+    String batch;
+    
+    @Transient 
+    String DM;
+    
+    @Transient 
+    String expDate;
+    
+    @Transient
+    String pack;
+    
+     @Transient
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+     
+     @Transient 
+     float itemVatPerc;
 
     public SaleBillPharmaItem() {
     }
@@ -65,12 +150,39 @@ public class SaleBillPharmaItem implements Serializable {
         this.id = id;
     }
 
-    public SaleBillPharmaItem(Integer id, int qnty, int itemRate, int amt, int itemVatRs) {
+    public SaleBillPharmaItem(Integer id, String qnty, int itemRate, int amt, int itemVatRs) {
         this.id = id;
         this.qnty = qnty;
         this.itemRate = itemRate;
         this.amt = amt;
         this.itemVatRs = itemVatRs;
+    }
+    
+    public SaleBillPharmaItem(ItemsPharma item){
+        this.itemPharmaId = item;
+        this.ItemName = item.getDesc();
+        this.DM = item.getDM();
+        this.amt = 0.0f;
+        this.batch = item.getBatch();
+        this.expDate = dateFormatter.format(item.getExpDate());                
+        this.itemVatRs = 0.0f;
+        this.make = item.getMake();
+        this.mrp = item.getMrp();
+        this.qnty = ""+1;
+        this.saleBillNo = null; 
+        this.pack = item.getPack();
+        this.itemRate = item.getRateFraction();
+        this.itemVatPerc = item.getVat();
+        
+        
+    }
+
+    public float getItemVatPerc() {
+        return itemVatPerc;
+    }
+
+    public void setItemVatPerc(float itemVatPerc) {
+        this.itemVatPerc = itemVatPerc;
     }
 
     public Integer getId() {
@@ -81,35 +193,39 @@ public class SaleBillPharmaItem implements Serializable {
         this.id = id;
     }
 
-    public int getQnty() {
+    public String getQnty() {
         return qnty;
     }
+    
+    
 
-    public void setQnty(int qnty) {
+    public void setQnty(String qnty) {
         this.qnty = qnty;
+        this.amt = Integer.parseInt(qnty)*this.getItemRate();
+        this.setItemVatRs(amt*getItemVatPerc());
     }
 
-    public int getItemRate() {
+    public float getItemRate() {
         return itemRate;
     }
 
-    public void setItemRate(int itemRate) {
+    public void setItemRate(float itemRate) {
         this.itemRate = itemRate;
     }
 
-    public int getAmt() {
+    public float getAmt() {
         return amt;
     }
 
-    public void setAmt(int amt) {
+    public void setAmt(float amt) {
         this.amt = amt;
     }
 
-    public int getItemVatRs() {
+    public float getItemVatRs() {
         return itemVatRs;
     }
 
-    public void setItemVatRs(int itemVatRs) {
+    public void setItemVatRs(float itemVatRs) {
         this.itemVatRs = itemVatRs;
     }
 
@@ -151,7 +267,7 @@ public class SaleBillPharmaItem implements Serializable {
 
     @Override
     public String toString() {
-        return "pojos.SaleBillPharmaItem[ id=" + id + " ]";
+        return this.ItemName + " - " +this.getBatch();
     }
     
 }

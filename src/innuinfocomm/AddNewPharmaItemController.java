@@ -102,7 +102,7 @@ public class AddNewPharmaItemController {
         item.setMrp(mrp);
         
         String rateS = rateTextBox.getText();
-        float rate = Float.parseFloat(rateS);
+        float rate = Float.parseFloat(rateS)*mrp;
         item.setRateFraction(rate);
                 
          String desc= descTextArea.getText();

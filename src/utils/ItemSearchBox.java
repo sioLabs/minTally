@@ -25,29 +25,34 @@ import javafx.stage.Popup;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import pojos.ItemsPharma;
+import pojos.SaleBillPharmaItem;
 
 /**
  *
  * @author ashutoshsingh
  */
-public class ItemSearchBox extends TableCell<ItemsPharma, String> {
+public class ItemSearchBox extends TableCell {
 
-    private SimpleStringProperty itemName = new SimpleStringProperty();
+    
     private Popup popup;
-    private ItemTextField itemTextField;
-    private SimpleDoubleProperty itemTextWidth = new SimpleDoubleProperty(100);
-    private ChangeListener<Boolean> focusOutListener;
+    private TextField itemTextField;
     private ListView<ItemsPharma> itemsListView = new ListView<ItemsPharma>();
     private ItemsPharma selectedItem;
     private EventBus eventBus ;
-    private int rowInd;
+    
 
-    public ItemSearchBox(EventBus e, int rowInd) {
+    public ItemSearchBox(EventBus e, String itemName) {
         super();
          this.eventBus = e; 
-         this.rowInd = rowInd;
+    
+        
          setAlignment(Pos.CENTER);
          configureItemSearchBox();
+    
+    }
+    public ItemSearchBox()
+    {
+        
     }
     
     public ItemsPharma getSelectedItem(){
@@ -65,14 +70,14 @@ public class ItemSearchBox extends TableCell<ItemsPharma, String> {
                         @Override
                         public void handle(KeyEvent event) {
                               if (KeyCode.TAB.equals(event.getCode())) {
-                                        hidePopup();
+                                       hidePopup();
                                         return;
                               }
-                              //  if (KeyCode.UP.equals(event.getCode()) || KeyCode.DOWN.equals(event.getCode()) || KeyCode.ENTER.equals(event.getCode())) {
-                                        System.out.println(itemTextField.getText() + ": in key pressed");
-                                        initiatePopUp(itemTextField.getText());
-                                        showPopup();
-                                //} else
+                            initiatePopUp(itemTextField.getText());
+                            showPopup();
+                            if(KeyCode.ENTER.equals(event.getCode())){
+                                codeOnEnter();
+                            }
                                       
                            
                         }
@@ -85,10 +90,12 @@ public class ItemSearchBox extends TableCell<ItemsPharma, String> {
             public void handle(MouseEvent t) {
                 System.out.println("Clicked on "+itemsListView.getSelectionModel().getSelectedItem());
                 ItemsPharma i = itemsListView.getSelectionModel().getSelectedItem();
+                
                     System.out.println("Item Selected is :" + i);
                     selectedItem = i;
+                    commitEdit(selectedItem.toString());
                     eventBus.post(selectedItem);
-                     updateItem(i.toString(), false);
+             
                     hidePopup();
             }
              
@@ -101,9 +108,11 @@ public class ItemSearchBox extends TableCell<ItemsPharma, String> {
                     //Enter pressed
                     ItemsPharma i = itemsListView.getSelectionModel().getSelectedItem();
                     System.out.println("keyb Item Selected is :" + i);
-                    selectedItem = i;
-                    updateItem(i.toString(), false);
-                    eventBus.post(selectedItem);                   
+                    //selectedItem = i;
+                    setText(i.toString());
+                    //updateItem(i.toString(), false);
+                    commitEdit(selectedItem.toString());
+                    //eventBus.post(selectedItem);                   
                     hidePopup();
                 }
             }
@@ -113,23 +122,10 @@ public class ItemSearchBox extends TableCell<ItemsPharma, String> {
          
          //creating the itemname text field
          //TODO empty for now
-         itemTextField = new ItemTextField();
+         itemTextField = new TextField();
                  
-         itemTextField.prefWidthProperty().bind(itemTextWidth);
-                  
-//         this.focusOutListener = new ChangeListener<Boolean>() {
-//
-//            @Override
-//            public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean t1) {
-//               // System.out.println("focus chaneged");
-//                //if(t1){
-//                  
-//                //}
-//                  
-//            }
-//        };
-//         
-//         itemTextField.focusedProperty().addListener(focusOutListener);
+
+
          
          getChildren().addAll(itemTextField);
          
@@ -178,49 +174,68 @@ public class ItemSearchBox extends TableCell<ItemsPharma, String> {
     
                //all the view is created by the update item. I have to show the selected Item now who calls the updateItem
                //an event in popup will call the updateITem.
-              @Override
-              public void updateItem(String item, boolean empty) {
-                  super.updateItem(item, empty);
-                   
-                  
+             //@Override
+              public  void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty);
+
                   if (empty) {
-                         setText(getString());
-                          setContentDisplay(ContentDisplay.TEXT_ONLY);
+                      setText(null);
+                      setGraphic(null);
                   } else {
-                          System.out.println(selectedItem.toString() + "update Item");
-                          setText(selectedItem.toString());
+                          setText(getString());
                           setContentDisplay(ContentDisplay.TEXT_ONLY);
-                      
-                  }
+                          eventBus.post(getString());
+                      }
+                  
               }
               
               @Override
                public void startEdit(){
-                  super.startEdit();
-                  this.requestFocus();
-                  setGraphic(itemTextField);
-                  setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                  itemTextField.selectAll();                 
+                           super.startEdit();
+               if(itemTextField == null)
+                   createTextField();
+               
+               setGraphic(itemTextField);
+               setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+               itemTextField.selectAll();
                }
-//               @Override 
-//               public void cancelEdit(){
-//                   super.cancelEdit();
-//                   //setText(String.valueOf(getItem()));
-//                   //setContentDisplay(ContentDisplay.TEXT_ONLY);
-//               }
-//
-//    private void createTextField() {
-//  //   itemTextField = new ItemTextField();
-//   //    itemTextField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
-//        
-//    }
 
-    private String getString() {
-         return selectedItem == null ? "" : selectedItem.toString();
-        
-        //return selectedItem.toString();
-    }
+          @Override
+          public void cancelEdit() {
+            super.cancelEdit();
+
+            setText(String.valueOf(getItem()));
+            setContentDisplay(ContentDisplay.TEXT_ONLY);
+        }
+              
+    private void createTextField() {
+           itemTextField = new TextField();
+           itemTextField.setAlignment(Pos.CENTER);
+           itemTextField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
+           itemTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+               @Override
+               public void handle(KeyEvent t) {
+                  if(t.getCode() == KeyCode.ESCAPE){
+                      cancelEdit();
+                  }
+                  else{
+                                          codeOnEnter();
+                  }
+               }
+           });
+           
+         
+       
+   }
     
+  public void codeOnEnter(){
+                commitEdit(selectedItem.getDesc());
+           }
+           private String getString() {
+                    return getItem() == null ? "" : getItem().toString();
+           }
+}  
     
      /**
          * Cell Inteface
@@ -229,39 +244,39 @@ public class ItemSearchBox extends TableCell<ItemsPharma, String> {
          * 
          * @param <ItemType>
 //         */
-        public static interface Cell {
-                Node getNode();
+//        public static interface Cell {
+//                Node getNode();
+//
+//                void updateItem(String item);
+//
+//        }
+//    
+//  /**
+//         * Simple Cell Class
+//         * 
+//         * @author Sai.Dandem
+//         * 
+//         * @param <ItemType>
+//         */
+//        public static class ItemTextField extends TextField implements Cell {
+//                public ItemTextField() {
+//                        setEditable(true);
+//                                
+//                        setPrefHeight(22);
+//                        setPromptText("Start Typing Item Name");
+//                }
+//
+//                public Node getNode() {
+//                        return this;
+//                }
+//
+//                public void updateItem(String item) {
+//                        setText(item != null ? item.toString() : "");
+//                }
+//        }
 
-                void updateItem(String item);
 
-        }
     
-  /**
-         * Simple Cell Class
-         * 
-         * @author Sai.Dandem
-         * 
-         * @param <ItemType>
-         */
-        public static class ItemTextField extends TextField implements Cell {
-                public ItemTextField() {
-                        setEditable(true);
-                                
-                        setPrefHeight(22);
-                        setPromptText("Start Typing Item Name");
-                }
-
-                public Node getNode() {
-                        return this;
-                }
-
-                public void updateItem(String item) {
-                        setText(item != null ? item.toString() : "");
-                }
-        }
-
-
     
-    
-}
+
 

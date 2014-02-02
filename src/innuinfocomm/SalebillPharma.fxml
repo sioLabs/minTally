@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="626.0000999999975" prefWidth="935.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.SalebillPharmaController">
+<AnchorPane id="AnchorPane" prefHeight="626.0000999999975" prefWidth="1264.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.SalebillPharmaController">
   <children>
     <Label layoutX="348.0" layoutY="41.0" text="Create New Sale Bill">
       <effect>
-        <DropShadow color="#1a1a1a8a" height="48.32142857142857" radius="21.88988095238095" width="41.238095238095234">
+        <DropShadow color="#1a1a1a8a" height="44.7797619047619" radius="21.004464285714285" width="41.238095238095234">
           <input>
             <Lighting>
               <bumpInput>
@@ -105,5 +105,11 @@
       </font>
     </Label>
     <Label fx:id="successLabel" font="$x2" layoutX="347.0" layoutY="66.0" text="Irem Saved Successfully" textFill="#009918" visible="false" />
+    <TextField fx:id="itemSearchTextBox" layoutX="977.0" layoutY="144.0" onKeyPressed="#searchItems" prefWidth="200.0" />
+    <SplitPane id="SplitPane" layoutX="977.0" layoutY="189.0">
+      <items>
+        <ListView fx:id="searchResultListView" onMouseClicked="#addItemToTable" prefHeight="243.0" prefWidth="200.0" />
+      </items>
+    </SplitPane>
   </children>
 </AnchorPane>

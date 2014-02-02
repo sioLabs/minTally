@@ -91,8 +91,8 @@ public class MainWindowController {
     @FXML
     void handleAddLedgerButton(ActionEvent event) throws IOException {
         
-        Parent rootNew = FXMLLoader.load(getClass().getResource("AddLedger.fxml"));
-        Tab tab = new Tab("Add a New Ledger");
+        Parent rootNew = FXMLLoader.load(getClass().getResource("AddNewCustomer.fxml"));
+        Tab tab = new Tab("Add New Customer");
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);
         
