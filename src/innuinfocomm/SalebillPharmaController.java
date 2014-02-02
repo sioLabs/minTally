@@ -3,6 +3,7 @@ package innuinfocomm;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.InvalidationListener;
@@ -13,7 +14,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -84,7 +87,7 @@ public class SalebillPharmaController {
     private TableColumn<SaleBillPharmaItem, String> descTableColumn;
 
     @FXML
-    private TextField discountTextBox;
+    private TextField chequeTextBox;
 
     @FXML
     private TableColumn<SaleBillPharmaItem, String> dmTableColumn;
@@ -154,6 +157,9 @@ public class SalebillPharmaController {
     private float vat5Amt = 0.0f;
     private float vat125Amt = 0.0f;
     private float totalAmt = 0.0f;
+    private  int cash_discount = 0;
+    
+    DecimalFormat f = new DecimalFormat("##.00");
     
     private ObservableList<SaleBillPharmaItem> data = FXCollections.observableArrayList();
      private ItemSearchBox selectedItemSearchBox;
@@ -171,7 +177,7 @@ public class SalebillPharmaController {
         assert dateTextBox != null : "fx:id=\"dateTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert deliveryTextArea != null : "fx:id=\"deliveryTextArea\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert descTableColumn != null : "fx:id=\"descTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
-        assert discountTextBox != null : "fx:id=\"discountTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
+        assert chequeTextBox != null : "fx:id=\"discountTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert dmTableColumn != null : "fx:id=\"dmTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert errorLabel != null : "fx:id=\"errorLabel\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert expTableColumn != null : "fx:id=\"expTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
@@ -219,23 +225,6 @@ public class SalebillPharmaController {
         descTableColumn.setCellValueFactory(new PropertyValueFactory<SaleBillPharmaItem,String>("itemName"));
         
        
-        //make qnty col editable
-          
-           Callback<TableColumn<SaleBillPharmaItem,Integer>,TableCell<SaleBillPharmaItem,Integer>> cellFactory = 
-                new Callback<TableColumn<SaleBillPharmaItem,Integer>,TableCell<SaleBillPharmaItem,Integer>>(){
-                     
-
-           @Override
-           public TableCell<SaleBillPharmaItem, Integer> call(TableColumn<SaleBillPharmaItem, Integer> p) {
-               return new EditableCell(eventBus);
-           }
-                };
-          
-          //qntyTableColumn.setCellFactory(cellFactory);
-           
-
-    
-           
            qntyTableColumn.setCellFactory(TextFieldTableCell.<SaleBillPharmaItem>forTableColumn());
        
        
@@ -245,6 +234,7 @@ public class SalebillPharmaController {
            public void handle(CellEditEvent<SaleBillPharmaItem, String> t) {
                System.out.println("on edit commit called" + t.getNewValue() + " " + t.getOldValue());
               ((SaleBillPharmaItem)t.getTableView().getItems().get(t.getTablePosition().getRow())).setQnty(t.getNewValue());
+              updateAmount();
               saleItemTableview.getColumns().get(0).setVisible(false);
               saleItemTableview.getColumns().get(0).setVisible(true);
            }
@@ -258,13 +248,20 @@ public class SalebillPharmaController {
     void addItemToTable(MouseEvent event) {
      
      SaleBillPharmaItem item = searchResultListView.getSelectionModel().getSelectedItem();
+     item.setQnty(""+1);
      data.add(item);
-     
+     updateAmount();
+         
     }
  
      @FXML
     void searchItems(KeyEvent event) {
-         searchResultListView.getItems().clear();
+                searchItemsCode();
+  
+    }
+     
+     void searchItemsCode(){
+                  searchResultListView.getItems().clear();
          String text = itemSearchTextBox.getText().trim();
               text = "%"+text+"%";
             EntityManager em = EntityManagerHelper.getInstance().getEm();
@@ -283,44 +280,74 @@ public class SalebillPharmaController {
                 searchResultListView.getItems().add(convItem);
             }
             
-         
-         
-         
-    }
- 
-    @Subscribe
-    public void updateAmount(String s){
-        SaleBillPharmaItem i = data.get(currentSelectedIndex);
-        
-        i.setQnty(s);
-//         saleItemTableview.getColumns().get(0).setVisible(false);
-//         saleItemTableview.getColumns().get(0).setVisible(true);     
-        data.add(new SaleBillPharmaItem());
-        saleItemTableview.getSelectionModel().select(0);
-        
-        
-    }
-    
+     }
  
     
-    
-    @Subscribe
-    public void setSelectedItem(ItemsPharma userSelectedItem){
-        System.out.println(currentSelectedIndex);
-        selectedItem = userSelectedItem;         
-        SaleBillPharmaItem convItem = new SaleBillPharmaItem(selectedItem);
-        convItem.setQnty(""+1);
-        //int ind = saleItemTableview.getSelectionModel().getSelectedIndex();
-        System.out.println(currentSelectedIndex + "index in controller");
-        data.remove(currentSelectedIndex); 
-        data.add(currentSelectedIndex, convItem);
-        //updateAmount(""+1);
-        System.out.println(selectedItem.getDesc() + "in con");
-//         saleItemTableview.getColumns().get(0).setVisible(false);
-//         saleItemTableview.getColumns().get(0).setVisible(true);     
-         //data.add(new SaleBillPharmaItem());
+    public void updateAmount(){
+        
+        float vat5amount = 0.0f;
+        float vat125amount= 0.0f;
+        float vatTotalAmt = 0.0f;
+        float totalamount= 0.0f;
+        float totalpayable= 0.0f;
+        float cdAmount= 0.0f;
+        
+        for(int i = 0;i<data.size();i++){
+            SaleBillPharmaItem item = data.get(i);
+            if(Math.abs(item.getItemVatPerc() - 5) < 0.01){
+                vat5amount += item.getItemVatRs();
+            }else{
+                vat125amount += item.getItemVatRs();
+            }
+            totalamount += item.getAmt();
+        }
+        
+        vatTotalAmt = vat5amount + vat125amount;
+        
+        if(cash_discount < 2)
+            cdAmount = 0.0f;
+        else
+            cdAmount =(float) 0.02*totalamount;
+        
+        totalpayable = totalamount - cdAmount;
+        
+        vat5AmtLabel.setText( " Vat Amount on 5% Product :  Rs " + f.format(vat5amount));
+        vat125AmtLabel.setText(" Vat Amount on 12.5% Product :  Rs " + f.format(vat125amount));
+        totalTextBox.setText(""+f.format(totalamount));
+        finalAmtTextBox.setText(""+f.format(totalpayable));
+        CDamtTextBox.setText("" + f.format(cdAmount));
+        vatTextBox.setText(""+f.format(vatTotalAmt));
+        
         
     }
+    
+ 
+    
+    
+//    @Subscribe
+//    public void setSelectedItem(ItemsPharma userSelectedItem){
+//        System.out.println(currentSelectedIndex);
+//        selectedItem = userSelectedItem;         
+//        SaleBillPharmaItem convItem = new SaleBillPharmaItem(selectedItem);
+//        convItem.setQnty(""+1);
+//        //int ind = saleItemTableview.getSelectionModel().getSelectedIndex();
+//        System.out.println(currentSelectedIndex + "index in controller");
+//        data.remove(currentSelectedIndex); 
+//        data.add(currentSelectedIndex, convItem);
+//        //updateAmount(""+1);
+//        System.out.println(selectedItem.getDesc() + "in con");
+////         saleItemTableview.getColumns().get(0).setVisible(false);
+////         saleItemTableview.getColumns().get(0).setVisible(true);     
+//         //data.add(new SaleBillPharmaItem());
+//        
+//    }
+    
+        @FXML
+    void handlePaymentModeChanged(MouseEvent event) {
+         
+            
+    }
+
         
     
     
@@ -338,94 +365,45 @@ public class SalebillPharmaController {
     @FXML
     void handleSaveBtn(ActionEvent event) {
         System.out.println("Button Clicked");
-     //   data.add(new SaleBillPharmaItem());      
-     
+  
         
     }
 
     private void initializeSaleBill() {
+        saleItemTableview.setOnKeyPressed(new EventHandler<KeyEvent>(){
+
+            @Override
+            public void handle(KeyEvent t) {
+                if(t.getCode().equals(KeyCode.DELETE)){
+                    data.remove(saleItemTableview.getSelectionModel().getSelectedIndex());
+                    updateAmount();
+                }
+              
+            }
+        });
+        
+        
+        paymentComboBox.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent t) {
+                int val = paymentComboBox.getSelectionModel().getSelectedIndex();
+                if(val ==  0){
+                    cash_discount = 2;
+                    
+                }
+                else
+                    cash_discount = 0;
+                
+                updateAmount();
+            }
+            
+        });
+        
        saleItemTableview.setItems(data);    
+       searchItemsCode();
 
     }
 
 }
 
-
-//Editing Cell
-//Qnty Cell Editor
- class EditableCell extends TableCell{
-           private TextField textField;
-           private EventBus appBus;
-           
-           public EditableCell(EventBus appBus){
-               this.appBus = appBus;
-           }
-           
-           public EditableCell(){}
-           
-           @Override
-           public void startEdit(){
-               super.startEdit();
-               if(textField == null)
-                   createTextField();
-               
-               setGraphic(textField);
-               setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-               textField.selectAll();
-           }
-           
-            @Override
-          public void cancelEdit() {
-          super.cancelEdit();
-          setText(String.valueOf(getItem()));
-           setContentDisplay(ContentDisplay.TEXT_ONLY);
-        }
-           
-           //update Item
-            
-            
-              public void updateItem(Integer item, boolean empty) {
-                  super.updateItem(item, empty);
-
-                  if (empty) {
-                      setText(null);
-                      setContentDisplay(ContentDisplay.TEXT_ONLY);
-                  } else {
-                          setText(textField.getText());
-                          setContentDisplay(ContentDisplay.TEXT_ONLY);
-                          appBus.post(textField.getText());
-                      }
-                  
-              }
-           
-           //textfield creation and settings
-           private void createTextField(){
-                textField = new TextField(getString());
-                
-                textField.setAlignment(Pos.CENTER);
-                textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
-                textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-                    @Override
-                    public void handle(KeyEvent t) {
-                        
-                     
-                        if (t.getCode() == KeyCode.ENTER) {
-            //              updateItem(Integer.parseInt(textField.getText()), false);
-                            
-                            commitEdit(Integer.parseInt(textField.getText()));
-                         //   System.out.println("enter key pressed");
-                        } else if (t.getCode() == KeyCode.ESCAPE) {
-                            cancelEdit();
-                        }
-                    }
-                });
-           
-           
-          }//end create textfield
-         
-           private String getString() {
-                    return getItem() == null ? "" : getItem().toString();
-           }
-
-    }
