@@ -20,7 +20,12 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
@@ -50,7 +55,11 @@ import utils.EntityManagerHelper;
 import utils.ItemSearchBox;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.StringConverter;
+import pojos.Customer;
 import pojos.SaleBillPharma;
 
 
@@ -164,9 +173,10 @@ public class SalebillPharmaController {
     
     private ObservableList<SaleBillPharmaItem> data = FXCollections.observableArrayList();
     
+    private Popup popup;
+    private ListView<Customer> customerListView = new ListView<Customer>();
     
-    
-    
+     Stage stage = new Stage();
     
     @FXML
     void initialize() {
@@ -240,6 +250,7 @@ public class SalebillPharmaController {
     void addItemToTable(MouseEvent event) {
      
      SaleBillPharmaItem item = searchResultListView.getSelectionModel().getSelectedItem();
+     item.setSaleBillNo(salebill);
      item.setQnty(""+1);
      data.add(item);
      updateAmount();
@@ -337,11 +348,28 @@ public class SalebillPharmaController {
 
     @FXML
     void handleSaveBtn(ActionEvent event) {
-        System.out.println("Button Clicked");
+         EntityManager em = EntityManagerHelper.getInstance().getEm();
+        
+         salebill.setSaleBillPharmaItemList(data.subList(0, data.size()));
+         salebill.setDeliveryAddress(deliveryTextArea.getText());
+         salebill.setDiscount(Float.parseFloat(CDamtTextBox.getText()));
+         salebill.setFinalAmt(Float.parseFloat(finalAmtTextBox.getText()));
+         salebill.setTotalAmt(Float.parseFloat(totalTextBox.getText()));
+         salebill.setTotalVat(Float.parseFloat(vatTextBox.getText()));
+         try{
+             em.getTransaction().begin();
+             em.persist(salebill);
+             
+             em.getTransaction().commit();
+             
+         }catch(Exception e){
+             System.out.println("error in saving items");
+             e.printStackTrace();
+         }
   
         
     }
-
+    
     private void initializeSaleBill() {
         saleItemTableview.setOnKeyPressed(new EventHandler<KeyEvent>(){
 
@@ -394,7 +422,82 @@ public class SalebillPharmaController {
        //set the billDate
         salebill.setBillDate(new Date());
         dateTextBox.setText(dateFormatter.format(new Date()));
+        
+        
+        customerTextBox.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent t) {
+                 if (KeyCode.TAB.equals(t.getCode())) {
+                                       hidePopup();
+                                        return;
+                              }
+                 initiatePopUp(customerTextBox.getText());
+                 if(KeyCode.ENTER.equals(t.getCode())){
+                     showPopup();
+                 }
+                 
+      
+            }
+        });
+        
+        customerListView.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent t) {
+                System.out.println("key prese:");
+                     if(KeyCode.ENTER.equals(t.getCode())){
+                              chooseCustomerNow();
+                 }
+            }
+        });
+        
+        customerListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                chooseCustomerNow();
+            }
+        });
+    }
+    
+    public void chooseCustomerNow(){
+        Customer c = customerListView.getSelectionModel().getSelectedItem();
+                customerTextBox.setText(c.toString());
+                salebill.setCustomerId(c);
+                custLicTextBox.setText(c.getLicenceNo());
+                hidePopup();
     }
 
+    
+    
+      private void initiatePopUp(String text){
+        
+           customerListView.getItems().clear();
+         
+            //write the code to get the items List from the db and then 
+            //show it here 
+            text = text.trim();
+            text = "%"+text+"%";
+            EntityManager em = EntityManagerHelper.getInstance().getEm();
+            Query q  = null;
+            if(text.length() ==0 )
+                q = em.createNamedQuery("Customer.findAll");
+            else
+            {q= em.createNamedQuery("Customer.findByCustomersNameLike");
+                q.setParameter("companyName", text);
+            }
+            ArrayList<Customer> list = new ArrayList(q.getResultList());
+            System.out.println(list.size()+ " items found");
+            customerListView.getItems().addAll(list);
+   }
+            private void showPopup(){
+        stage.setScene(new Scene(new Group(customerListView)));
+        stage.show();
+            }
+            
+     private void hidePopup(){
+        stage.close();
+    }
 }
 
