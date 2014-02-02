@@ -4,7 +4,9 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
@@ -49,6 +51,7 @@ import utils.ItemSearchBox;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.util.StringConverter;
+import pojos.SaleBillPharma;
 
 
 public class SalebillPharmaController {
@@ -152,22 +155,22 @@ public class SalebillPharmaController {
            @FXML
     private TextField itemSearchTextBox;
     
-    private int currentSelectedIndex = -1;
-    
-    private float vat5Amt = 0.0f;
-    private float vat125Amt = 0.0f;
-    private float totalAmt = 0.0f;
     private  int cash_discount = 0;
     
+   SaleBillPharma salebill = new SaleBillPharma();
+    
     DecimalFormat f = new DecimalFormat("##.00");
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
     
     private ObservableList<SaleBillPharmaItem> data = FXCollections.observableArrayList();
-     private ItemSearchBox selectedItemSearchBox;
-     EventBus eventBus = new EventBus();
-    private ItemsPharma selectedItem;
+    
+    
+    
+    
+    
     @FXML
     void initialize() {
-       eventBus.register(this);
+    
         assert AmountTableColumn != null : "fx:id=\"AmountTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert CDamtTextBox != null : "fx:id=\"CDamtTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert batchTableColumn != null : "fx:id=\"batchTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
@@ -198,18 +201,7 @@ public class SalebillPharmaController {
         assert vat5AmtLabel != null : "fx:id=\"vat5AmtLabel\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert vatTextBox != null : "fx:id=\"vatTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         
-        //selection listener for the tableview
-       saleItemTableview.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener<Integer>() {
 
-            @Override
-            public void onChanged(ListChangeListener.Change<? extends Integer> change) {
-                if(change.getList().size() > 0)
-                {
-                                currentSelectedIndex = change.getList().get(0);
-                    
-                }
-            }
-        });
         
 
         mrpTableColumn.setCellValueFactory(new PropertyValueFactory<SaleBillPharmaItem, Float>("mrp"));
@@ -321,34 +313,15 @@ public class SalebillPharmaController {
         
     }
     
- 
-    
-    
-//    @Subscribe
-//    public void setSelectedItem(ItemsPharma userSelectedItem){
-//        System.out.println(currentSelectedIndex);
-//        selectedItem = userSelectedItem;         
-//        SaleBillPharmaItem convItem = new SaleBillPharmaItem(selectedItem);
-//        convItem.setQnty(""+1);
-//        //int ind = saleItemTableview.getSelectionModel().getSelectedIndex();
-//        System.out.println(currentSelectedIndex + "index in controller");
-//        data.remove(currentSelectedIndex); 
-//        data.add(currentSelectedIndex, convItem);
-//        //updateAmount(""+1);
-//        System.out.println(selectedItem.getDesc() + "in con");
-////         saleItemTableview.getColumns().get(0).setVisible(false);
-////         saleItemTableview.getColumns().get(0).setVisible(true);     
-//         //data.add(new SaleBillPharmaItem());
-//        
-//    }
     
         @FXML
     void handlePaymentModeChanged(MouseEvent event) {
-         
-            
     }
 
-        
+    //code to update stocks on click save btn
+        public void updateStocks(){
+            
+        }
     
     
         @FXML
@@ -402,7 +375,25 @@ public class SalebillPharmaController {
         
        saleItemTableview.setItems(data);    
        searchItemsCode();
+       
+       //set the bill Number
+       EntityManager em = EntityManagerHelper.getInstance().getEm();
+        Query q = em.createNamedQuery("SaleBillPharma.findNextId");
+      
+        int nextId = 0;
+        if(q.getSingleResult() == null )
+            nextId = 1;
+        else
+        {
+            nextId = Integer.parseInt(""+q.getSingleResult());
+            nextId++;
+        }
+        
+        billNoTextbox.setText(""+nextId);
 
+       //set the billDate
+        salebill.setBillDate(new Date());
+        dateTextBox.setText(dateFormatter.format(new Date()));
     }
 
 }
