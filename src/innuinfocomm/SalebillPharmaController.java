@@ -2,12 +2,15 @@ package innuinfocomm;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableObjectValue;
@@ -61,6 +64,7 @@ import javafx.stage.Window;
 import javafx.util.StringConverter;
 import pojos.Customer;
 import pojos.SaleBillPharma;
+import utils.MyLogger;
 
 
 public class SalebillPharmaController {
@@ -167,10 +171,9 @@ public class SalebillPharmaController {
            
     @FXML
     private Label errLabel;
-    
-   @FXML
-    private Label successLabel;
-    
+
+    private final static Logger LOGGER = Logger.getLogger(SalebillPharmaController.class.getName());
+
     private  int cash_discount = 0;
     
    SaleBillPharma salebill = new SaleBillPharma();
@@ -339,6 +342,28 @@ public class SalebillPharmaController {
     //code to update stocks on click save btn
         public void updateStocks(){
             
+            for(int i = 0 ;i<data.size();i++){
+                SaleBillPharmaItem item = data.get(i);
+                ItemsPharma itemP = item.getItemPharmaId();
+                itemP.setStockStrips(itemP.getStockStrips()-Integer.parseInt(item.getQnty()));
+                EntityManager em = EntityManagerHelper.getInstance().getEm();
+                try{
+                    em.getTransaction().begin();
+                em.persist(itemP);
+                em.getTransaction().commit();
+                }catch(Exception e){
+                    //e.printStackTrace();
+                    //System.out.println("error in ");
+                    LOGGER.setLevel(Level.SEVERE);
+                    LOGGER.info("error in update Stocks.");
+                    LOGGER.info(e.getMessage());
+                    
+                    errLabel.setVisible(true);
+                }
+                
+            }
+            
+            
         }
     
     
@@ -381,18 +406,30 @@ public class SalebillPharmaController {
              em.getTransaction().begin();
              em.persist(salebill);
              em.getTransaction().commit();
+             updateStocks();
+             
              successLabel.setVisible(true);
              
          }catch(Exception e){
+             LOGGER.setLevel(Level.SEVERE);
+             LOGGER.info(e.getMessage());
              errLabel.setVisible(true);
-             System.out.println("error in saving items");
-             e.printStackTrace();
+             //System.out.println("error in saving items");
+             //e.printStackTrace();
          }
   
         
     }
     
     private void initializeSaleBill() {
+        
+          try {
+      MyLogger.setup();
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException("Problems with creating the log files");
+    }
+
         saleItemTableview.setOnKeyPressed(new EventHandler<KeyEvent>(){
 
             @Override

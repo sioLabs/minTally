@@ -202,7 +202,7 @@ public class SaleBillPharmaItem implements Serializable {
     public void setQnty(String qnty) {
         this.qnty = qnty;
         this.amt = Integer.parseInt(qnty)*this.getItemRate();
-        this.setItemVatRs(amt*getItemVatPerc());
+        this.setItemVatRs(amt*getItemVatPerc()/100);
     }
 
     public float getItemRate() {

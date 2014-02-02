@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="626.0000999999975" prefWidth="1264.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.SalebillPharmaController">
+<AnchorPane id="AnchorPane" onMouseClicked="#handlePaymentModeChanged" prefHeight="626.0000999999975" prefWidth="1264.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.SalebillPharmaController">
   <children>
     <Label layoutX="348.0" layoutY="41.0" text="Create New Sale Bill">
       <effect>
-        <DropShadow color="#1a1a1a8a" height="44.7797619047619" radius="21.004464285714285" width="41.238095238095234">
+        <DropShadow color="#1a1a1a8a" height="41.68080357142857" radius="20.22972470238095" width="41.238095238095234">
           <input>
             <Lighting>
               <bumpInput>
@@ -52,9 +52,8 @@
         <ComboBox fx:id="paymentComboBox" prefHeight="21.0" prefWidth="92.0" promptText="Select Mode">
           <items>
             <FXCollections fx:factory="observableArrayList">
-              <String fx:value="Item 1" />
-              <String fx:value="Item 2" />
-              <String fx:value="Item 3" />
+              <String fx:value="Cash" />
+              <String fx:value="Cheque" />
             </FXCollections>
           </items>
         </ComboBox>
@@ -78,38 +77,35 @@
         </TableView>
       </content>
     </ScrollPane>
-    <HBox id="HBox" alignment="CENTER" layoutX="43.0" layoutY="445.0" spacing="20.0">
-      <children>
-        <Label fx:id="vat5AmtLabel" font="$x1" text="Vat amt on 5% product" />
-        <Label id="vat125AmtLAbel" fx:id="vat125AmtLabel" font="$x1" text="Vat amt on 12.5% product" />
-      </children>
-    </HBox>
+    <Label fx:id="vat5AmtLabel" font="$x1" layoutX="43.0" layoutY="445.0" text="Vat amt on 5% product" />
+    <Label id="vat125AmtLAbel" fx:id="vat125AmtLabel" font="$x1" layoutX="43.0" layoutY="466.0" text="Vat amt on 12.5% product" />
     <Label font="$x1" layoutX="718.0" layoutY="441.0" text="Total Amount :" />
     <TextField fx:id="totalTextBox" layoutX="821.0" layoutY="441.0" prefWidth="92.0" />
-    <Label font="$x1" layoutX="712.0" layoutY="467.0" text="(+) CD 2% amt :" />
+    <Label font="$x1" layoutX="712.0" layoutY="467.0" text="(-) CD 2% amt :" />
     <TextField fx:id="CDamtTextBox" layoutX="821.0" layoutY="466.0" prefWidth="92.0" />
-    <Label font="$x1" layoutX="726.0" layoutY="490.0" text="(+) VAT Amt :" />
-    <TextField fx:id="vatTextBox" layoutX="821.0" layoutY="488.0" prefWidth="92.0" />
-    <Label font="$x1" layoutX="730.0" layoutY="520.0" text="(-) Discount :" />
-    <TextField fx:id="discountTextBox" layoutX="821.0" layoutY="520.0" prefWidth="92.0" />
-    <Label font="$x1" layoutX="676.0" layoutY="554.0" text="Net Amount Payable : " />
-    <TextField fx:id="finalAmtTextBox" layoutX="821.0" layoutY="554.0" prefWidth="92.0" />
+    <Label font="$x1" layoutX="455.0" layoutY="444.0" text="Total VAT Amt :" />
+    <TextField fx:id="vatTextBox" layoutX="552.0" layoutY="443.0" prefWidth="92.0" />
+    <Label font="$x1" layoutX="730.0" layoutY="496.0" text="Cheque No:" />
+    <TextField id="discountTextBox" fx:id="chequeTextBox" layoutX="822.0" layoutY="496.0" prefWidth="92.0" />
+    <Label font="$x1" layoutX="676.0" layoutY="530.0" text="Net Amount Payable : " />
+    <TextField fx:id="finalAmtTextBox" layoutX="821.0" layoutY="530.0" prefWidth="92.0" />
     <Label font="$x1" layoutX="43.0" layoutY="490.0" text="Delivery Address:" />
     <TextArea fx:id="deliveryTextArea" layoutX="43.0" layoutY="511.0" prefHeight="56.0" prefWidth="326.0" promptText="Enter delivery location. Leave blank if not applied" wrapText="true" />
     <Button fx:id="saveBtn" layoutX="45.0" layoutY="599.0" mnemonicParsing="false" onAction="#handleSaveBtn" prefWidth="85.0" text="Save" />
     <Button fx:id="printBtn" layoutX="150.0" layoutY="599.0" mnemonicParsing="false" onAction="#handlePrintBtn" prefWidth="85.0" text="Print" />
     <Button fx:id="resetBtn" layoutX="258.0" layoutY="599.0" mnemonicParsing="false" onAction="#handleResetBtn" prefWidth="85.0" text="Reset" />
-    <Label fx:id="errorLabel" layoutX="346.0" layoutY="66.0" text="Error Label :" textFill="#cc0000" visible="false">
-      <font>
-        <Font size="16.0" fx:id="x2" />
-      </font>
-    </Label>
-    <Label fx:id="successLabel" font="$x2" layoutX="347.0" layoutY="66.0" text="Irem Saved Successfully" textFill="#009918" visible="false" />
-    <TextField fx:id="itemSearchTextBox" layoutX="977.0" layoutY="144.0" onKeyPressed="#searchItems" prefWidth="200.0" />
+    <TextField fx:id="itemSearchTextBox" layoutX="977.0" layoutY="144.0" onKeyPressed="#searchItems" prefWidth="200.0" promptText="Search Items Here" />
     <SplitPane id="SplitPane" layoutX="977.0" layoutY="189.0">
       <items>
         <ListView fx:id="searchResultListView" onMouseClicked="#addItemToTable" prefHeight="243.0" prefWidth="200.0" />
       </items>
     </SplitPane>
+    <Label font="$x1" layoutX="978.0" layoutY="171.0" text="Click Below to add to Bill" />
+    <Label fx:id="successLabel" layoutX="366.0" layoutY="601.0" text="SaleBill Generate successfully" textFill="#319900" visible="false">
+      <font>
+        <Font size="16.0" fx:id="x2" />
+      </font>
+    </Label>
+    <Label id="successLabel" fx:id="errLabel" font="$x2" layoutX="366.0" layoutY="601.0" text="Error in saving. Try Again" textFill="RED" visible="false" />
   </children>
 </AnchorPane>

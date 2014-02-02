@@ -5,6 +5,7 @@
 package pojos;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -19,6 +20,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "SaleBillPharma.findAll", query = "SELECT s FROM SaleBillPharma s"),
     @NamedQuery(name = "SaleBillPharma.findById", query = "SELECT s FROM SaleBillPharma s WHERE s.id = :id"),
+    @NamedQuery(name = "SaleBillPharma.findNextId", query = "SELECT MAX(i.id) FROM SaleBillPharma i"),
     @NamedQuery(name = "SaleBillPharma.findByBillDate", query = "SELECT s FROM SaleBillPharma s WHERE s.billDate = :billDate"),
     @NamedQuery(name = "SaleBillPharma.findByCustomerId", query = "SELECT s FROM SaleBillPharma s WHERE s.customerId = :customerId"),
     @NamedQuery(name = "SaleBillPharma.findByTotalVat", query = "SELECT s FROM SaleBillPharma s WHERE s.totalVat = :totalVat"),
@@ -40,6 +44,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "SaleBillPharma.findByFinalAmt", query = "SELECT s FROM SaleBillPharma s WHERE s.finalAmt = :finalAmt"),
     @NamedQuery(name = "SaleBillPharma.findByDeliveryAddress", query = "SELECT s FROM SaleBillPharma s WHERE s.deliveryAddress = :deliveryAddress")})
 public class SaleBillPharma implements Serializable {
+    @Basic(optional = false)
+    @Column(name = "bill_date")
+    @Temporal(TemporalType.DATE)
+    private Date billDate;
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Customer customerId;
@@ -49,9 +57,6 @@ public class SaleBillPharma implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @Column(name = "bill_date")
-    private int billDate;
     
     @Basic(optional = false)
     @Column(name = "total_vat")
@@ -77,9 +82,9 @@ public class SaleBillPharma implements Serializable {
         this.id = id;
     }
 
-    public SaleBillPharma(Integer id, int billDate, Customer customerId, float totalVat, float totalAmt, float finalAmt) {
+    public SaleBillPharma(Integer id, Date billDate, Customer customerId, float totalVat, float totalAmt, float finalAmt) {
         this.id = id;
-        this.billDate = billDate;
+
         this.customerId = customerId;
         this.totalVat = totalVat;
         this.totalAmt = totalAmt;
@@ -94,14 +99,7 @@ public class SaleBillPharma implements Serializable {
         this.id = id;
     }
 
-    public int getBillDate() {
-        return billDate;
-    }
-
-    public void setBillDate(int billDate) {
-        this.billDate = billDate;
-    }
-
+    
     public Customer getCustomerId() {
         return customerId;
     }
@@ -182,6 +180,14 @@ public class SaleBillPharma implements Serializable {
     @Override
     public String toString() {
         return "pojos.SaleBillPharma[ id=" + id + " ]";
+    }
+
+    public Date getBillDate(){
+        return this.billDate;
+    }
+
+    public void setBillDate(Date billDate) {
+        this.billDate = billDate;
     }
 
 
