@@ -7,23 +7,31 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.util.Callback;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -45,7 +53,7 @@ public class SalebillPharmaController {
     private URL location;
 
     @FXML
-    private TableColumn<ItemsPharma, Float> AmountTableColumn;
+    private TableColumn AmountTableColumn = new TableColumn();
 
     @FXML
     private TextField CDamtTextBox;
@@ -102,7 +110,7 @@ public class SalebillPharmaController {
     private Button printBtn;
 
     @FXML
-    private TableColumn<ItemsPharma, Float> qntyTableColumn;
+    private TableColumn qntyTableColumn = new TableColumn();
 
     @FXML
     private TableColumn<ItemsPharma, Float> rateTableColumn;
@@ -132,14 +140,18 @@ public class SalebillPharmaController {
     private TextField vatTextBox;
     
     private int currentSelectedIndex = -1;
-
+    
+    private float vat5Amt = 0.0f;
+    private float vat125Amt = 0.0f;
+    private float totalAmt = 0.0f;
+    
     private ObservableList<ItemsPharma> data = FXCollections.observableArrayList();
      private ItemSearchBox selectedItemSearchBox;
      EventBus eventBus = new EventBus();
     private ItemsPharma selectedItem;
     @FXML
     void initialize() {
-        eventBus.register(this);
+       eventBus.register(this);
         assert AmountTableColumn != null : "fx:id=\"AmountTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert CDamtTextBox != null : "fx:id=\"CDamtTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert batchTableColumn != null : "fx:id=\"batchTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
@@ -184,12 +196,6 @@ public class SalebillPharmaController {
         });
         
 
-            
-
-            
-        
-        
-        
         mrpTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma, Float>("mrp"));
         dmTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma,String>("DM"));
         makeTableColumn.setCellValueFactory(new PropertyValueFactory<ItemsPharma,String>("make"));
@@ -214,12 +220,58 @@ public class SalebillPharmaController {
         };
           descTableColumn.setCellFactory(itNameCellfactory);
         
-        
-                
+        //make qnty col editable
+          
+           Callback<TableColumn<SalebillItem,Double>,TableCell<SalebillItem,Double>> cellFactory = 
+                new Callback<TableColumn<SalebillItem,Double>,TableCell<SalebillItem,Double>>(){
+                     public TableCell<SalebillItem,Double> call(TableColumn<SalebillItem,Double> p) {
+                         EditableCell ec = new EditableCell(eventBus);
+                         eventBus.register(ec);
+                        return  ec;
+                  }
+                };
+          
+          qntyTableColumn.setCellFactory(cellFactory);
 
        initializeSaleBill();
         
     }
+    
+
+ 
+    @Subscribe
+    public void updateAmount(String s){
+        //ge tht equntity and rate at that column.
+        ItemsPharma i  = saleItemTableview.getItems().get(currentSelectedIndex);
+        float rate = i.getRateFraction();
+        int qty = Integer.parseInt(s);
+        
+        float amount = rate*qty;
+        float vatPerc = i.getVat();
+        float vatAmt = 0.0f;
+        if(Math.abs(vatPerc -5) < 0.0001){
+            vatAmt = amount*0.05f;
+            //TODO remove previous amount
+            vat5Amt += vatAmt;
+            vat5AmtLabel.setText(vat5AmtLabel.getText().concat(": "+vat5Amt));
+        }else{
+            vatAmt = amount * 0.125f;
+            //TODO initialize vat 125 sale amt.
+            vat125Amt += vatAmt;
+            vat125AmtLabel.setText(vat125AmtLabel.getText().concat(": "+vat125Amt));
+        }
+        
+          amount += vatAmt;
+         
+          
+        
+        System.out.println(amount+"\n"+vat5Amt+"\n"+ vat125Amt);
+        
+        
+    }
+    
+ 
+    
     
     @Subscribe
     public void setSelectedItem(ItemsPharma userSelectedItem){
@@ -231,9 +283,7 @@ public class SalebillPharmaController {
         data.add(currentSelectedIndex, selectedItem);
         System.out.println(selectedItem.getDesc() + "in con");
          saleItemTableview.getColumns().get(0).setVisible(false);
-         saleItemTableview.getColumns().get(0).setVisible(true);
-
-       // data.add(new ItemsPharma());
+         saleItemTableview.getColumns().get(0).setVisible(true);     
         
     }
         
@@ -272,3 +322,82 @@ public class SalebillPharmaController {
     }
 
 }
+
+
+//Editing Cell
+//Qnty Cell Editor
+ class EditableCell extends TableCell{
+           private TextField textField;
+           private EventBus appBus;
+           
+           public EditableCell(EventBus appBus){
+               this.appBus = appBus;
+           }
+           
+           public EditableCell(){}
+           
+           @Override
+           public void startEdit(){
+               super.startEdit();
+               if(textField == null)
+                   createTextField();
+               
+               setGraphic(textField);
+               setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+               textField.selectAll();
+           }
+           
+            @Override
+          public void cancelEdit() {
+            super.cancelEdit();
+
+            setText(String.valueOf(getItem()));
+            setContentDisplay(ContentDisplay.TEXT_ONLY);
+        }
+           
+           //update Item
+            
+            
+              public void updateItem(Integer item, boolean empty) {
+                  super.updateItem(item, empty);
+
+                  if (empty) {
+                      setText(null);
+                      setGraphic(null);
+                  } else {
+                          setText(getString());
+                          setContentDisplay(ContentDisplay.TEXT_ONLY);
+                          appBus.post(getString());
+                      }
+                  
+              }
+           
+           //textfield creation and settings
+           private void createTextField(){
+                textField = new TextField(getString());
+                textField.setAlignment(Pos.CENTER);
+                textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
+                textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+                    @Override
+                    public void handle(KeyEvent t) {
+                        
+                     //   System.out.println("inside key handle event");
+                       // System.out.println(t.getCode());
+                        if (t.getCode() == KeyCode.ENTER) {
+                           updateItem(Integer.parseInt(textField.getText()), false);
+                         //   System.out.println("enter key pressed");
+                        } else if (t.getCode() == KeyCode.ESCAPE) {
+                            cancelEdit();
+                        }
+                    }
+                });
+           
+           
+          }//end create textfield
+         
+           private String getString() {
+                    return getItem() == null ? "" : getItem().toString();
+           }
+
+    }
