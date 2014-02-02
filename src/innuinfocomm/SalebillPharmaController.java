@@ -163,6 +163,13 @@ public class SalebillPharmaController {
        
            @FXML
     private TextField itemSearchTextBox;
+           
+           
+    @FXML
+    private Label errLabel;
+    
+   @FXML
+    private Label successLabel;
     
     private  int cash_discount = 0;
     
@@ -342,7 +349,21 @@ public class SalebillPharmaController {
 
     @FXML
     void handleResetBtn(ActionEvent event) {
-
+            data.remove(0, data.size());
+            customerTextBox.setText(null);
+            custLicTextBox.setText(null);
+            vat5AmtLabel.setText("Vat amt on 5% Product");
+            vat125AmtLabel.setText("Vat amt on 12.5% Product");
+            deliveryTextArea.setText(null);
+            vatTextBox.setText(null);
+            totalTextBox.setText(null);
+            CDamtTextBox.setText(null);
+            chequeTextBox.setText(null);
+            finalAmtTextBox.setText(null);
+            errLabel.setVisible(false);
+            successLabel.setVisible(false);
+            updateAmount();
+                    
      
     }
 
@@ -359,10 +380,11 @@ public class SalebillPharmaController {
          try{
              em.getTransaction().begin();
              em.persist(salebill);
-             
              em.getTransaction().commit();
+             successLabel.setVisible(true);
              
          }catch(Exception e){
+             errLabel.setVisible(true);
              System.out.println("error in saving items");
              e.printStackTrace();
          }
