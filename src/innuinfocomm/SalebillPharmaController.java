@@ -1,7 +1,5 @@
 package innuinfocomm;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -11,57 +9,34 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableObjectValue;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.util.Callback;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import pojos.ConverterUtil;
 import pojos.ItemsPharma;
 import pojos.SaleBillPharmaItem;
-import pojos.SaleBillPharmaItem;
-import pojos.SaleBill;
-import pojos.SalebillItem;
 import utils.EntityManagerHelper;
-import utils.ItemSearchBox;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import javafx.util.StringConverter;
 import pojos.Customer;
 import pojos.SaleBillPharma;
 import utils.MyLogger;
@@ -185,7 +160,7 @@ public class SalebillPharmaController {
     private ObservableList<SaleBillPharmaItem> data = FXCollections.observableArrayList();
     
     private Popup popup;
-    private ListView<Customer> customerListView = new ListView<Customer>();
+    private ListView<Customer> customerListView = new ListView<>();
     
      Stage stage = new Stage();
     
@@ -401,6 +376,8 @@ public class SalebillPharmaController {
 
     @FXML
     void handleSaveBtn(ActionEvent event) {
+        successLabel.setVisible(false);
+        errLabel.setVisible(false);
          EntityManager em = EntityManagerHelper.getInstance().getEm();
         
          salebill.setSaleBillPharmaItemList(data.subList(0, data.size()));
