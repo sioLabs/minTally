@@ -3,16 +3,23 @@ package innuinfocomm;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import pojos.Customer;
 import pojos.ItemsPharma;
 import utils.EntityManagerHelper;
 
@@ -66,6 +73,16 @@ public class AddNewPharmaItemController {
      
     @FXML
     private TextField stockTextBox;
+    
+    
+    @FXML
+    private ListView<ItemsPharma> itemsListView;
+    
+    
+    @FXML
+    private TextField searchItemsTextBox;
+    
+    ObservableList<ItemsPharma> data = FXCollections.observableArrayList();
 
       private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
       private int nextId;
@@ -168,6 +185,8 @@ public class AddNewPharmaItemController {
         assert rateTextBox != null : "fx:id=\"rateTextBox\" was not injected: check your FXML file 'AddNewPharmaItem.fxml'.";
         assert stockTextBox != null : "fx:id=\"rateTextBox\" was not injected: check your FXML file 'AddNewPharmaItem.fxml'.";
         setNextId();
+        
+        itemsListView.setItems(data);
     }
     
     private void setNextId(){
@@ -187,6 +206,29 @@ public class AddNewPharmaItemController {
 
 }
 
+    
+      @FXML
+    void handleItemsClicked(MouseEvent event) {
+    }
+      
+          @FXML
+    void searchItems(KeyEvent event) {
+                    data.clear();
+        String text = searchItemsTextBox.getText().trim();
+        text = "%"+text+"%";
+            EntityManager em = EntityManagerHelper.getInstance().getEm();
+            Query q  = null;
+            if(text.length() ==0 )
+                q = em.createNamedQuery("ItemsPharma.findAll");
+            else
+            {q= em.createNamedQuery("Items.findByItemsPharmaNameLike");
+                q.setParameter("description", text);
+            }
+            ArrayList<ItemsPharma> list = new ArrayList(q.getResultList());
+            System.out.println(list.size()+ " items found");
+            data.addAll(list);     
+              
+    }
 
 }
 
