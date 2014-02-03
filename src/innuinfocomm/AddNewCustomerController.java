@@ -1,15 +1,24 @@
 package innuinfocomm;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import pojos.Customer;
 import utils.EntityManagerHelper;
 
@@ -21,6 +30,13 @@ public class AddNewCustomerController {
 
     @FXML
     private URL location;
+    
+    
+    @FXML
+    private TableView<Customer> customerListTableView;
+    
+    @FXML
+    private TextField searchCustomerTextBox;
 
     @FXML
     private CheckBox addCheckBox;
@@ -57,8 +73,14 @@ public class AddNewCustomerController {
 
     @FXML
     private Label successLabel;
+    
+     @FXML
+    private TableColumn<Customer,String> customerCol;
 
+    ObservableList<Customer> data = FXCollections.observableArrayList();
 
+    boolean dataFromTable = false;
+    
     @FXML
     void handleResetBtn(ActionEvent event) {
     }
@@ -67,7 +89,14 @@ public class AddNewCustomerController {
     void handleSaveBtn(ActionEvent event) {
         if(verify()){
             
-            Customer c = new Customer();
+            Customer c ;
+            if(dataFromTable){
+                c = customerListTableView.getSelectionModel().getSelectedItem();
+            }else{
+                 c = new Customer();
+            }
+            
+            
             c.setCompanyName(nameTextBox.getText());
             
             String balS = balanceTextBox.getText();
@@ -135,6 +164,9 @@ public class AddNewCustomerController {
         assert saveBtn != null : "fx:id=\"saveBtn\" was not injected: check your FXML file 'AddNewCustomer.fxml'.";
         assert successLabel != null : "fx:id=\"successLabel\" was not injected: check your FXML file 'AddNewCustomer.fxml'.";
 
+        
+        customerCol.setCellValueFactory(new PropertyValueFactory<Customer,String>("companyName"));
+        customerListTableView.setItems(data);
     }
     
     private boolean verify(){
@@ -152,5 +184,48 @@ public class AddNewCustomerController {
         
         return true;
     }
+    
+      @FXML
+    void handleCustomerClicked(MouseEvent event) {
+          
+          Customer c = customerListTableView.getSelectionModel().getSelectedItem();
+          fillCustomerDetails(c);
+          dataFromTable  = true;
+          
+    }
+      
+      
+    @FXML
+    void searchCustomers(KeyEvent event) {
+        data.clear();
+        String text = searchCustomerTextBox.getText().trim();
+        text = "%"+text+"%";
+            EntityManager em = EntityManagerHelper.getInstance().getEm();
+            Query q  = null;
+            if(text.length() ==0 )
+                q = em.createNamedQuery("Customer.findAll");
+            else
+            {q= em.createNamedQuery("Customer.findByCustomersNameLike");
+                q.setParameter("companyName", text);
+            }
+            ArrayList<Customer> list = new ArrayList(q.getResultList());
+            System.out.println(list.size()+ " items found");
+            data.addAll(list);     
+            
+        
+    }
+    
+    private void fillCustomerDetails(Customer c){
+        
+        nameTextBox.setText(c.getCompanyName());
+        addTextBox.setText(c.getSiteAddress());
+        licenseTextBox.setText(c.getLicenceNo());
+        phoneTextBox.setText(c.getPhone());
+        mobileTextBox.setText(c.getMobile());
+        delAddTextBox.setText(c.getDelAddress());
+        balanceTextBox.setText(""+c.getBalance());
+        
+    }
+
 
 }
