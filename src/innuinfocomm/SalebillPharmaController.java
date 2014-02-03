@@ -65,6 +65,7 @@ import javafx.util.StringConverter;
 import pojos.Customer;
 import pojos.SaleBillPharma;
 import utils.MyLogger;
+import utils.PrintInvoice;
 
 
 public class SalebillPharmaController {
@@ -337,6 +338,11 @@ public class SalebillPharmaController {
     
         @FXML
     void handlePaymentModeChanged(MouseEvent event) {
+            if(paymentComboBox.getSelectionModel().isSelected(0))
+                salebill.setMode("CASH");
+            else if(paymentComboBox.getSelectionModel().isSelected(1))
+                salebill.setMode("");
+            
     }
 
     //code to update stocks on click save btn
@@ -369,7 +375,8 @@ public class SalebillPharmaController {
     
         @FXML
     void handlePrintBtn(ActionEvent event) {
-            
+            PrintInvoice printer = new PrintInvoice(salebill);
+            printer.getDocument();
     }
 
     @FXML
@@ -402,6 +409,10 @@ public class SalebillPharmaController {
          salebill.setFinalAmt(Float.parseFloat(finalAmtTextBox.getText()));
          salebill.setTotalAmt(Float.parseFloat(totalTextBox.getText()));
          salebill.setTotalVat(Float.parseFloat(vatTextBox.getText()));
+         salebill.setMode("CASH");
+         if(paymentComboBox.getSelectionModel().isSelected(1)){
+             salebill.setMode(chequeTextBox.getText());
+         }
          try{
              em.getTransaction().begin();
              em.persist(salebill);
@@ -477,6 +488,7 @@ public class SalebillPharmaController {
         }
         
         billNoTextbox.setText(""+nextId);
+        salebill.setId(nextId);
 
        //set the billDate
         salebill.setBillDate(new Date());
