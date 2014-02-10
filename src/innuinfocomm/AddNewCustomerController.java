@@ -214,17 +214,33 @@ public class AddNewCustomerController {
     }
     
     private boolean verify(){
-        
+        errLabel.setVisible(true);
         if(nameTextBox.getText().trim().length() < 1)
+        {
+            errLabel.setText("Name cannot be empty");
             return false;
+        }
         if(addTextBox.getText().trim().length() < 1)
+        {
+            errLabel.setText("Address cannot be empty");
             return false;
+        }
         if(mobileTextBox.getText().trim().length() < 1)
+        {
+            errLabel.setText("Mobile number cannot be empty");
             return false;
+        }
         if(licenseTextBox.getText().trim().length() < 1)
+        {
+            errLabel.setText("License Number cannot be empty");
             return false;
+        }
         if(balanceTextBox.getText().trim().length() < 1)
+        {
+            errLabel.setText("Opening balance cannot be empty");
             return false;
+        }
+            
         
         return true;
     }
