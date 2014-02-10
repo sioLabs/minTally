@@ -14,6 +14,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
+import javax.persistence.EntityManager;
+import utils.EntityManagerHelper;
 
 
 public class MainWindowController {
@@ -220,7 +222,8 @@ public class MainWindowController {
         assert x1 != null : "fx:id=\"x1\" was not injected: check your FXML file 'MainWindow.fxml'.";
         assert createNewSaleBillBtn != null : "fx:id=\"createNewSaleBillBtn\" was not injected: check your FXML file 'MainWindow.fxml'.";
 
-
+        
+        checkDataBaseConnectivity();
     }
     
     @FXML
@@ -241,6 +244,13 @@ public class MainWindowController {
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);
         mainContentTabPane.getSelectionModel().select(tab);
+    }
+
+    private void checkDataBaseConnectivity() {
+        
+
+        
+        
     }
 
 }

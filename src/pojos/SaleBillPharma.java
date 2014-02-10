@@ -45,6 +45,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "SaleBillPharma.findByDeliveryAddress", query = "SELECT s FROM SaleBillPharma s WHERE s.deliveryAddress = :deliveryAddress")})
 public class SaleBillPharma implements Serializable {
     @Basic(optional = false)
+    @Column(name = "mode")
+    private String mode;
+    @Basic(optional = false)
     @Column(name = "bill_date")
     @Temporal(TemporalType.DATE)
     private Date billDate;
@@ -188,6 +191,14 @@ public class SaleBillPharma implements Serializable {
 
     public void setBillDate(Date billDate) {
         this.billDate = billDate;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 
 

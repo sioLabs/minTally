@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="161.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.ImportInventoryController">
+<AnchorPane id="AnchorPane" prefHeight="192.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.ImportInventoryController">
   <children>
     <HBox id="HBox" alignment="CENTER" layoutX="80.0" layoutY="86.0" spacing="5.0">
       <children>
@@ -26,6 +26,6 @@
         <Font name="System Bold" size="15.0" />
       </font>
     </Label>
-    <ProgressIndicator fx:id="importProgressIndicator" layoutX="260.0" layoutY="109.0" progress="0.0" />
+    <ProgressBar fx:id="progressBar" layoutX="174.0" layoutY="120.0" prefHeight="22.0" prefWidth="200.0" progress="0.0" />
   </children>
 </AnchorPane>

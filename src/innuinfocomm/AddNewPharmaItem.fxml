@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="457.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.AddNewPharmaItemController">
+<AnchorPane id="AnchorPane" prefHeight="457.0" prefWidth="852.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.AddNewPharmaItemController">
   <children>
     <Label layoutX="251.0" layoutY="14.0" text="Add New Item">
       <effect>
@@ -80,8 +80,12 @@
         <Font size="15.0" />
       </font>
     </Label>
-    <Button fx:id="resetBtn" layoutX="341.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleResetBtn" prefWidth="89.0" text="Reset" />
+    <Button fx:id="resetBtn" layoutX="383.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleResetBtn" prefWidth="89.0" text="Reset" />
     <Label font="$x1" layoutX="373.0" layoutY="142.0" prefHeight="23.0" prefWidth="53.0" text="Stock :" />
     <TextField id="packTextBox" fx:id="stockTextBox" layoutX="416.0" layoutY="143.0" prefWidth="53.0" />
+    <TextField fx:id="searchItemsTextBox" layoutX="555.0" layoutY="69.0" onKeyPressed="#searchItems" prefWidth="200.0" promptText="Search Items Here" visible="true" />
+    <ListView fx:id="itemsListView" layoutX="555.0" layoutY="107.0" onMouseClicked="#handleItemsClicked" prefHeight="173.0" prefWidth="200.0" visible="true" />
+    <Button id="addNewItemButton" fx:id="updateItemBtn" disable="true" layoutX="158.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleUpdateBtn" prefWidth="89.0" text="Update" />
+    <Button id="addNewItemButton" fx:id="deleteItemBtn" disable="true" layoutX="264.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleDeleteItemBtn" prefWidth="89.0" text="Delete" />
   </children>
 </AnchorPane>

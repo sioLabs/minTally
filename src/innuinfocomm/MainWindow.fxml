@@ -6,10 +6,11 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.MainWindowController">
   <children>
-    <MenuBar fx:id="topMenuBar" layoutX="1.0" layoutY="1.0">
+    <MenuBar fx:id="topMenuBar" layoutX="1.0" layoutY="1.0" visible="false">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
@@ -34,16 +35,15 @@
           <children>
             <Accordion id="leftMenuAccordion" minWidth="103.0" prefHeight="570.0" prefWidth="103.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <expandedPane>
-                <TitledPane fx:id="ledgerMgmt" animated="false" text="Ledger Management">
+                <TitledPane fx:id="x2" animated="false" text="Inventory Management">
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                       <children>
-                        <VBox id="VBox" alignment="CENTER" prefHeight="478.0" prefWidth="204.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox id="VBox" alignment="CENTER" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="478.0" prefWidth="204.0" spacing="5.0" AnchorPane.bottomAnchor="-0.5" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.5">
                           <children>
-                            <Button fx:id="addLedgerButton" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddLedgerButton" prefHeight="35.0" text="Add Customer" />
-                            <Button fx:id="viewAllLedgerButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleViewAllLedgerButton" prefHeight="35.0" text="View All" />
-                            <Button fx:id="addNewLedgerType" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddNewLedgerType" prefHeight="35.0" prefWidth="85.0" text="Add New Ledger Type" textAlignment="CENTER" wrapText="true" />
-                            <Button disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="View All Ledgers Type" wrapText="true" />
+                            <Button fx:id="AddItemBtn" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddItemBtn" prefHeight="35.0" prefWidth="116.0" text="Add New Item" wrapText="true" />
+                            <Button fx:id="viewAllItemsBtn" disable="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleViewAllItemsBtn" prefHeight="35.0" text="View All Items" />
+                            <Button fx:id="importInventoryBtn" disable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleImportInventoryBtn" prefHeight="35.0" text="Import Inventory" />
                           </children>
                         </VBox>
                       </children>
@@ -52,35 +52,36 @@
                 </TitledPane>
               </expandedPane>
               <panes>
-                <fx:reference source="ledgerMgmt" />
-                <TitledPane fx:id="x2" animated="false" text="Inventory Management">
+                <TitledPane fx:id="ledgerMgmt" animated="false" text="Ledger Management">
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                       <children>
-                        <VBox id="VBox" alignment="CENTER" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="478.0" prefWidth="204.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox id="VBox" alignment="CENTER" prefHeight="478.0" prefWidth="204.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <children>
-                            <Button fx:id="AddItemBtn" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddItemBtn" prefHeight="35.0" prefWidth="116.0" text="Add New Item" wrapText="true" />
-                            <Button fx:id="viewAllItemsBtn" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleViewAllItemsBtn" prefHeight="35.0" text="View All Items" />
-                            <Button fx:id="importInventoryBtn" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleImportInventoryBtn" prefHeight="35.0" text="Import Inventory" />
+                            <Button fx:id="addLedgerButton" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddLedgerButton" prefHeight="35.0" text="Add Customer" />
+                            <Button fx:id="viewAllLedgerButton" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleViewAllLedgerButton" prefHeight="35.0" text="View All" />
+                            <Button fx:id="addNewLedgerType" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddNewLedgerType" prefHeight="35.0" prefWidth="85.0" text="Add New Ledger Type" textAlignment="CENTER" wrapText="true" />
+                            <Button disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="View All Ledgers Type" wrapText="true" />
                           </children>
                         </VBox>
                       </children>
                     </AnchorPane>
                   </content>
                 </TitledPane>
+                <fx:reference source="x2" />
                 <TitledPane fx:id="VoucherMgmt" animated="false" text="Vouchers">
                   <content>
                     <AnchorPane id="Content" disable="false" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                       <children>
-                        <Button fx:id="createNewPaymentVoucherResult" layoutX="17.0" layoutY="30.0" mnemonicParsing="false" onAction="#handleCreateNewPaymentVoucher" text="Payment" />
-                        <Button fx:id="createNewRecieptVoucherBtn" layoutX="102.0" layoutY="30.0" mnemonicParsing="false" onAction="#handleCreateNewRecieptVoucherBtn" text="Reciept" />
+                        <Button fx:id="createNewPaymentVoucherResult" disable="true" layoutX="17.0" layoutY="30.0" mnemonicParsing="false" onAction="#handleCreateNewPaymentVoucher" text="Payment" />
+                        <Button fx:id="createNewRecieptVoucherBtn" disable="true" layoutX="102.0" layoutY="30.0" mnemonicParsing="false" onAction="#handleCreateNewRecieptVoucherBtn" text="Reciept" />
                         <Button fx:id="createNewSaleBillBtn" layoutX="102.0" layoutY="59.0" mnemonicParsing="false" onAction="#handleCreateNewSaleBillBtn" text="Sale Bill" />
-                        <Button fx:id="createNewPurchaseBtn" layoutX="17.0" layoutY="59.0" mnemonicParsing="false" onAction="#handleCreateNewPurchaseBill" text="Purchase" />
+                        <Button fx:id="createNewPurchaseBtn" disable="true" layoutX="17.0" layoutY="59.0" mnemonicParsing="false" onAction="#handleCreateNewPurchaseBill" text="Purchase" />
                         <Button fx:id="createNewRecievableBtn" disable="true" layoutX="17.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleCreateNewRecievableBtn" text="Recievable" />
                         <Button fx:id="createNewPayableBtn" disable="true" layoutX="102.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleCreateNewPayableBtn" text="Payable" />
-                        <Button id="createNewPurchaseBtn" fx:id="createNewContraVoucher" layoutX="22.0" layoutY="119.0" mnemonicParsing="false" onAction="#handleCreateNewContraVoucher" text="Contra" />
-                        <Button id="createNewPurchaseBtn" fx:id="createNewJournalVoucher" layoutX="102.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleCreateNewJournalVoucher" text="Journal" />
-                        <Button fx:id="viewSaleBillBtn" layoutX="22.0" layoutY="161.0" mnemonicParsing="false" onAction="#handleViewSaleBillBtn" text="View Sale Bill" />
+                        <Button id="createNewPurchaseBtn" fx:id="createNewContraVoucher" disable="true" layoutX="22.0" layoutY="119.0" mnemonicParsing="false" onAction="#handleCreateNewContraVoucher" text="Contra" />
+                        <Button id="createNewPurchaseBtn" fx:id="createNewJournalVoucher" disable="true" layoutX="102.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleCreateNewJournalVoucher" text="Journal" />
+                        <Button fx:id="viewSaleBillBtn" disable="true" layoutX="22.0" layoutY="161.0" mnemonicParsing="false" onAction="#handleViewSaleBillBtn" text="View Sale Bill" />
                       </children>
                     </AnchorPane>
                   </content>
@@ -125,5 +126,10 @@
         </AnchorPane>
       </items>
     </SplitPane>
+    <Label layoutX="222.0" layoutY="6.0" text="BIO PHARMA" textFill="BLACK">
+      <font>
+        <Font name="System Bold" size="16.0" />
+      </font>
+    </Label>
   </children>
 </AnchorPane>

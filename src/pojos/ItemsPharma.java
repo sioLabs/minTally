@@ -161,6 +161,10 @@ public class ItemsPharma implements Serializable {
         public Date getExpDate() {
         return expDate;
     }
+        
+        public String getExpDateString(){
+            return dateFormatter.format(expDate);
+        }
 
     public void setExpDate(Date expDate) {
         this.expDate = expDate;
