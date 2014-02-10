@@ -82,11 +82,19 @@ public class AddNewPharmaItemController {
     @FXML
     private TextField searchItemsTextBox;
     
+    @FXML
+    private Button updateItemBtn;
+    
+    @FXML
+    private Button deleteItemBtn;
+    
     ObservableList<ItemsPharma> data = FXCollections.observableArrayList();
 
       private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
       private int nextId;
-
+      
+      private boolean itemClicked  =false;
+    
     @FXML
     void handleAddButtonClick(ActionEvent event) throws ParseException {
         //handle addItemhere
@@ -152,6 +160,7 @@ public class AddNewPharmaItemController {
     
      @FXML
     void handleResetBtn(ActionEvent event) {
+         itemClicked = false;
          setNextId();
          rateTextBox.setText(null);
          packTextBox.setText(null);
@@ -209,6 +218,10 @@ public class AddNewPharmaItemController {
     
       @FXML
     void handleItemsClicked(MouseEvent event) {
+          itemClicked = true;
+          ItemsPharma item = itemsListView.getSelectionModel().getSelectedItem();
+          fillForm(item);
+          
     }
       
           @FXML
@@ -229,6 +242,37 @@ public class AddNewPharmaItemController {
             data.addAll(list);     
               
     }
+
+    private void fillForm(ItemsPharma item) {
+        
+        itemIdTextBox.setText(item.getId()+"");
+        DMTextBox.setText(item.getDM());
+        makeTextBox.setText(item.getMake());
+        batchTextBox.setText(item.getBatch());
+        expDateTextBox.setText(item.getExpDate()+"");
+        packTextBox.setText(item.getPack());
+        stockTextBox.setText(item.getStockStrips()+"");
+        descTextArea.setText(item.getDesc());
+        mrpTextBox.setText(item.getMrp()+"");
+        rateTextBox.setText(item.getRateFraction()+"");
+    }
+    
+      @FXML
+    void handleDeleteItemBtn(ActionEvent event) {
+          if(!itemClicked)
+              return;
+          
+          
+    }
+      
+         @FXML
+    void handleUpdateBtn(ActionEvent event) {
+            
+             if(!itemClicked)
+              return;
+          
+    }
+
 
 }
 
