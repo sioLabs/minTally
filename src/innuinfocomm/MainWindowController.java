@@ -95,6 +95,7 @@ public class MainWindowController {
         Tab tab = new Tab("Add New Customer");
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);
+        mainContentTabPane.getSelectionModel().select(tab);
         
         
     }
@@ -109,6 +110,7 @@ public class MainWindowController {
         Tab tab = new Tab("View All Ledger");
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);
+        mainContentTabPane.getSelectionModel().select(tab);
         
     }
     
@@ -118,6 +120,7 @@ public class MainWindowController {
         Tab tab = new Tab("Add an Item");
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);
+        mainContentTabPane.getSelectionModel().select(tab);
     
     }
     
@@ -128,6 +131,7 @@ public class MainWindowController {
         Tab tab = new Tab("View All Items");
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);
+        mainContentTabPane.getSelectionModel().select(tab);
     }
     
     @FXML
@@ -136,6 +140,7 @@ public class MainWindowController {
         Tab tab = new Tab("Create New Sale Bill");
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);
+        mainContentTabPane.getSelectionModel().select(tab);
     
     }
     
@@ -157,6 +162,7 @@ public class MainWindowController {
         Tab tab = new Tab("Create New Purchase Bill");
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);                
+        mainContentTabPane.getSelectionModel().select(tab);
     }
     
     @FXML 
@@ -165,6 +171,7 @@ public class MainWindowController {
         Tab tab = new Tab("Create New Reciept Voucher");
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);                
+        mainContentTabPane.getSelectionModel().select(tab);
     }
     
     @FXML
@@ -172,7 +179,8 @@ public class MainWindowController {
         Parent rootNew = FXMLLoader.load(getClass().getResource("PaymentVoucher.fxml"));
         Tab tab = new Tab("Create New Purchase Voucher");
         tab.setContent(rootNew);
-        mainContentTabPane.getTabs().add(tab);                    
+        mainContentTabPane.getTabs().add(tab);                  
+        mainContentTabPane.getSelectionModel().select(tab);
     }
     
     @FXML
@@ -180,7 +188,8 @@ public class MainWindowController {
         Parent rootNew = FXMLLoader.load(getClass().getResource("ContraVoucher.fxml"));
         Tab tab = new Tab("Create New Contra Voucher");
         tab.setContent(rootNew);
-        mainContentTabPane.getTabs().add(tab);                    
+        mainContentTabPane.getTabs().add(tab);                  
+        mainContentTabPane.getSelectionModel().select(tab);
     
     }
     
@@ -189,7 +198,8 @@ public class MainWindowController {
         Parent rootNew = FXMLLoader.load(getClass().getResource("Journalvoucher.fxml"));
         Tab tab = new Tab("Create New Journal Voucher");
         tab.setContent(rootNew);
-        mainContentTabPane.getTabs().add(tab);                    
+        mainContentTabPane.getTabs().add(tab);                  
+        mainContentTabPane.getSelectionModel().select(tab);
     
     
     }
@@ -220,7 +230,7 @@ public class MainWindowController {
         Tab tab = new Tab("Import Inventory");
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);
-        
+        mainContentTabPane.getSelectionModel().select(tab);
     }
     
     @FXML 
@@ -230,7 +240,7 @@ public class MainWindowController {
         Tab tab = new Tab("View Sale Bills");
         tab.setContent(rootNew);
         mainContentTabPane.getTabs().add(tab);
-        
+        mainContentTabPane.getSelectionModel().select(tab);
     }
 
 }
