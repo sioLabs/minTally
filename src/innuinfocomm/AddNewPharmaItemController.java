@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -98,12 +100,31 @@ public class AddNewPharmaItemController {
     @FXML
     void handleAddButtonClick(ActionEvent event) throws ParseException {
         //handle addItemhere
-        ItemsPharma item = new ItemsPharma();
+    
+        ItemsPharma item = createItemFromForm();
+         EntityManager em = EntityManagerHelper.getInstance().getEm();
+        boolean flag = false;
+         try{
+            em.getTransaction().begin();
+            em.persist(item);
+            em.getTransaction().commit();
+         }catch(Exception e){
+            errorLabel.getText().concat("  Error in saving the Item. Please contact the developer");
+            errorLabel.setVisible(true);
+            flag = true;
+         }
+                
+         if(!flag)
+         {    handleResetBtn(event);
+             successLabel.setVisible(true);
+         }
         
-        //get the Item id.from the database
+    }
+    
+    private ItemsPharma createItemFromForm() throws ParseException{
+          ItemsPharma item = new ItemsPharma();
         
-        
-        
+           
         String batch = batchTextBox.getText();
         item.setBatch(batch);
         
@@ -138,23 +159,7 @@ public class AddNewPharmaItemController {
              item.setStockStrips(Integer.parseInt(stockS));
          }
          
-         EntityManager em = EntityManagerHelper.getInstance().getEm();
-        boolean flag = false;
-         try{
-            em.getTransaction().begin();
-            em.persist(item);
-            em.getTransaction().commit();
-         }catch(Exception e){
-            errorLabel.getText().concat("  Error in saving the Item. Please contact the developer");
-            errorLabel.setVisible(true);
-            flag = true;
-         }
-                
-         if(!flag)
-         {    handleResetBtn(event);
-             successLabel.setVisible(true);
-         }
-        
+         return item;
     }
 
     
@@ -218,6 +223,11 @@ public class AddNewPharmaItemController {
     
       @FXML
     void handleItemsClicked(MouseEvent event) {
+          addNewItemButton.setDisable(true);
+          deleteItemBtn.setDisable(false);
+          updateItemBtn.setDisable(false);
+          successLabel.setVisible(false);
+          errorLabel.setVisible(false);
           itemClicked = true;
           ItemsPharma item = itemsListView.getSelectionModel().getSelectedItem();
           fillForm(item);
@@ -249,7 +259,7 @@ public class AddNewPharmaItemController {
         DMTextBox.setText(item.getDM());
         makeTextBox.setText(item.getMake());
         batchTextBox.setText(item.getBatch());
-        expDateTextBox.setText(item.getExpDate()+"");
+        expDateTextBox.setText(item.getExpDateString()+"");
         packTextBox.setText(item.getPack());
         stockTextBox.setText(item.getStockStrips()+"");
         descTextArea.setText(item.getDesc());
@@ -262,7 +272,23 @@ public class AddNewPharmaItemController {
           if(!itemClicked)
               return;
           
-          
+        
+        try {
+            //now deletre the entity
+        EntityManager em = EntityManagerHelper.getInstance().getEm();
+        ItemsPharma item = em.find(ItemsPharma.class, Integer.parseInt(itemIdTextBox.getText()));
+        em.getTransaction().begin();
+        em.remove(item);
+        em.getTransaction().commit();
+        handleResetBtn(event);
+        successLabel.setText("Item Deleted Successfully");
+        successLabel.setVisible(true);
+        
+        } catch (Exception ex) {
+            errorLabel.setVisible(true);
+            errorLabel.setText("Error in Deleting Item");
+            Logger.getLogger(AddNewPharmaItemController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
       
          @FXML
@@ -270,7 +296,27 @@ public class AddNewPharmaItemController {
             
              if(!itemClicked)
               return;
+             
+             ItemsPharma item = null;
+        try {
+            item =  createItemFromForm();
+            item.setId(Integer.parseInt(itemIdTextBox.getText()));
+            EntityManager em = EntityManagerHelper.getInstance().getEm();
+            em.getTransaction().begin();
+            em.persist(item);
+            em.getTransaction().commit();
+           
+            successLabel.setText("Item Updated Successfully");
+            successLabel.setVisible(true);
+           
+        } catch (Exception ex) {
+            errorLabel.setVisible(true);
+            errorLabel.setText("Error in Deleting Item");
+            Logger.getLogger(AddNewPharmaItemController.class.getName()).log(Level.SEVERE, null, ex);
+        }
           
+     
+        
     }
 
 
