@@ -73,6 +73,9 @@ public class AddNewPharmaItemController {
      @FXML
      private Label successLabel;
      
+     @FXML
+    private TextField vatPercTextBox;
+     
     @FXML
     private TextField stockTextBox;
     
@@ -102,6 +105,11 @@ public class AddNewPharmaItemController {
         //handle addItemhere
     
         ItemsPharma item = createItemFromForm();
+        
+        if( null == item){
+            return;
+        }
+        
          EntityManager em = EntityManagerHelper.getInstance().getEm();
         boolean flag = false;
          try{
@@ -122,6 +130,9 @@ public class AddNewPharmaItemController {
     }
     
     private ItemsPharma createItemFromForm() throws ParseException{
+        if(!verify())
+            return null;
+        
           ItemsPharma item = new ItemsPharma();
         
            
@@ -150,6 +161,11 @@ public class AddNewPharmaItemController {
         String rateS = rateTextBox.getText();
         float rate = Float.parseFloat(rateS)*mrp;
         item.setRateFraction(rate);
+        
+        String vatPercS = vatPercTextBox.getText();
+        float vatPerc = Float.parseFloat(vatPercS);
+        item.setVat(vatPerc);
+                
                 
          String desc= descTextArea.getText();
          item.setDesc(desc);
@@ -162,6 +178,50 @@ public class AddNewPharmaItemController {
          return item;
     }
 
+    private boolean verify(){
+        errorLabel.setVisible(true);
+        if(makeTextBox.getText().trim().length() < 1){
+            errorLabel.setText("Make cannot be empty");
+            return false;
+        }
+        if(batchTextBox.getText().trim().length() < 1){
+            errorLabel.setText("Batch Number can not be empty");
+            return false;
+        }
+        
+        if(expDateTextBox.getText().trim().length() != 10){
+            errorLabel.setText("Invalid Date format. Please Enter date in dd/mm/yyyy format");
+            return false;           
+        }
+        
+        if(packTextBox.getText().trim().length()<1){
+            errorLabel.setText("Pack Size cannot be empty");
+            return false;
+        }
+        
+        if(stockTextBox.getText().trim().length() < 1){
+            errorLabel.setText("Stock cannot be empty. Please enter a value");
+            return false;
+        }
+        
+        if(descTextArea.getText().trim().length() < 2){
+            errorLabel.setText("Please enter the name of the item in the description.");
+            return false;
+        }
+        
+        if(mrpTextBox.getText().trim().length() < 1){
+            errorLabel.setText("Enter the MRP of the item");
+            return false;
+        }
+        
+        if(vatPercTextBox.getText().trim().length() < 1){
+            errorLabel.setText("Enter the vat Percentage");
+            return false;
+        }
+        
+        
+        return true;
+    }
     
      @FXML
     void handleResetBtn(ActionEvent event) {
@@ -171,7 +231,7 @@ public class AddNewPharmaItemController {
          packTextBox.setText(null);
          mrpTextBox.setText(null);
          makeTextBox.setText(null);
-         itemIdTextBox.setText(null);
+        
          expDateTextBox.setText(null);
          errorLabel.setVisible(false);
          successLabel.setVisible(false);
@@ -297,6 +357,10 @@ public class AddNewPharmaItemController {
              if(!itemClicked)
               return;
              
+             if(!verify())
+                 return;
+          
+             errorLabel.setVisible(false);
              ItemsPharma item = null;
         try {
             item =  createItemFromForm();
