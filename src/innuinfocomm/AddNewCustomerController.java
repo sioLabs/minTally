@@ -76,15 +76,59 @@ public class AddNewCustomerController {
     
      @FXML
     private TableColumn<Customer,String> customerCol;
+     
+     
+    @FXML
+    private Button deleteBtn;
 
+    Customer selectedCustomer = null;
+    boolean customerClicked = false;
+    
     ObservableList<Customer> data = FXCollections.observableArrayList();
 
     boolean dataFromTable = false;
     
     @FXML
     void handleResetBtn(ActionEvent event) {
+        nameTextBox.setText(null);
+        addTextBox.setText(null);
+        licenseTextBox.setText(null);
+        phoneTextBox.setText(null);
+        mobileTextBox.setText(null);
+        delAddTextBox.setText(null);
+        balanceTextBox.setText(null);
+        addCheckBox.setSelected(false);
+        successLabel.setVisible(false);
+        errLabel.setVisible(false);
+        customerClicked = false;
+        selectedCustomer = null;
+        deleteBtn.setDisable(true);          
     }
 
+    
+    @FXML
+    void handleDeleteBtn(ActionEvent event) {
+        if(!customerClicked)
+            return;
+        
+        try{
+        EntityManager em = EntityManagerHelper.getInstance().getEm();
+        Customer c = em.find(Customer.class, selectedCustomer.getId());
+        em.getTransaction().begin();
+        em.remove(c);
+        em.getTransaction().commit();
+        handleResetBtn(event);
+        errLabel.setVisible(false);
+        successLabel.setText("Customer Deleted Successfully");
+        successLabel.setVisible(true);
+        }catch(Exception e){
+            successLabel.setVisible(false);
+            errLabel.setText("Error in deleting customer.");
+            errLabel.setVisible(true);
+        }
+        
+    }
+    
     @FXML
     void handleSaveBtn(ActionEvent event) {
         if(verify()){
@@ -164,7 +208,7 @@ public class AddNewCustomerController {
         assert saveBtn != null : "fx:id=\"saveBtn\" was not injected: check your FXML file 'AddNewCustomer.fxml'.";
         assert successLabel != null : "fx:id=\"successLabel\" was not injected: check your FXML file 'AddNewCustomer.fxml'.";
 
-        
+        deleteBtn.setDisable(true);        
         customerCol.setCellValueFactory(new PropertyValueFactory<Customer,String>("companyName"));
         customerListTableView.setItems(data);
     }
@@ -187,8 +231,10 @@ public class AddNewCustomerController {
     
       @FXML
     void handleCustomerClicked(MouseEvent event) {
-          
+          deleteBtn.setDisable(false);
+          customerClicked  = true;
           Customer c = customerListTableView.getSelectionModel().getSelectedItem();
+          selectedCustomer = c;
           fillCustomerDetails(c);
           dataFromTable  = true;
           
