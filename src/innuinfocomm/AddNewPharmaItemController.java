@@ -303,7 +303,7 @@ public class AddNewPharmaItemController {
             item.setId(Integer.parseInt(itemIdTextBox.getText()));
             EntityManager em = EntityManagerHelper.getInstance().getEm();
             em.getTransaction().begin();
-            em.persist(item);
+            em.merge(item);
             em.getTransaction().commit();
            
             successLabel.setText("Item Updated Successfully");
