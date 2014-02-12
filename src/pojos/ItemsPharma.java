@@ -234,7 +234,14 @@ public class ItemsPharma implements Serializable {
     }
 
         public String getPack() {
-        return pack;
+            
+            try {
+                Integer.parseInt(pack);
+                return pack + " tab.";
+            }catch(Exception e){
+                return pack;
+            }        
+       
     }
 
     public void setPack(String pack) {
