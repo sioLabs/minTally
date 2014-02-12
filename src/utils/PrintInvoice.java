@@ -129,7 +129,7 @@ public class PrintInvoice {
             
              List<SaleBillPharmaItem> items = salebill.getSaleBillPharmaItemList();
              for(int i = 0 ;i <items.size();i++){
-                 PdfPCell desc = new PdfPCell(new Phrase(items.get(i).getItemName()));
+                 PdfPCell desc = new PdfPCell(new Phrase(items.get(i).getItemName() + "   Exp: " + items.get(i).getExpDate()));
 //                 //desc.setBorderColor(BaseColor.WHITE);
 //                 desc.setBorderColorLeft(BaseColor.BLACK);
 //                 desc.setBorderColorRight(BaseColor.WHITE);
