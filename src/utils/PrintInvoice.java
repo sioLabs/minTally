@@ -129,7 +129,7 @@ public class PrintInvoice {
             
              List<SaleBillPharmaItem> items = salebill.getSaleBillPharmaItemList();
              for(int i = 0 ;i <items.size();i++){
-                 PdfPCell desc = new PdfPCell(new Phrase(items.get(i).getItemName() + "   Exp: " + items.get(i).getExpDate()));
+                 PdfPCell desc = new PdfPCell(new Phrase(items.get(i).getItemName() + " - " + items.get(i).getItemPharmaId().getBatch()+"\n Exp: " + items.get(i).getExpDate()));
 //                 //desc.setBorderColor(BaseColor.WHITE);
 //                 desc.setBorderColorLeft(BaseColor.BLACK);
 //                 desc.setBorderColorRight(BaseColor.WHITE);
@@ -158,7 +158,9 @@ public class PrintInvoice {
              }
              
              //now show the sub details
-             PdfPCell finalCell = new PdfPCell(new Phrase("Total VAT Amt : Rs " + salebill.getTotalVat() + "                     Total Amount : Rs "));
+             //PdfPCell finalCell = new PdfPCell(new Phrase("Total VAT Amt : Rs " + salebill.getTotalVat() + "                     Total Amount : Rs "));
+             //Todo change code here to show vat amount when there is vat number
+             PdfPCell finalCell = new PdfPCell(new Phrase("Total VAT Amt : Rs " + 0.0  + "                     Total Amount : Rs "));
              finalCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
              finalCell.setColspan(4);
              table.addCell(finalCell);
