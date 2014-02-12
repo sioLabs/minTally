@@ -201,7 +201,16 @@ public class SaleBillPharmaItem implements Serializable {
 
     public void setQnty(String qnty) {
         this.qnty = qnty;
-        this.amt = Integer.parseInt(qnty)*this.getItemRate();
+        
+        int plusLoc = qnty.indexOf("+");
+        //code here is plus is not present.
+        int amtQnty = 0;
+        if(-1 == plusLoc){
+            amtQnty = Integer.parseInt(qnty);
+        }else
+             amtQnty = Integer.parseInt(qnty.substring(0, plusLoc));
+        
+        this.amt = amtQnty*this.getItemRate();
         this.setItemVatRs(amt*getItemVatPerc()/100);
     }
 

@@ -166,7 +166,11 @@ public class SalebillPharmaController {
     
     @FXML
     void initialize() {
-    
+        try {
+            MyLogger.setup();
+        } catch (IOException ex) {
+            Logger.getLogger(SalebillPharmaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         assert AmountTableColumn != null : "fx:id=\"AmountTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert CDamtTextBox != null : "fx:id=\"CDamtTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert batchTableColumn != null : "fx:id=\"batchTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
@@ -325,20 +329,21 @@ public class SalebillPharmaController {
             
             for(int i = 0 ;i<data.size();i++){
                 SaleBillPharmaItem item = data.get(i);
-                ItemsPharma itemP = item.getItemPharmaId();
-                itemP.setStockStrips(itemP.getStockStrips()-Integer.parseInt(item.getQnty()));
                 EntityManager em = EntityManagerHelper.getInstance().getEm();
+                ItemsPharma itemP = em.find(ItemsPharma.class, item.getItemPharmaId().getId());
+                itemP.setStockStrips(itemP.getStockStrips()-parseQnty(item.getQnty()));
+                
                 try{
-                    em.getTransaction().begin();
-                em.persist(itemP);
-                em.getTransaction().commit();
+                em.getTransaction().begin();
+                em.merge(itemP);
+                 em.getTransaction().commit();
                 }catch(Exception e){
-                    //e.printStackTrace();
+                    e.printStackTrace();
                     //System.out.println("error in ");
                     LOGGER.setLevel(Level.SEVERE);
                     LOGGER.info("error in update Stocks.");
                     LOGGER.info(e.getMessage());
-                    
+                                    
                     errLabel.setVisible(true);
                 }
                 
@@ -403,7 +408,7 @@ public class SalebillPharmaController {
              LOGGER.info(e.getMessage());
              errLabel.setVisible(true);
              //System.out.println("error in saving items");
-             //e.printStackTrace();
+             e.printStackTrace();
          }
   
         
@@ -507,6 +512,23 @@ public class SalebillPharmaController {
                 chooseCustomerNow();
             }
         });
+    }
+    
+    private int parseQnty(String qnty){
+        
+        int total = 0;
+        
+        int plusLoc = qnty.indexOf("+");
+        if(plusLoc == -1){
+            total = Integer.parseInt(qnty);
+        }else
+        {
+            int mainQty = Integer.parseInt(qnty.substring(0,plusLoc));
+            int freeQty = Integer.parseInt(qnty.substring(plusLoc+1, qnty.length()));
+            total = mainQty + freeQty;
+         }
+        System.out.println(total +  " : total qnty");
+        return total;
     }
     
     public void chooseCustomerNow(){
