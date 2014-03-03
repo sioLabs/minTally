@@ -593,6 +593,19 @@ public class SalebillPharmaController {
          
      }
      
+     @FXML
+     private void handleItemRadioBtnClick(){
+         searchLabel.setText("Click to add  Items to Sale Bill");
+         itemSearchTextBox.setPromptText("Search by Item name");
+     }
+     
+     @FXML
+     private void handleSaleRadioBtnClick(){
+         itemSearchTextBox.setPromptText("Search by customer Name to view Sale Bill");
+         searchLabel.setText("Click to view the Sale Bill");
+         
+     }
+     
   
 }
 

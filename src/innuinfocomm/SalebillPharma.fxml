@@ -107,7 +107,7 @@
       </font>
     </Label>
     <Label id="successLabel" fx:id="errLabel" font="$x2" layoutX="366.0" layoutY="601.0" text="Error in saving. Try Again" textFill="RED" visible="false" />
-    <RadioButton fx:id="searchItemRadioBtn" layoutX="978.0" layoutY="116.0" mnemonicParsing="false" text="Items" />
-    <RadioButton fx:id="searchSaleBillRadioBtn" layoutX="1040.0" layoutY="116.0" mnemonicParsing="false" text="Sale Bills" />
+    <RadioButton fx:id="searchItemRadioBtn" layoutX="978.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleItemRadioBtnClick" text="Items" />
+    <RadioButton fx:id="searchSaleBillRadioBtn" layoutX="1040.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleSaleRadioBtnClick" text="Sale Bills" />
   </children>
 </AnchorPane>
