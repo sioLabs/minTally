@@ -13,7 +13,7 @@
   <children>
     <Label layoutX="348.0" layoutY="41.0" text="Create New Sale Bill">
       <effect>
-        <DropShadow color="#1a1a1a8a" height="41.68080357142857" radius="20.22972470238095" width="41.238095238095234">
+        <DropShadow color="#1a1a1a8a" height="41.4594494047619" radius="20.174386160714285" width="41.238095238095234">
           <input>
             <Lighting>
               <bumpInput>
@@ -94,18 +94,20 @@
     <Button fx:id="saveBtn" layoutX="45.0" layoutY="599.0" mnemonicParsing="false" onAction="#handleSaveBtn" prefWidth="85.0" text="Save" />
     <Button fx:id="printBtn" layoutX="150.0" layoutY="599.0" mnemonicParsing="false" onAction="#handlePrintBtn" prefWidth="85.0" text="Print" />
     <Button fx:id="resetBtn" layoutX="258.0" layoutY="599.0" mnemonicParsing="false" onAction="#handleResetBtn" prefWidth="85.0" text="Reset" />
-    <TextField fx:id="itemSearchTextBox" layoutX="977.0" layoutY="144.0" onKeyPressed="#searchItems" prefWidth="200.0" promptText="Search Items Here" />
+    <TextField fx:id="itemSearchTextBox" layoutX="977.0" layoutY="144.0" onKeyPressed="#searchItems" prefWidth="200.0" promptText="Select above and Search here" />
     <SplitPane id="SplitPane" layoutX="977.0" layoutY="189.0">
       <items>
         <ListView fx:id="searchResultListView" onMouseClicked="#addItemToTable" prefHeight="243.0" prefWidth="200.0" />
       </items>
     </SplitPane>
-    <Label font="$x1" layoutX="978.0" layoutY="171.0" text="Click Below to add to Bill" />
+    <Label id="seachLabel" fx:id="searchLabel" font="$x1" layoutX="978.0" layoutY="171.0" text="Click Below to add to Bill" />
     <Label fx:id="successLabel" layoutX="366.0" layoutY="601.0" text="SaleBill Generate successfully" textFill="#319900" visible="false">
       <font>
         <Font size="16.0" fx:id="x2" />
       </font>
     </Label>
     <Label id="successLabel" fx:id="errLabel" font="$x2" layoutX="366.0" layoutY="601.0" text="Error in saving. Try Again" textFill="RED" visible="false" />
+    <RadioButton fx:id="searchItemRadioBtn" layoutX="978.0" layoutY="116.0" mnemonicParsing="false" text="Items" />
+    <RadioButton fx:id="searchSaleBillRadioBtn" layoutX="1040.0" layoutY="116.0" mnemonicParsing="false" text="Sale Bills" />
   </children>
 </AnchorPane>
