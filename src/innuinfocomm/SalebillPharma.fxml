@@ -105,6 +105,6 @@
     <Label id="successLabel" fx:id="errLabel" font="$x2" layoutX="366.0" layoutY="601.0" text="Error in saving. Try Again" textFill="RED" visible="false" />
     <RadioButton fx:id="searchItemRadioBtn" layoutX="978.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleItemRadioBtnClick" text="Items" />
     <RadioButton fx:id="searchSaleBillRadioBtn" layoutX="1040.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleSaleRadioBtnClick" text="Sale Bills" />
-    <ListView id="searchResultListView" fx:id="saleSearchListView" layoutX="978.0" layoutY="190.0" onMouseClicked="#addItemToTable" prefHeight="243.0" prefWidth="200.0" visible="false" />
+    <ListView id="searchResultListView" fx:id="saleSearchListView" layoutX="978.0" layoutY="190.0" onMouseClicked="#showSaleBill" prefHeight="243.0" prefWidth="200.0" visible="false" />
   </children>
 </AnchorPane>

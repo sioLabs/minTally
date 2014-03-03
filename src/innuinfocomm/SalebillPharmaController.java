@@ -180,6 +180,11 @@ public class SalebillPharmaController {
     private ListView<Customer> customerListView = new ListView<>();
     
      Stage stage = new Stage();
+     
+     //variable to check which state user is in
+     private boolean isSearchingSaleBill = false;
+     private Customer custFromSearchSaleBill = null;
+     
     
     @FXML
     void initialize() {
@@ -266,7 +271,11 @@ public class SalebillPharmaController {
  
      @FXML
     void searchItems(KeyEvent event) {
+         //change here to search items or Salebill
+            if(searchItemRadioBtn.isSelected())
                 searchItemsCode();
+            else if(searchSaleBillRadioBtn.isSelected())
+                searchSaleBills();
   
     }
      
@@ -292,6 +301,27 @@ public class SalebillPharmaController {
             
      }
  
+     void searchSaleBills(){
+         saleSearchListView.getItems().clear();
+         String text = itemSearchTextBox.getText().trim();
+              text = "%"+text+"%";
+            EntityManager em = EntityManagerHelper.getInstance().getEm();
+            Query q  = null;
+            if(text.length() ==0 )
+                q = em.createNamedQuery("SaleBillPharma.findAll");
+            else
+            {q= em.createNamedQuery("SaleBillPharma.findByCustomerId");
+                q.setParameter("customerId", custFromSearchSaleBill);
+            }
+            ArrayList<SaleBillPharma> list = new ArrayList(q.getResultList());
+            System.out.println(list.size()+ " items found");
+            if(list == null || list.size() < 1){
+                errorLabel.setText("No sale bill found for customer  " + custFromSearchSaleBill.getCompanyName());
+            }
+            
+            saleSearchListView.getItems().addAll(list);
+            
+     }
     
     public void updateAmount(){
         
@@ -532,6 +562,23 @@ public class SalebillPharmaController {
                 chooseCustomerNow();
             }
         });
+        
+        itemSearchTextBox.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+              @Override
+              public void handle(KeyEvent t) {
+                     if (KeyCode.TAB.equals(t.getCode())) {
+                                       hidePopup();
+                                        return;
+                              }
+                 initiatePopUp(customerTextBox.getText());
+                 if(KeyCode.ENTER.equals(t.getCode())){
+                     showPopup();
+                 }
+              }
+          });
+        
+        searchItemRadioBtn.setSelected(true);
     }
     
     private int parseQnty(String qnty){
@@ -553,10 +600,19 @@ public class SalebillPharmaController {
     
     public void chooseCustomerNow(){
         Customer c = customerListView.getSelectionModel().getSelectedItem();
-                customerTextBox.setText(c.toString());
-                salebill.setCustomerId(c);
-                custLicTextBox.setText(c.getLicenceNo());
-                hidePopup();
+        
+        if(!isSearchingSaleBill)
+        {
+            customerTextBox.setText(c.toString());
+            salebill.setCustomerId(c);
+            custLicTextBox.setText(c.getLicenceNo());
+            hidePopup();
+        }
+        else{
+            custFromSearchSaleBill = c;
+            searchSaleBills();
+            hidePopup(  );
+        }
     }
 
     
@@ -598,6 +654,7 @@ public class SalebillPharmaController {
      
      @FXML
      private void handleItemRadioBtnClick(){
+         isSearchingSaleBill = false;
          searchLabel.setText("Click to add  Items to Sale Bill");
          itemSearchTextBox.setPromptText("Search by Item name");
          saleSearchListView.setVisible(false);
@@ -606,12 +663,21 @@ public class SalebillPharmaController {
      
      @FXML
      private void handleSaleRadioBtnClick(){
+         isSearchingSaleBill = true;
          itemSearchTextBox.setPromptText("Search by customer Name to view Sale Bill");
          searchLabel.setText("Click to view the Sale Bill");
          searchResultListView.setVisible(false);
          saleSearchListView.setVisible(true);
          
      }
+
+     @FXML
+      void showSaleBill(MouseEvent event){
+         SaleBillPharma sb = saleSearchListView.getSelectionModel().getSelectedItem();
+         System.out.println(sb);
+         fillSaleBillFormFromData(sb);
+     }
+    
      
   
 }
