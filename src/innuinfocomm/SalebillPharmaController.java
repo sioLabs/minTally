@@ -569,5 +569,13 @@ public class SalebillPharmaController {
      private void hidePopup(){
         stage.close();
     }
+     
+     private void fillSaleBillFormFromData(SaleBillPharma sFromDB){
+         salebill.setCustomerId(sFromDB.getCustomerId());
+         custLicTextBox.setText(sFromDB.getCustomerId().getLicenceNo());
+         
+     }
+     
+  
 }
 
