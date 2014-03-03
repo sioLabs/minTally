@@ -143,6 +143,9 @@ public class SalebillPharmaController {
        @FXML
     private ListView<SaleBillPharmaItem> searchResultListView;
        
+       @FXML
+       private ListView<SaleBillPharma> saleSearchListView;
+       
            @FXML
     private TextField itemSearchTextBox;
            
@@ -597,12 +600,16 @@ public class SalebillPharmaController {
      private void handleItemRadioBtnClick(){
          searchLabel.setText("Click to add  Items to Sale Bill");
          itemSearchTextBox.setPromptText("Search by Item name");
+         saleSearchListView.setVisible(false);
+         searchResultListView.setVisible(true);
      }
      
      @FXML
      private void handleSaleRadioBtnClick(){
          itemSearchTextBox.setPromptText("Search by customer Name to view Sale Bill");
          searchLabel.setText("Click to view the Sale Bill");
+         searchResultListView.setVisible(false);
+         saleSearchListView.setVisible(true);
          
      }
      

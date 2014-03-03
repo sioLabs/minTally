@@ -95,11 +95,7 @@
     <Button fx:id="printBtn" layoutX="150.0" layoutY="599.0" mnemonicParsing="false" onAction="#handlePrintBtn" prefWidth="85.0" text="Print" />
     <Button fx:id="resetBtn" layoutX="258.0" layoutY="599.0" mnemonicParsing="false" onAction="#handleResetBtn" prefWidth="85.0" text="Reset" />
     <TextField fx:id="itemSearchTextBox" layoutX="977.0" layoutY="144.0" onKeyPressed="#searchItems" prefWidth="200.0" promptText="Select above and Search here" />
-    <SplitPane id="SplitPane" layoutX="977.0" layoutY="189.0">
-      <items>
-        <ListView fx:id="searchResultListView" onMouseClicked="#addItemToTable" prefHeight="243.0" prefWidth="200.0" />
-      </items>
-    </SplitPane>
+    <ListView fx:id="searchResultListView" layoutX="978.0" layoutY="190.0" onMouseClicked="#addItemToTable" prefHeight="243.0" prefWidth="200.0" />
     <Label id="seachLabel" fx:id="searchLabel" font="$x1" layoutX="978.0" layoutY="171.0" text="Click Below to add to Bill" />
     <Label fx:id="successLabel" layoutX="366.0" layoutY="601.0" text="SaleBill Generate successfully" textFill="#319900" visible="false">
       <font>
@@ -109,5 +105,6 @@
     <Label id="successLabel" fx:id="errLabel" font="$x2" layoutX="366.0" layoutY="601.0" text="Error in saving. Try Again" textFill="RED" visible="false" />
     <RadioButton fx:id="searchItemRadioBtn" layoutX="978.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleItemRadioBtnClick" text="Items" />
     <RadioButton fx:id="searchSaleBillRadioBtn" layoutX="1040.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleSaleRadioBtnClick" text="Sale Bills" />
+    <ListView id="searchResultListView" fx:id="saleSearchListView" layoutX="978.0" layoutY="190.0" onMouseClicked="#addItemToTable" prefHeight="243.0" prefWidth="200.0" visible="false" />
   </children>
 </AnchorPane>
