@@ -623,16 +623,17 @@ public class SalebillPharmaController {
          
             //write the code to get the items List from the db and then 
             //show it here 
+           EntityManager em = EntityManagerHelper.getInstance().getEm();
+           Query q  = null;
+           if(text == null || text.length() == 0)
+               q = em.createNamedQuery("Customer.findAll");
+           else{
             text = text.trim();
             text = "%"+text+"%";
-            EntityManager em = EntityManagerHelper.getInstance().getEm();
-            Query q  = null;
-            if(text.length() ==0 )
-                q = em.createNamedQuery("Customer.findAll");
-            else
-            {q= em.createNamedQuery("Customer.findByCustomersNameLike");
+            q= em.createNamedQuery("Customer.findByCustomersNameLike");
                 q.setParameter("companyName", text);
-            }
+           }
+            
             ArrayList<Customer> list = new ArrayList(q.getResultList());
             System.out.println(list.size()+ " items found");
             customerListView.getItems().addAll(list);
@@ -647,13 +648,33 @@ public class SalebillPharmaController {
     }
      
      private void fillSaleBillFormFromData(SaleBillPharma sFromDB){
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(SalebillPharmaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
          salebill.setCustomerId(sFromDB.getCustomerId());
+         customerTextBox.setText(sFromDB.getCustomerId().getCompanyName());
          custLicTextBox.setText(sFromDB.getCustomerId().getLicenceNo());
+         billNoTextbox.setText(sFromDB.getId() +"");
+         data.clear();
+         
+         ArrayList<SaleBillPharmaItem> itemList = new ArrayList(sFromDB.getSaleBillPharmaItemList());
+         ArrayList<SaleBillPharmaItem> showList = new ArrayList(   );
+         for (SaleBillPharmaItem i : itemList){
+             showList.add(new SaleBillPharmaItem(i.getItemPharmaId()));
+         }
+         data.addAll(showList);
+         
+         //update Amount
+         updateAmount();;
+         
          
      }
      
      @FXML
      private void handleItemRadioBtnClick(){
+         saleSearchListView.getItems().clear(); // to clear the items in the list view
          isSearchingSaleBill = false;
          searchLabel.setText("Click to add  Items to Sale Bill");
          itemSearchTextBox.setPromptText("Search by Item name");
