@@ -185,6 +185,8 @@ public class SalebillPharmaController {
      //variable to check which state user is in
      private boolean isSearchingSaleBill = false;
      private Customer custFromSearchSaleBill = null;
+    private boolean isUpdating;
+    private Integer selectedSaleBill;
      
     
     @FXML
@@ -440,7 +442,9 @@ public class SalebillPharmaController {
         successLabel.setVisible(false);
         errLabel.setVisible(false);
          EntityManager em = EntityManagerHelper.getInstance().getEm();
-        
+        if(isUpdating)
+            salebill.setId(selectedSaleBill);
+         
          salebill.setSaleBillPharmaItemList(data.subList(0, data.size()));
          salebill.setDeliveryAddress(deliveryTextArea.getText());
          salebill.setDiscount(Float.parseFloat(CDamtTextBox.getText()));
@@ -452,9 +456,18 @@ public class SalebillPharmaController {
              salebill.setMode(chequeTextBox.getText());
          }
          try{
+             SaleBillPharma toBeUpdated = null;
              em.getTransaction().begin();
-             em.persist(salebill);
-             em.getTransaction().commit();
+              for(SaleBillPharmaItem i : data){
+                 em.merge(i);
+             }
+             em.merge(salebill);               
+             em.getTransaction().commit();     
+            
+             
+             
+             //em.persist(salebill);
+             
              updateStocks();
              
              successLabel.setVisible(true);
@@ -648,6 +661,7 @@ public class SalebillPharmaController {
         } catch (InterruptedException ex) {
             Logger.getLogger(SalebillPharmaController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        salebill.setId(sFromDB.getId());
          salebill.setCustomerId(sFromDB.getCustomerId());
          customerTextBox.setText(sFromDB.getCustomerId().getCompanyName());
          custLicTextBox.setText(sFromDB.getCustomerId().getLicenceNo());
@@ -656,11 +670,18 @@ public class SalebillPharmaController {
          
          ArrayList<SaleBillPharmaItem> itemList = new ArrayList(sFromDB.getSaleBillPharmaItemList());
          ArrayList<SaleBillPharmaItem> showList = new ArrayList(   );
+         EntityManager em = EntityManagerHelper.getInstance().getEm();
          for (SaleBillPharmaItem i : itemList){
              SaleBillPharmaItem item = new SaleBillPharmaItem(i.getItemPharmaId());
              item.setQnty(i.getQnty());
+             item.setSaleBillNo(sFromDB);
              showList.add(item);
          }
+             em.getTransaction().begin();
+             for(int i = 0;i<itemList.size();i++)
+                 em.remove(itemList.get(i));
+             em.getTransaction().commit();
+
          data.addAll(showList);
          
          dateTextBox.setText(dateFormatter.format(sFromDB.getBillDate()));
@@ -701,6 +722,8 @@ public class SalebillPharmaController {
      @FXML
       void showSaleBill(MouseEvent event){
          SaleBillPharma sb = saleSearchListView.getSelectionModel().getSelectedItem();
+         isUpdating = true;
+         selectedSaleBill = sb.getId();
          System.out.println(sb);
          fillSaleBillFormFromData(sb);
      }
