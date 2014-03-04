@@ -331,7 +331,7 @@ public class SalebillPharmaController {
         float totalamount= 0.0f;
         float totalpayable= 0.0f;
         float cdAmount= 0.0f;
-        
+        System.out.println(data.size() + " items in the data list");
         for(int i = 0;i<data.size();i++){
             SaleBillPharmaItem item = data.get(i);
             if(Math.abs(item.getItemVatPerc() - 5) < 0.01){
@@ -339,7 +339,9 @@ public class SalebillPharmaController {
             }else{
                 vat125amount += item.getItemVatRs();
             }
+            
             totalamount += item.getAmt();
+            System.out.println(item.getAmt());
         }
         
         vatTotalAmt = vat5amount + vat125amount;
@@ -662,7 +664,9 @@ public class SalebillPharmaController {
          ArrayList<SaleBillPharmaItem> itemList = new ArrayList(sFromDB.getSaleBillPharmaItemList());
          ArrayList<SaleBillPharmaItem> showList = new ArrayList(   );
          for (SaleBillPharmaItem i : itemList){
-             showList.add(new SaleBillPharmaItem(i.getItemPharmaId()));
+             SaleBillPharmaItem item = new SaleBillPharmaItem(i.getItemPharmaId());
+             item.setQnty(i.getQnty());
+             showList.add(item);
          }
          data.addAll(showList);
          
