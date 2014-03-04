@@ -43,6 +43,7 @@ import pojos.Customer;
 import pojos.SaleBillPharma;
 import utils.MyLogger;
 import utils.PrintInvoice;
+import utils.SessionClass;
 
 
 public class SalebillPharmaController {
@@ -352,7 +353,12 @@ public class SalebillPharmaController {
             cdAmount =(float) 0.02*totalamount;
         
         totalpayable = totalamount - cdAmount;
-        
+        if(SessionClass.getInstance().getVatNumber() == null)
+        {
+            vat5amount = 0.0f;
+            vat125amount = 0.0f;
+            vatTotalAmt = 0.0f;
+        }
         vat5AmtLabel.setText( " Vat Amount on 5% Product :  Rs " + f.format(vat5amount));
         vat125AmtLabel.setText(" Vat Amount on 12.5% Product :  Rs " + f.format(vat125amount));
         totalTextBox.setText(""+f.format(totalamount));
@@ -424,7 +430,8 @@ public class SalebillPharmaController {
             errLabel.setVisible(false);
             successLabel.setVisible(false);
             updateAmount();
-                    
+            
+             setNextBillNo();
      
     }
 
@@ -508,22 +515,8 @@ public class SalebillPharmaController {
        saleItemTableview.setItems(data);    
        searchItemsCode();
        
-       //set the bill Number
-       EntityManager em = EntityManagerHelper.getInstance().getEm();
-        Query q = em.createNamedQuery("SaleBillPharma.findNextId");
-      
-        int nextId = 0;
-        if(q.getSingleResult() == null )
-            nextId = 1;
-        else
-        {
-            nextId = Integer.parseInt(""+q.getSingleResult());
-            nextId++;
-        }
-        
-        billNoTextbox.setText(""+nextId);
-        salebill.setId(nextId);
-
+     
+       setNextBillNo();
        //set the billDate
         salebill.setBillDate(new Date());
         dateTextBox.setText(dateFormatter.format(new Date()));
@@ -670,6 +663,15 @@ public class SalebillPharmaController {
          }
          data.addAll(showList);
          
+         dateTextBox.setText(dateFormatter.format(sFromDB.getBillDate()));
+         if(sFromDB.getMode().equalsIgnoreCase("CASH"))
+             paymentComboBox.getSelectionModel().select(0);
+         else
+             paymentComboBox.getSelectionModel().select(1);
+             
+         if(sFromDB.getDeliveryAddress() != null)
+             deliveryTextArea.setText(sFromDB.getDeliveryAddress());
+         
          //update Amount
          updateAmount();;
          
@@ -701,6 +703,24 @@ public class SalebillPharmaController {
          SaleBillPharma sb = saleSearchListView.getSelectionModel().getSelectedItem();
          System.out.println(sb);
          fillSaleBillFormFromData(sb);
+     }
+     
+     private void setNextBillNo(){
+           //set the bill Number
+       EntityManager em = EntityManagerHelper.getInstance().getEm();
+        Query q = em.createNamedQuery("SaleBillPharma.findNextId");
+      
+        int nextId = 0;
+        if(q.getSingleResult() == null )
+            nextId = 1;
+        else
+        {
+            nextId = Integer.parseInt(""+q.getSingleResult());
+            nextId++;
+        }
+        
+        billNoTextbox.setText(""+nextId);
+        salebill.setId(nextId);
      }
     
      
