@@ -51,13 +51,14 @@ public class PrintInvoice {
     private Document document = new Document(PageSize.A4);
     private SaleBillPharma salebill ;
     
-   public static final Font[] FONT = new Font[5];
+   public static final Font[] FONT = new Font[6];
     static {
         FONT[0] = new Font(FontFamily.HELVETICA, 24);
         FONT[1] = new Font(FontFamily.HELVETICA, 18);
         FONT[2] = new Font(FontFamily.HELVETICA, 10);
         FONT[3] = new Font(FontFamily.HELVETICA, 12, Font.BOLD);
         FONT[4] = new Font(FontFamily.TIMES_ROMAN, 12, Font.ITALIC | Font.UNDERLINE);
+        FONT[5] = new Font(FontFamily.HELVETICA, 8);
     }
     public static final Font BOLD_UNDERLINED = new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD | Font.UNDERLINE);
      public static final Font ITALICS = new Font(FontFamily.TIMES_ROMAN, 12, Font.ITALIC | Font.UNDERLINE);
@@ -85,7 +86,11 @@ public class PrintInvoice {
             //show the company details here.
             Phrase company = new Phrase(new Chunk("BIO PHARMA\nAKOT 444101(M.S)", FONT[3]));
             document.add(company);
-            document.add(new Phrase("\nLicense No : 20B : AK-88888\n                     21B : AK-88889 \n Mob: "+SessionClass.getInstance().getMobileNumber(),FONT[2]));
+            document.add(new Phrase("\nLicense No : 20B : AK-88888\n                     21B : AK-88889\n       Mobile : " + SessionClass.getInstance().getMobileNumber() ,FONT[2]));
+            
+//            Phrase mobNum  = new Phrase("    Mobile : "+SessionClass.getInstance().getMobileNumber() );
+//            mobNum.setFont(FONT[2]);
+//            ColumnText.showTextAligned(directContent, Element.ALIGN_LEFT, mobNum, 35, 710, 0);
             
             System.out.println(dateFormatter.format(salebill.getBillDate()));
             //show the invoice details
@@ -100,13 +105,13 @@ public class PrintInvoice {
             //show the customer details
             Customer c = salebill.getCustomerId();
             Phrase custDetails = new Phrase("SOLD TO", FONT[3]);
-            ColumnText.showTextAligned(directContent, Element.ALIGN_LEFT, custDetails , 35, 707,0);
-            custDetails = new Phrase(c.getCompanyName());
             ColumnText.showTextAligned(directContent, Element.ALIGN_LEFT, custDetails , 35, 693,0);
-            custDetails = new Phrase(c.getSiteAddress());
+            custDetails = new Phrase(c.getCompanyName());
             ColumnText.showTextAligned(directContent, Element.ALIGN_LEFT, custDetails , 35, 681,0);
-            custDetails = new Phrase("Licence : "+c.getLicenceNo());
+            custDetails = new Phrase(c.getSiteAddress());
             ColumnText.showTextAligned(directContent, Element.ALIGN_LEFT, custDetails , 35, 668,0);
+            custDetails = new Phrase("Licence : "+c.getLicenceNo());
+            ColumnText.showTextAligned(directContent, Element.ALIGN_LEFT, custDetails , 35, 655,0);
             
             
             
