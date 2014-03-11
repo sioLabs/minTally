@@ -33,8 +33,12 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import pojos.Customer;
 import pojos.SaleBillPharmaItem;
 
@@ -59,7 +63,8 @@ public class PrintInvoice {
      public static final Font ITALICS = new Font(FontFamily.TIMES_ROMAN, 12, Font.ITALIC | Font.UNDERLINE);
     
     
-     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+     private SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/yyyy");
+     private SimpleDateFormat dateFormatter2 = new SimpleDateFormat("dd/MM/yyyy");
     public PrintInvoice(SaleBillPharma salebill){
         this.salebill = salebill;
     }
@@ -80,7 +85,7 @@ public class PrintInvoice {
             //show the company details here.
             Phrase company = new Phrase(new Chunk("BIO PHARMA\nAKOT 444101(M.S)", FONT[3]));
             document.add(company);
-            document.add(new Phrase("\nLicense No : 20B : AK-88888\n                     21B : AK-88889",FONT[2]));
+            document.add(new Phrase("\nLicense No : 20B : AK-88888\n                     21B : AK-88889 \n Mob: "+SessionClass.getInstance().getMobileNumber(),FONT[2]));
             
             System.out.println(dateFormatter.format(salebill.getBillDate()));
             //show the invoice details
@@ -113,13 +118,15 @@ public class PrintInvoice {
             document.add(Chunk.NEWLINE);
             
             //Item Particulars are shown here
-            PdfPTable table = new PdfPTable(5);
-            table.setTotalWidth(new float[]{275,50,50,50,75});
+            PdfPTable table = new PdfPTable(7);
+            table.setTotalWidth(new float[]{175,80,80,50,50,50,75});
             table.setHeaderRows(1);
             
             //headers
             table.getDefaultCell().setBackgroundColor(BaseColor.LIGHT_GRAY);
             table.addCell("Particulars");
+            table.addCell("Batch");
+            table.addCell("Expiry");
             table.addCell("MRP");
             table.addCell("Rate");
             table.addCell("Qnty");
@@ -129,11 +136,27 @@ public class PrintInvoice {
             
              List<SaleBillPharmaItem> items = salebill.getSaleBillPharmaItemList();
              for(int i = 0 ;i <items.size();i++){
-                 PdfPCell desc = new PdfPCell(new Phrase(items.get(i).getItemName() + " - " + items.get(i).getItemPharmaId().getBatch()+"\n Exp: " + items.get(i).getExpDate()));
-//                 //desc.setBorderColor(BaseColor.WHITE);
-//                 desc.setBorderColorLeft(BaseColor.BLACK);
-//                 desc.setBorderColorRight(BaseColor.WHITE);
+                 PdfPCell desc = new PdfPCell(new Phrase(items.get(i).getItemName() ));
+
                  table.addCell(desc);
+                 
+                 PdfPCell batch = new PdfPCell(new Phrase(items.get(i).getBatch()));
+                 
+                 table.addCell(batch);
+                 
+                 PdfPCell expiry = null;
+                 Date tDate = null;
+                 try {
+                     tDate = dateFormatter2.parse(items.get(i).getExpDate());
+                 } catch (ParseException ex) {
+                     Logger.getLogger(PrintInvoice.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+                 
+                 
+                  expiry = new PdfPCell(new Phrase(dateFormatter.format(tDate)));
+                 
+                 table.addCell(expiry);
+                 
                  PdfPCell mrp = new PdfPCell(new Phrase(items.get(i).getMrp()+""));
 //                 //mrp.setBorderColor(BaseColor.WHITE);
 //                 mrp.setBorderColorLeft(BaseColor.BLACK);
@@ -160,14 +183,14 @@ public class PrintInvoice {
              //now show the sub details
              //PdfPCell finalCell = new PdfPCell(new Phrase("Total VAT Amt : Rs " + salebill.getTotalVat() + "                     Total Amount : Rs "));
              //Todo change code here to show vat amount when there is vat number
-             PdfPCell finalCell = new PdfPCell(new Phrase("Total VAT Amt : Rs " + 0.0  + "                     Total Amount : Rs "));
+             PdfPCell finalCell = new PdfPCell(new Phrase("Total VAT Amt : Rs " + 0.0  + "           Total Amount : Rs "));
              finalCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-             finalCell.setColspan(4);
+             finalCell.setColspan(6);
              table.addCell(finalCell);
              table.addCell(""+salebill.getTotalAmt());
              
              PdfPCell cdCell = new PdfPCell(new Phrase("Cash Discount (2 %) : (-) Rs"));
-             cdCell.setColspan(4);
+             cdCell.setColspan(6);
              cdCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
              table.addCell(cdCell);
              table.addCell(""+salebill.getDiscount());
@@ -175,7 +198,7 @@ public class PrintInvoice {
              
              
              PdfPCell finalAmtCell = new PdfPCell(new Phrase("Final Amount : Rs" ));
-             finalAmtCell.setColspan(4);
+             finalAmtCell.setColspan(6);
              finalAmtCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
              table.addCell(finalAmtCell);
              table.addCell(""+salebill.getFinalAmt());
