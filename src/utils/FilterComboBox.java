@@ -81,7 +81,7 @@ public FilterComboBox(final ObservableList<T> items) {
     this.focusedProperty().addListener(new ChangeListener() {
         @Override
         public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-            if (newValue == false) {
+            if ((boolean)newValue == false) {
                 s = "";
                 fcbo.setItems(items);
                 fcbo.getSelectionModel().select((T)selection);
