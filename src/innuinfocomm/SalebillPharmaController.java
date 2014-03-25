@@ -417,6 +417,7 @@ public class SalebillPharmaController {
     void handlePrintBtn(ActionEvent event) {
             PrintInvoice printer = new PrintInvoice(salebill);
             printer.getDocument();
+            successLabel.setText("Document Printed");
     }
 
     @FXML
