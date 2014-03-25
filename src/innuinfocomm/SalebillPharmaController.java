@@ -437,7 +437,7 @@ public class SalebillPharmaController {
             successLabel.setVisible(false);
             updateAmount();
             
-             setNextBillNo();
+            setNextBillNo();
      
     }
 
