@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -186,7 +187,9 @@ public class SalebillPharmaController {
      private boolean isSearchingSaleBill = false;
      private Customer custFromSearchSaleBill = null;
     private boolean isUpdating;
-    private Integer selectedSaleBill;
+    private Integer selectedSaleBillNo;
+    private SaleBillPharma selectedSaleBill;
+            
      
     
     @FXML
@@ -318,7 +321,7 @@ public class SalebillPharmaController {
             }
             ArrayList<SaleBillPharma> list = new ArrayList(q.getResultList());
             System.out.println(list.size()+ " items found");
-            if(list == null || list.size() < 1){
+            if(list.size() < 1){
                 errorLabel.setText("No sale bill found for customer  " + custFromSearchSaleBill.getCompanyName());
             }
             
@@ -393,7 +396,7 @@ public class SalebillPharmaController {
                 try{
                 em.getTransaction().begin();
                 em.merge(itemP);
-                 em.getTransaction().commit();
+                em.getTransaction().commit();
                 }catch(Exception e){
                     e.printStackTrace();
                     //System.out.println("error in ");
@@ -418,6 +421,7 @@ public class SalebillPharmaController {
 
     @FXML
     void handleResetBtn(ActionEvent event) {
+            isUpdating = false;
             data.remove(0, data.size());
             customerTextBox.setText(null);
             custLicTextBox.setText(null);
@@ -443,7 +447,14 @@ public class SalebillPharmaController {
         errLabel.setVisible(false);
          EntityManager em = EntityManagerHelper.getInstance().getEm();
         if(isUpdating)
-            salebill.setId(selectedSaleBill);
+        {
+            salebill.setId(selectedSaleBillNo);
+            if(salebill.getSaleBillPharmaItemList() == null )
+                ;
+            else
+                returnAllSalebillStock();
+              
+        }
          
          salebill.setSaleBillPharmaItemList(data.subList(0, data.size()));
          salebill.setDeliveryAddress(deliveryTextArea.getText());
@@ -456,12 +467,16 @@ public class SalebillPharmaController {
              salebill.setMode(chequeTextBox.getText());
          }
          try{
-             SaleBillPharma toBeUpdated = null;
+             
              em.getTransaction().begin();
-              for(SaleBillPharmaItem i : data){
-                 em.merge(i);
-             }
-             em.merge(salebill);               
+             
+                 salebill.setSaleBillPharmaItemList(data);
+                 em.merge(salebill);               
+             
+             
+             
+             
+             
              em.getTransaction().commit();     
             
              
@@ -677,10 +692,10 @@ public class SalebillPharmaController {
              item.setSaleBillNo(sFromDB);
              showList.add(item);
          }
-             em.getTransaction().begin();
-             for(int i = 0;i<itemList.size();i++)
-                 em.remove(itemList.get(i));
-             em.getTransaction().commit();
+//             em.getTransaction().begin();
+//             for(int i = 0;i<itemList.size();i++)
+//                 em.remove(itemList.get(i));
+//             em.getTransaction().commit();
 
          data.addAll(showList);
          
@@ -723,7 +738,8 @@ public class SalebillPharmaController {
       void showSaleBill(MouseEvent event){
          SaleBillPharma sb = saleSearchListView.getSelectionModel().getSelectedItem();
          isUpdating = true;
-         selectedSaleBill = sb.getId();
+         selectedSaleBillNo = sb.getId();
+         selectedSaleBill = sb;
          System.out.println(sb);
          fillSaleBillFormFromData(sb);
      }
@@ -744,9 +760,54 @@ public class SalebillPharmaController {
         
         billNoTextbox.setText(""+nextId);
         salebill.setId(nextId);
+    
+        
+    
+  }
+     
+     
+     
+     //return all the old salebill items
+     //something is wrong here .. There is the new data in old list.
+     private void returnAllSalebillStock(){
+         
+         EntityManager em = EntityManagerHelper.getInstance().getEm();
+         
+         em.getTransaction().begin();
+         
+         System.out.println("Returning the old items");
+         for(SaleBillPharmaItem i : selectedSaleBill.getSaleBillPharmaItemList())
+         {
+            System.out.println(i.getItemPharmaId().getId() + " : " + i.getQnty());
+            ItemsPharma p = em.find(ItemsPharma.class, i.getItemPharmaId().getId());
+            p.setStockStrips(p.getStockStrips()+Integer.parseInt(i.getQnty()));
+            em.persist(p);
+          }
+         em.getTransaction().commit();
+         
+         System.out.println("The stock shold be updated now");
+         //code to delete the old ITems list
+         SaleBillPharma oldSaleBill =  selectedSaleBill;
+         
+         
+         System.out.println("Now deleting the old items from the db");
+         Query q = em.createNamedQuery("SaleBillPharmaItem.findBySaleBillId");
+         q.setParameter("sale_bill_no",oldSaleBill);
+        
+         List<SaleBillPharmaItem> oldItemList = q.getResultList();
+        
+         em.getTransaction().begin();
+         
+         for(SaleBillPharmaItem i : oldItemList){
+             em.remove(i);
+         }
+         
+         em.getTransaction().commit();
+         
+         System.out.println("Deletion of items completed");
      }
     
      
-  
+
 }
 
