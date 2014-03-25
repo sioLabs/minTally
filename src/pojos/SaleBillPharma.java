@@ -5,6 +5,7 @@
 package pojos;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -182,7 +183,7 @@ public class SaleBillPharma implements Serializable {
 
     @Override
     public String toString() {
-        return "pojos.SaleBillPharma[ id=" + id + " ]";
+        return dateFormatter.format(billDate) + " - " + finalAmt;
     }
 
     public Date getBillDate(){
@@ -200,6 +201,8 @@ public class SaleBillPharma implements Serializable {
     public void setMode(String mode) {
         this.mode = mode;
     }
+    
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
 
 
