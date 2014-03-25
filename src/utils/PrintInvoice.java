@@ -86,7 +86,7 @@ public class PrintInvoice {
           //  String txt = "Bill No. : " + salebill.getId()+"\nBill Date : " + dateFormatter.format(salebill.getBillDate()) +;
             Phrase invoiceDetails = new Phrase( "Bill No. : " + salebill.getId());
             ColumnText.showTextAligned(directContent, Element.ALIGN_LEFT, invoiceDetails , 400, 693,0);
-            invoiceDetails = new Phrase("Bill Date : " + dateFormatter.format(salebill.getBillDate()));
+            invoiceDetails = new Phrase("Bill Date : " + dateFormatter2.format(salebill.getBillDate()));
             ColumnText.showTextAligned(directContent, Element.ALIGN_LEFT, invoiceDetails , 400, 681,0);
             invoiceDetails = new Phrase("Mode of Payment : " + salebill.getMode());
             ColumnText.showTextAligned(directContent, Element.ALIGN_LEFT, invoiceDetails , 400, 668,0);
