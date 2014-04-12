@@ -57,8 +57,8 @@ public class InnuInfocomm extends Application {
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.setScene(new Scene(VBoxBuilder.create().
         children(new Text("Database Connectivity Error \nStart WampServer")).
-         alignment(Pos.CENTER).padding(new Insets(50)).build()));
-         dialogStage.show();
+        alignment(Pos.CENTER).padding(new Insets(50)).build()));
+        dialogStage.show();
     }
 
     /**

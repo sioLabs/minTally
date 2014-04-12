@@ -28,6 +28,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBoxBuilder;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import pojos.Customer;
 import pojos.SaleBillPharmaItem;
 
@@ -231,6 +238,13 @@ public class PrintInvoice {
         } catch (DocumentException | FileNotFoundException e) {
             //LOGGER
             e.printStackTrace();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Printing Error");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.setScene(new Scene(VBoxBuilder.create().
+            children(new Text("The file to be printed is already open \n. Please close the file and Print Again")).
+            alignment(Pos.CENTER).padding(new Insets(50)).build()));
+            dialogStage.show();
         }
      
 }

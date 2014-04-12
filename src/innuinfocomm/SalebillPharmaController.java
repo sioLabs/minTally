@@ -85,9 +85,7 @@ public class SalebillPharmaController {
     @FXML
     private TextField chequeTextBox;
 
-    @FXML
-    private TableColumn<SaleBillPharmaItem, String> dmTableColumn;
-
+  
     @FXML
     private Label errorLabel;
 
@@ -205,7 +203,6 @@ public class SalebillPharmaController {
         assert deliveryTextArea != null : "fx:id=\"deliveryTextArea\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert descTableColumn != null : "fx:id=\"descTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert chequeTextBox != null : "fx:id=\"discountTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
-        assert dmTableColumn != null : "fx:id=\"dmTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert errorLabel != null : "fx:id=\"errorLabel\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert expTableColumn != null : "fx:id=\"expTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert finalAmtTextBox != null : "fx:id=\"finalAmtTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
@@ -229,7 +226,6 @@ public class SalebillPharmaController {
         
 
         mrpTableColumn.setCellValueFactory(new PropertyValueFactory<SaleBillPharmaItem, Float>("mrp"));
-        dmTableColumn.setCellValueFactory(new PropertyValueFactory<SaleBillPharmaItem,String>("DM"));
         makeTableColumn.setCellValueFactory(new PropertyValueFactory<SaleBillPharmaItem,String>("make"));
         packTableColumn.setCellValueFactory(new PropertyValueFactory<SaleBillPharmaItem, String>("pack"));
         rateTableColumn.setCellValueFactory(new PropertyValueFactory<SaleBillPharmaItem,Float>("itemRate"));
