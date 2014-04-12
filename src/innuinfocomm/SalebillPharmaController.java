@@ -320,9 +320,10 @@ public class SalebillPharmaController {
                 q.setParameter("customerId", custFromSearchSaleBill);
             }
             ArrayList<SaleBillPharma> list = new ArrayList(q.getResultList());
-            System.out.println(list.size()+ " items found");
+            
             if(list.size() < 1){
-                errorLabel.setText("No sale bill found for customer  " + custFromSearchSaleBill.getCompanyName());
+                errLabel.setVisible(true);
+                errLabel.setText("No sale bill found for customer  " + custFromSearchSaleBill.getCompanyName());
             }
             
             saleSearchListView.getItems().addAll(list);
@@ -450,8 +451,8 @@ public class SalebillPharmaController {
         if(isUpdating)
         {
             salebill.setId(selectedSaleBillNo);
-            if(salebill.getSaleBillPharmaItemList() == null )
-                ;
+            if(selectedSaleBill.getSaleBillPharmaItemList() == null )
+                System.out.println("Nothing to return here");
             else
                 returnAllSalebillStock();
               
@@ -595,10 +596,16 @@ public class SalebillPharmaController {
                                        hidePopup();
                                         return;
                               }
-                 initiatePopUp(customerTextBox.getText());
-                 if(KeyCode.ENTER.equals(t.getCode())){
-                     showPopup();
-                 }
+                     if(isSearchingSaleBill)
+                     {
+                         initiatePopUp(customerTextBox.getText());
+                         if(KeyCode.ENTER.equals(t.getCode())){
+                               showPopup();
+                            }
+                     }
+                     else
+                         searchItemsCode();
+                 
               }
           });
         
@@ -634,6 +641,7 @@ public class SalebillPharmaController {
         }
         else{
             custFromSearchSaleBill = c;
+            
             searchSaleBills();
             hidePopup(  );
         }
@@ -682,6 +690,7 @@ public class SalebillPharmaController {
          customerTextBox.setText(sFromDB.getCustomerId().getCompanyName());
          custLicTextBox.setText(sFromDB.getCustomerId().getLicenceNo());
          billNoTextbox.setText(sFromDB.getId() +"");
+         salebill.setBillDate(sFromDB.getBillDate());
          data.clear();
          
          ArrayList<SaleBillPharmaItem> itemList = new ArrayList(sFromDB.getSaleBillPharmaItemList());
