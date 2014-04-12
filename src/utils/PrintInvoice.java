@@ -177,7 +177,7 @@ public class PrintInvoice {
              //now show the sub details
              //PdfPCell finalCell = new PdfPCell(new Phrase("Total VAT Amt : Rs " + salebill.getTotalVat() + "                     Total Amount : Rs "));
              //Todo change code here to show vat amount when there is vat number
-             PdfPCell finalCell = new PdfPCell(new Phrase("Total VAT Amt : Rs " + 0.0  + "           Total Amount : Rs "));
+             PdfPCell finalCell = new PdfPCell(new Phrase("Total VAT Amt : Rs " + salebill.getTotalVat()  + "           Total Amount : Rs "));
              finalCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
              finalCell.setColspan(6);
              table.addCell(finalCell);
@@ -210,11 +210,7 @@ public class PrintInvoice {
                 document.add(Chunk.NEWLINE);
              document.add(Chunk.NEWLINE);
              
-            document.add(new Chunk("Terms and Conditions ", FONT[3]));
-              document.add(Chunk.NEWLINE);
-            document.add(new Chunk("1. This invoice is valid only for 30 days from date of generation"));
-              document.add(Chunk.NEWLINE);
-            document.add(new Chunk("2. All disputes will be subject to AKOT jurisdiction."));
+
             
             
             document.add(Chunk.NEWLINE);

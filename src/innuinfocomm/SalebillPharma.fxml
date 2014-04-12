@@ -54,6 +54,7 @@
             <FXCollections fx:factory="observableArrayList">
               <String fx:value="Cash" />
               <String fx:value="Cheque" />
+              <String fx:value="TO PAY" />
             </FXCollections>
           </items>
         </ComboBox>

@@ -171,7 +171,7 @@ public class SalebillPharmaController {
 
     private  int cash_discount = 0;
     
-   SaleBillPharma salebill = new SaleBillPharma();
+    SaleBillPharma salebill = new SaleBillPharma();
     
     DecimalFormat f = new DecimalFormat("##.00");
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -194,11 +194,7 @@ public class SalebillPharmaController {
     
     @FXML
     void initialize() {
-        try {
-            MyLogger.setup();
-        } catch (IOException ex) {
-            Logger.getLogger(SalebillPharmaController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+  
         assert AmountTableColumn != null : "fx:id=\"AmountTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert CDamtTextBox != null : "fx:id=\"CDamtTextBox\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
         assert batchTableColumn != null : "fx:id=\"batchTableColumn\" was not injected: check your FXML file 'SalebillPharma.fxml'.";
@@ -245,7 +241,8 @@ public class SalebillPharmaController {
         descTableColumn.setCellValueFactory(new PropertyValueFactory<SaleBillPharmaItem,String>("itemName"));
         
        
-           qntyTableColumn.setCellFactory(TextFieldTableCell.<SaleBillPharmaItem>forTableColumn());
+        qntyTableColumn.setCellFactory(TextFieldTableCell.<SaleBillPharmaItem>forTableColumn());
+        paymentComboBox.getSelectionModel().select(2);
        
        
           qntyTableColumn.setOnEditCommit(new EventHandler<CellEditEvent<SaleBillPharmaItem, String>>() {
@@ -359,12 +356,12 @@ public class SalebillPharmaController {
             cdAmount =(float) 0.02*totalamount;
         
         totalpayable = totalamount - cdAmount;
-        if(SessionClass.getInstance().getVatNumber() == null)
-        {
-            vat5amount = 0.0f;
-            vat125amount = 0.0f;
-            vatTotalAmt = 0.0f;
-        }
+        //if(SessionClass.getInstance().getVatNumber() == null)
+        //{
+          //  vat5amount = 0.0f;
+            //vat125amount = 0.0f;
+            //vatTotalAmt = 0.0f;
+        //}
         vat5AmtLabel.setText( " Vat Amount on 5% Product :  Rs " + f.format(vat5amount));
         vat125AmtLabel.setText(" Vat Amount on 12.5% Product :  Rs " + f.format(vat125amount));
         totalTextBox.setText(""+f.format(totalamount));
@@ -382,6 +379,8 @@ public class SalebillPharmaController {
                 salebill.setMode("CASH");
             else if(paymentComboBox.getSelectionModel().isSelected(1))
                 salebill.setMode("");
+            else 
+                salebill.setMode("TO PAY");
             
     }
 
@@ -467,7 +466,8 @@ public class SalebillPharmaController {
          salebill.setMode("CASH");
          if(paymentComboBox.getSelectionModel().isSelected(1)){
              salebill.setMode(chequeTextBox.getText());
-         }
+         }else if(paymentComboBox.getSelectionModel().isSelected(2))
+             salebill.setMode("TO PAY");
          try{
              
              em.getTransaction().begin();
@@ -502,12 +502,12 @@ public class SalebillPharmaController {
     
     private void initializeSaleBill() {
         
-          try {
-      MyLogger.setup();
-    } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException("Problems with creating the log files");
-    }
+//          try {
+//      MyLogger.setup();
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//      throw new RuntimeException("Problems with creating the log files");
+//    }
 
          searchItemRadioBtn.setToggleGroup(radioToggle);
          searchSaleBillRadioBtn.setToggleGroup(radioToggle);
@@ -532,7 +532,7 @@ public class SalebillPharmaController {
                 int val = paymentComboBox.getSelectionModel().getSelectedIndex();
                 if(val ==  0){
                     cash_discount = 2;
-                    
+              
                 }
                 else
                     cash_discount = 0;
@@ -712,6 +712,8 @@ public class SalebillPharmaController {
          dateTextBox.setText(dateFormatter.format(sFromDB.getBillDate()));
          if(sFromDB.getMode().equalsIgnoreCase("CASH"))
              paymentComboBox.getSelectionModel().select(0);
+         else if(sFromDB.getMode().equalsIgnoreCase("TO PAY"))
+             paymentComboBox.getSelectionModel().select(2);
          else
              paymentComboBox.getSelectionModel().select(1);
              
