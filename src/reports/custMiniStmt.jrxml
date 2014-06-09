@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report3" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4ef4a12f-8a15-4ad5-920d-a5d30589c8cd">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     sale_bill_pharma.`id` AS sale_bill_pharma_id,
+     sale_bill_pharma.`bill_date` AS sale_bill_pharma_bill_date,
+     customer.`company_name` AS customer_company_name,
+     sale_bill_pharma.`final_amt` AS sale_bill_pharma_final_amt
+FROM
+     `customer` customer INNER JOIN `sale_bill_pharma` sale_bill_pharma ON customer.`id` = sale_bill_pharma.`customer_id`]]>
+	</queryString>
+	<field name="sale_bill_pharma_id" class="java.lang.Integer"/>
+	<field name="sale_bill_pharma_bill_date" class="java.sql.Date"/>
+	<field name="customer_company_name" class="java.lang.String"/>
+	<field name="sale_bill_pharma_final_amt" class="java.lang.Float"/>
+	<group name="sale_bill_pharma_id">
+		<groupExpression><![CDATA[$F{sale_bill_pharma_id}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="174" height="34" uuid="76d1cf48-e354-4448-aabb-1b4ded8908f6"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BIO PHARMA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="148" y="0" width="126" height="20" uuid="3c8a0a3c-67e8-4d5f-8abc-30f245c8c08b"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Bill Summary for : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="290" y="0" width="100" height="20" uuid="aeb084c3-6685-4b2d-9e73-08279fc4072e"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{customer_company_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="74" y="0" width="100" height="20" uuid="cd456866-d1a2-47c7-84e9-0e975e5e729c"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Bill Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="174" y="0" width="100" height="20" uuid="426b6496-6ea6-4b02-b210-c1a1b773640d"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Bill Num]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="274" y="0" width="100" height="20" uuid="86c8d355-6539-45ae-bf10-818b3f21c892"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Total Amount]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="74" y="0" width="100" height="20" uuid="0011d17a-44c7-444b-89ea-312c683f5c75"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{sale_bill_pharma_bill_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="174" y="0" width="100" height="20" uuid="a3a6c413-10c7-442e-8c08-745078b41c8f"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{sale_bill_pharma_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="274" y="0" width="100" height="20" uuid="ef4bd597-81e5-4f4e-956e-7ba6d29a598c"/>
+				<box leftPadding="0" rightPadding="7">
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{sale_bill_pharma_final_amt}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

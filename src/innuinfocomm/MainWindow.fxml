@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="innuinfocomm.MainWindowController">
+<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="innuinfocomm.MainWindowController">
   <children>
     <MenuBar fx:id="topMenuBar" layoutX="1.0" layoutY="1.0" visible="false">
       <menus>
@@ -35,15 +35,29 @@
           <children>
             <Accordion id="leftMenuAccordion" minWidth="103.0" prefHeight="570.0" prefWidth="103.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <expandedPane>
-                <TitledPane fx:id="x2" animated="false" text="Inventory Management">
+                <TitledPane fx:id="x1" animated="false" expanded="true" text="Reports">
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                       <children>
-                        <VBox id="VBox" alignment="CENTER" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="478.0" prefWidth="204.0" spacing="5.0" AnchorPane.bottomAnchor="-0.5" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.5">
+                        <VBox id="VBox" alignment="CENTER_LEFT" disable="true" fillWidth="true" focusTraversable="false" prefHeight="478.0" prefWidth="204.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <children>
-                            <Button fx:id="AddItemBtn" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddItemBtn" prefHeight="35.0" prefWidth="116.0" text="Add New Item" wrapText="true" />
-                            <Button fx:id="viewAllItemsBtn" disable="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleViewAllItemsBtn" prefHeight="35.0" text="View All Items" />
-                            <Button fx:id="importInventoryBtn" disable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleImportInventoryBtn" prefHeight="35.0" text="Import Inventory" />
+                            <Button alignment="CENTER" disable="true" maxHeight="-1.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" pickOnBounds="false" prefWidth="204.0" text="Sale Book" visible="true" VBox.vgrow="NEVER">
+                              <VBox.margin>
+                                <Insets />
+                              </VBox.margin>
+                            </Button>
+                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" text="Purchase Book" visible="true" VBox.vgrow="NEVER" />
+                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" text="Ledger Book" visible="true" VBox.vgrow="NEVER" />
+                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" text="Mini Statement" visible="true" VBox.vgrow="NEVER" />
+                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" text="Cash Book" visible="true" VBox.vgrow="NEVER" />
+                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" text="Stock Summary" visible="true" VBox.vgrow="NEVER" />
+                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" text="Account Statement" visible="true" VBox.vgrow="NEVER" />
+                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" text="Item Wise Recievable" visible="true" VBox.vgrow="NEVER" />
+                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" prefHeight="21.999900000002526" text="Recievable" visible="true" VBox.vgrow="NEVER" />
+                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" prefHeight="21.999900000002526" text="Payable" visible="true" VBox.vgrow="NEVER" />
+                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" prefHeight="21.999900000002526" text="Balance Sheet" visible="true" VBox.vgrow="NEVER" />
+                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" prefHeight="21.999900000002526" text="Trail balance Sheet" visible="true" VBox.vgrow="NEVER" />
+                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" prefHeight="21.999900000002526" text="Profit Loss A/C" visible="true" VBox.vgrow="NEVER" />
                           </children>
                         </VBox>
                       </children>
@@ -68,7 +82,21 @@
                     </AnchorPane>
                   </content>
                 </TitledPane>
-                <fx:reference source="x2" />
+                <TitledPane fx:id="x2" animated="false" text="Inventory Management">
+                  <content>
+                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <children>
+                        <VBox id="VBox" alignment="CENTER" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="478.0" prefWidth="204.0" spacing="5.0" AnchorPane.bottomAnchor="-0.5" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.5">
+                          <children>
+                            <Button fx:id="AddItemBtn" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAddItemBtn" prefHeight="35.0" prefWidth="116.0" text="Add New Item" wrapText="true" />
+                            <Button fx:id="viewAllItemsBtn" disable="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleViewAllItemsBtn" prefHeight="35.0" text="View All Items" />
+                            <Button fx:id="importInventoryBtn" disable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleImportInventoryBtn" prefHeight="35.0" text="Import Inventory" />
+                          </children>
+                        </VBox>
+                      </children>
+                    </AnchorPane>
+                  </content>
+                </TitledPane>
                 <TitledPane fx:id="VoucherMgmt" animated="false" text="Vouchers">
                   <content>
                     <AnchorPane id="Content" disable="false" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -86,35 +114,7 @@
                     </AnchorPane>
                   </content>
                 </TitledPane>
-                <TitledPane fx:id="x1" animated="false" expanded="false" text="Reports">
-                  <content>
-                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                      <children>
-                        <VBox id="VBox" alignment="CENTER_LEFT" disable="true" fillWidth="true" focusTraversable="false" prefHeight="478.0" prefWidth="204.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <children>
-                            <Button alignment="CENTER" disable="true" maxHeight="-1.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" pickOnBounds="false" prefWidth="204.0" text="Sale Book" visible="true" VBox.vgrow="NEVER">
-                              <VBox.margin>
-                                <Insets />
-                              </VBox.margin>
-                            </Button>
-                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" text="Purchase Book" visible="true" VBox.vgrow="NEVER" />
-                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" text="Ledger Book" visible="true" VBox.vgrow="NEVER" />
-                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" text="Day Book" visible="true" VBox.vgrow="NEVER" />
-                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" text="Cash Book" visible="true" VBox.vgrow="NEVER" />
-                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" text="Stock Summary" visible="true" VBox.vgrow="NEVER" />
-                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" text="Account Statement" visible="true" VBox.vgrow="NEVER" />
-                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" text="Item Wise Recievable" visible="true" VBox.vgrow="NEVER" />
-                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" prefHeight="21.999900000002526" text="Recievable" visible="true" VBox.vgrow="NEVER" />
-                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" prefHeight="21.999900000002526" text="Payable" visible="true" VBox.vgrow="NEVER" />
-                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" prefHeight="21.999900000002526" text="Balance Sheet" visible="true" VBox.vgrow="NEVER" />
-                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" prefHeight="21.999900000002526" text="Trail balance Sheet" visible="true" VBox.vgrow="NEVER" />
-                            <Button maxHeight="-1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" pickOnBounds="false" prefHeight="21.999900000002526" text="Profit Loss A/C" visible="true" VBox.vgrow="NEVER" />
-                          </children>
-                        </VBox>
-                      </children>
-                    </AnchorPane>
-                  </content>
-                </TitledPane>
+                <fx:reference source="x1" />
               </panes>
             </Accordion>
           </children>
