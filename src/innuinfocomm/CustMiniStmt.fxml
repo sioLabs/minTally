@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="innuinfocomm.CustMiniStmtController">
+  <children>
+    <Label layoutX="210.0" layoutY="51.0" text="Customer Mini Statement">
+      <font>
+        <Font size="16.0" />
+      </font>
+    </Label>
+    <Label layoutX="99.0" layoutY="97.0" text="Choose a Customer">
+      <font>
+        <Font size="14.0" />
+      </font>
+    </Label>
+    <TextField fx:id="searchCustTextField" layoutX="227.0" layoutY="96.0" prefWidth="200.0" />
+  </children>
+</AnchorPane>
