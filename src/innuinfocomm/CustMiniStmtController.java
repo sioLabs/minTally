@@ -6,8 +6,10 @@ import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -16,6 +18,8 @@ import javafx.scene.input.MouseEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 import pojos.Customer;
 import utils.EntityManagerHelper;
 
@@ -36,6 +40,10 @@ public class CustMiniStmtController {
 
     @FXML
     private TextField searchCustTextField;
+    
+    
+    @FXML
+    private Button viewStmtBtn;
 
 
     @FXML
@@ -65,31 +73,7 @@ public class CustMiniStmtController {
               });
         
         
-        custListView.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent t) {
-                Customer c = custListView.getSelectionModel().getSelectedItem();
-                
-                //now send this to jsp viewer
-                
-                try{
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/innuinfocomm?user=root&password=");
-                    System.out.println("Filling report");
-                    HashMap p = new HashMap();
-                    p.put("custid", c.getId());
-                    JasperFillManager.fillReportToFile("src/reports/custMiniStmt.jasper", p, con);
-                            
-                    
-                    
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-                
-            }
-            
-        });
+      
                 
     }
                 
@@ -114,6 +98,38 @@ public class CustMiniStmtController {
          
           
       }
+      
+         @FXML
+    void handleViewStmtbtn(ActionEvent event) {
+        
+        if(custListView.getSelectionModel().getSelectedIndex() < 0)
+            return                ;
+        
+            
+           Customer c = custListView.getSelectionModel().getSelectedItem();
+                
+                //now send this to jsp viewer
+           
+           
+                
+                try{
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/innuinfocomm?user=root&password=");
+                    System.out.println("Filling report "  +c.getId());
+                    HashMap p = new HashMap();
+                    p.put("custId", c.getId());
+                    JasperPrint jp = JasperFillManager.fillReport("src/reports/custMiniStmt.jasper", p, con);
+                    JasperViewer.viewReport(jp);
+                            
+                    
+                    
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                
+            }
+        
+    }
                 
                 
-   }
+   
