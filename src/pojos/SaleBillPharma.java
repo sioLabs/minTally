@@ -203,10 +203,11 @@ public class SaleBillPharma implements Serializable {
         this.mode = mode;
     }
     
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+   
+    //private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
 
-    @Transient
+   @Transient
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
 
