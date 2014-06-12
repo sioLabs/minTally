@@ -119,7 +119,7 @@ public class CustMiniStmtController {
                     HashMap p = new HashMap();
                     p.put("custId", c.getId());
                     JasperPrint jp = JasperFillManager.fillReport("src/reports/custMiniStmt.jasper", p, con);
-                    JasperViewer.viewReport(jp);
+                    JasperViewer.viewReport(jp,false);
                             
                     
                     
