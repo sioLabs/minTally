@@ -82,6 +82,9 @@ public class MainWindowController {
 
     @FXML
     private Button viewAllLedgerButton;
+    
+    @FXML
+    private Button miniStmt;
 
     @FXML
     private TitledPane x1;
@@ -245,6 +248,17 @@ public class MainWindowController {
         mainContentTabPane.getTabs().add(tab);
         mainContentTabPane.getSelectionModel().select(tab);
     }
+    
+    @FXML
+    public void handleMiniStmt() throws IOException{
+        Parent rootNew = FXMLLoader.load(getClass().getResource("CustMiniStmt.fxml"));
+        Tab tab = new Tab("View Sale Bills");
+        tab.setContent(rootNew);
+        mainContentTabPane.getTabs().add(tab);
+        mainContentTabPane.getSelectionModel().select(tab);   
+        
+    }
+            
 
     private void checkDataBaseConnectivity() {
         

@@ -3,13 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Ashutosh/projects/minTally/src/innuinfocomm/ImportInventoryController.java</file>
-            <file>file:/E:/Ashutosh/projects/minTally/src/innuinfocomm/SaleBillController.java</file>
-            <file>file:/E:/Ashutosh/projects/minTally/src/utils/PrintInvoice.java</file>
-            <file>file:/E:/Ashutosh/projects/minTally/src/pojos/SaleBillPharma.java</file>
-            <file>file:/E:/Ashutosh/projects/minTally/src/utils/FilterComboBox.java</file>
-            <file>file:/E:/Ashutosh/projects/minTally/src/utils/SessionClass.java</file>
-            <file>file:/E:/Ashutosh/projects/minTally/src/innuinfocomm/SalebillPharmaController.java</file>
+            <file>file:/E:/Ashutosh/projects/minTally/src/innuinfocomm/CustMiniStmtController.java</file>
+            <file>file:/E:/Ashutosh/projects/minTally/src/reports/custMiniStmt.jrxml</file>
         </group>
     </open-files>
 </project-private>

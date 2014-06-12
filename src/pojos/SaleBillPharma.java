@@ -91,7 +91,7 @@ public class SaleBillPharma implements Serializable {
         this.id = id;
 
         this.customerId = customerId;
-        this.totalVat = totalVat;
+         this.totalVat = totalVat;
         this.totalAmt = totalAmt;
         this.finalAmt = finalAmt;
     }
@@ -202,6 +202,8 @@ public class SaleBillPharma implements Serializable {
     public void setMode(String mode) {
         this.mode = mode;
     }
+    
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
 
     @Transient
