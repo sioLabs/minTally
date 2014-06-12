@@ -1,5 +1,6 @@
 package innuinfocomm;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.net.URL;
 import java.sql.DriverManager;
@@ -17,6 +18,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
@@ -56,6 +58,7 @@ public class CustMiniStmtController {
     }
     
     public void start(){
+        
         
         searchCustTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
@@ -118,7 +121,8 @@ public class CustMiniStmtController {
                     System.out.println("Filling report "  +c.getId());
                     HashMap p = new HashMap();
                     p.put("custId", c.getId());
-                    JasperPrint jp = JasperFillManager.fillReport("src/reports/custMiniStmt.jasper", p, con);
+                    InputStream jasperIS = getClass().getResourceAsStream("/reports/custMiniStmt.jasper");  
+                    JasperPrint jp = JasperFillManager.fillReport(jasperIS, p, con);
                     JasperViewer.viewReport(jp,false);
                             
                     
