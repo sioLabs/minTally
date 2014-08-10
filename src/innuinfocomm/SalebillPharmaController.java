@@ -471,10 +471,6 @@ public class SalebillPharmaController {
                  salebill.setSaleBillPharmaItemList(data);
                  em.merge(salebill);               
              
-             
-             
-             
-             
              em.getTransaction().commit();     
             
              
@@ -675,6 +671,7 @@ public class SalebillPharmaController {
         stage.close();
     }
      
+     //code to fill the data from the selected sale bill
      private void fillSaleBillFormFromData(SaleBillPharma sFromDB){
         try {
             Thread.sleep(100);
@@ -788,7 +785,7 @@ public class SalebillPharmaController {
          {
             System.out.println(i.getItemPharmaId().getId() + " : " + i.getQnty());
             ItemsPharma p = em.find(ItemsPharma.class, i.getItemPharmaId().getId());
-            p.setStockStrips(p.getStockStrips()+Integer.parseInt(i.getQnty()));
+            p.setStockStrips(p.getStockStrips()+parseQnty(i.getQnty()));
             em.persist(p);
           }
          em.getTransaction().commit();
